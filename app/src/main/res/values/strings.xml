@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Dzn-Dzn</string>
+
+    <!-- Main activity -->
+    <string name="app_colon">:</string>
+    <string name="main_activity_text">У вас установлены селфи будильники на:</string>
+    <string name="main_activity_button_new">Новый</string>
+
+    <!-- New_Edit activity -->
+    <string name="new_edit_activity_tune">Настроить</string>
+    <string name="new_edit_activity_ready">ГОТОВО</string>
+    <string name="new_edit_activity_back">ОТМЕНИТЬ</string>
+    <string name="new_edit_activity_setting">Настройка будильника</string>
+    <string name="new_edit_activity_repeat">Повторять</string>
+    <string name="new_edit_activity_music">Музыка:</string>
+    <string name="new_edit_activity_interval">Интервалы:</string>
+    <string name="new_edit_activity_social_network">Соцсети:</string>
+
+    <string-array name="new_edit_activity_spinner_repeat">
+        <item>Каждый день</item>
+    </string-array>
+
+    <string-array name="new_edit_activity_spinner_settings">
+        <item>общие настройки</item>
+    </string-array>
+
+</resources>

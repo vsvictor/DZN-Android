@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#FF0000</color>
+    <color name="colorAccent">#FF0000</color>
+
+    //Common colors
+    <color name="colorWhite">#FFFFFF</color>
+
+    //Main Activity colors
+    <color name="colorBackgroundMain">#FF0000</color>
+    <color name="colorTransparent">#00000000</color>
+
+
+    //New Edit Activity colors
+    <color name="colorNewEditPrimary">#3F51B5</color>
+    <color name="colorNewEditPrimaryDark">#2C79C5</color>
+    <color name="colorNewEditAccent">#2C79C5</color>
+    <color name="colorNewEditBackground">#2C79C5</color>
+    <color name="colorNewEditBackgroundClock">#1D65AC</color>
+    <color name="colorNewEditSpinner">#D7E2F1</color>
+    <color name="colorNewEditPastLastTime">#C5CAE0</color>
+
+</resources>

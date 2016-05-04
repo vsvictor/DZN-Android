@@ -1,0 +1,26 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="app_padding_8dp">8dp</dimen>
+
+    <!-- Main Activity -->
+    <dimen name="main_activity_text_prompt_size">28sp</dimen>
+    <dimen name="main_activity_text_clock_size">40sp</dimen>
+    <dimen name="main_activity_button_new">28sp</dimen>
+
+    <!-- default height  of divider line -->
+    <dimen name="app_divider_line">1dp</dimen>
+
+    <!-- New_Edit Activity -->
+    <dimen name="new_edit_activity_text_tune_size">34sp</dimen>
+    <dimen name="new_edit_activity_text_back_size">20sp</dimen>
+    <dimen name="new_edit_activity_text_setting_size">24sp</dimen>
+    <dimen name="new_edit_activity_text_repeat_size">24sp</dimen>
+    <dimen name="new_edit_activity_text_other_size">24sp</dimen>
+    <dimen name="new_edit_activity_text_spinner_size">24sp</dimen>
+    <dimen name="new_edit_activity_text_current_time_size">42sp</dimen>
+    <dimen name="new_edit_activity_text_last_time_size">32sp</dimen>
+    <dimen name="new_edit_activity_text_past_time_size">22sp</dimen>
+
+</resources>

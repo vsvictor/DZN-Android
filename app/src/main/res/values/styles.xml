@@ -1,0 +1,79 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- Main activity -->
+    <style name="MainActivityTextPrompt" >
+        <item name="android:textSize">@dimen/main_activity_text_prompt_size</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="MainActivityTextClock" >
+        <item name="android:textSize">@dimen/main_activity_text_clock_size</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="MainActivityButtonNew" >
+        <item name="android:textSize">@dimen/main_activity_button_new</item>
+        <item name="android:textColor">@color/colorBackgroundMain</item>
+    </style>
+
+    <!-- New_Edit activity -->
+    <style name="AppNewEditTheme" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorNewEditPrimary</item>
+        <item name="colorPrimaryDark">@color/colorNewEditPrimaryDark</item>
+        <item name="colorAccent">@color/colorNewEditAccent</item>
+    </style>
+
+    <style name="NewEditActivityTextTune" >
+        <item name="android:textSize">@dimen/new_edit_activity_text_tune_size</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="NewEditActivityTextBack" >
+        <item name="android:textSize">@dimen/new_edit_activity_text_back_size</item>
+        <item name="android:textColor">#F9DA5C</item>
+    </style>
+
+    <style name="NewEditSetting">
+        <item name="android:textSize">@dimen/new_edit_activity_text_setting_size</item>
+        <item name="android:textColor">#D7E2F1</item>
+    </style>
+
+    <style name="NewEditActivityTextRepeat" >
+        <item name="android:textSize">@dimen/new_edit_activity_text_repeat_size</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="NewEditActivityTextOther" >
+        <item name="android:textSize">@dimen/new_edit_activity_text_other_size</item>
+        <item name="android:textColor">#D7E2F1</item>
+    </style>
+
+    <style name="NewEditToggleHandler" parent="android:Widget">
+        <item name="android:background">@drawable/new_edit_btn_toggle</item>
+        <item name="android:disabledAlpha">?android:attr/disabledAlpha</item>
+    </style>
+
+    <style name="NewEditTextCurrentTime" >
+        <item name="android:textSize">@dimen/new_edit_activity_text_current_time_size</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="NewEditTextLastNextTime" >
+        <item name="android:textSize">@dimen/new_edit_activity_text_last_time_size</item>
+        <item name="android:textColor">@color/colorNewEditPastLastTime</item>
+    </style>
+
+    <style name="NewEditTextPastTime" >
+        <item name="android:textSize">@dimen/new_edit_activity_text_past_time_size</item>
+        <item name="android:textColor">@color/colorNewEditPastLastTime</item>
+    </style>
+
+</resources>
