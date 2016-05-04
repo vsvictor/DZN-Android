@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorNewEditBackground"
+    android:orientation="vertical"
+    tools:context=".Activities.NewEditActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/tvNewEditBack"
+            style="@style/NewEditActivityTextBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/new_edit_activity_back" />
+
+        <TextView
+            android:id="@+id/tvNewEditTune"
+            style="@style/NewEditActivityTextTune"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/new_edit_activity_tune" />
+
+        <TextView
+            android:id="@+id/tvNewEditReady"
+            style="@style/NewEditActivityTextBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/new_edit_activity_ready" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorNewEditBackgroundClock"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/tvNewEditPastTime"
+            style="@style/NewEditTextPastTime"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="05 00" />
+
+        <TextView
+            android:id="@+id/tvNewEditLastTime"
+            style="@style/NewEditTextLastNextTime"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="06 05" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_divider_line"
+            android:background="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tvNewEditCurrentTime"
+            style="@style/NewEditTextCurrentTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="07:10" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_divider_line"
+            android:background="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tvNewEditNextTime"
+            style="@style/NewEditTextLastNextTime"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="08 15" />
+
+        <TextView
+            android:id="@+id/tvNewEditAfterTime"
+            style="@style/NewEditTextPastTime"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="09 20" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvNewEditSetting"
+        style="@style/NewEditSetting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/app_padding_8dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/new_edit_activity_setting" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_divider_line"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@android:color/white" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/tvNewEditRepeat"
+            style="@style/NewEditActivityTextRepeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:text="@string/new_edit_activity_repeat" />
+
+        <Spinner
+            android:id="@+id/spinnerNewEditRepeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_divider_line"
+        android:background="@android:color/white" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/tvNewEditMusic"
+            style="@style/NewEditActivityTextOther"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/new_edit_activity_music" />
+
+        <Spinner
+            android:id="@+id/spinnerNewEditMusic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/tvNewEditMusic"
+            android:layout_alignBottom="@+id/tvNewEditMusic"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/app_padding_8dp"
+            android:layout_toEndOf="@+id/tvNewEditMusic"
+            android:layout_toRightOf="@+id/tvNewEditMusic" />
+
+        <ToggleButton
+            android:id="@+id/toggleNewEditMusic"
+            style="@style/NewEditToggleHandler"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textOff=""
+            android:textOn="" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_divider_line"
+        android:background="@android:color/white" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/tvNewEditInterval"
+            style="@style/NewEditActivityTextOther"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/new_edit_activity_interval" />
+
+        <Spinner
+            android:id="@+id/spinnerNewEditInterval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/tvNewEditInterval"
+            android:layout_alignBottom="@+id/tvNewEditInterval"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/app_padding_8dp"
+            android:layout_toEndOf="@+id/tvNewEditInterval"
+            android:layout_toRightOf="@+id/tvNewEditInterval" />
+
+        <ToggleButton
+            android:id="@+id/toggleNewEditInterval"
+            style="@style/NewEditToggleHandler"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textOff=""
+            android:textOn="" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_divider_line"
+        android:background="@android:color/white" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/tvNewEditSocialNetwork"
+            style="@style/NewEditActivityTextOther"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/new_edit_activity_social_network" />
+
+        <Spinner
+            android:id="@+id/spinnerNewEditSocialNetwork"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/tvNewEditSocialNetwork"
+            android:layout_alignBottom="@+id/tvNewEditSocialNetwork"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/app_padding_8dp"
+            android:layout_toEndOf="@+id/tvNewEditSocialNetwork"
+            android:layout_toRightOf="@+id/tvNewEditSocialNetwork" />
+
+        <ToggleButton
+            android:id="@+id/toggleNewEditSocialNetwork"
+            style="@style/NewEditToggleHandler"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textOff=""
+            android:textOn="" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_divider_line"
+        android:background="@android:color/white" />
+
+</LinearLayout>
