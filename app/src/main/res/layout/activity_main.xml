@@ -30,8 +30,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="false"
             android:layout_centerVertical="true"
-            android:background="@mipmap/settings"
-            android:onClick="onSettings"/>
+            android:background="@mipmap/settings" />
 
     </RelativeLayout>
 
@@ -137,11 +136,12 @@
 
         <Button
             android:id="@+id/btn_new"
+            style="@style/MainActivityButtonNew"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:text="@string/main_activity_button_new"
-            style="@style/MainActivityButtonNew"
-            android:background="@drawable/button_new" />
+            android:background="@drawable/button_new"
+            android:onClick="onNewEditAlarm"/>
 
     </LinearLayout>
 

@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         btnNew.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Regular.ttf"));
     }
 
-    public void onSettings(View view) {
+    public void onNewEditAlarm(View view) {
         Intent intent = new Intent(MainActivity.this, NewEditActivity.class);
         startActivity(intent);
     }
