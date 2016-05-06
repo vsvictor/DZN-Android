@@ -18,6 +18,9 @@
 
     <string-array name="new_edit_activity_spinner_repeat">
         <item>Каждый день</item>
+        <item>Рабочие дни</item>
+        <item>Выходные дни</item>
+        <item>Другое...</item>
     </string-array>
 
     <string-array name="new_edit_activity_spinner_settings">

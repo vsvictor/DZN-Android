@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Settings activity -->
+        <!-- New Edit activity -->
         <activity android:name=".Activities.NewEditActivity"
             android:theme="@style/AppNewEditTheme"
             android:screenOrientation="portrait"/>
