@@ -16,6 +16,15 @@
     <string name="new_edit_activity_interval">Интервалы:</string>
     <string name="new_edit_activity_social_network">Соцсети:</string>
 
+    <!-- Short Days of week -->
+    <string name="short_sunday">Вc</string>
+    <string name="short_monday">Пн</string>
+    <string name="short_tuesday">Вт</string>
+    <string name="short_wednesday">Ср</string>
+    <string name="short_thursday">Чт</string>
+    <string name="short_friday">Пт</string>
+    <string name="short_saturday">Сб</string>
+
     <string-array name="new_edit_activity_spinner_repeat">
         <item>Каждый день</item>
         <item>Рабочие дни</item>

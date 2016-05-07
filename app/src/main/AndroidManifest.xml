@@ -7,11 +7,10 @@
         android:icon="@mipmap/dzn_dzn_icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
-
+        android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,10 +19,11 @@
         </activity>
 
         <!-- New Edit activity -->
-        <activity android:name=".Activities.NewEditActivity"
-            android:theme="@style/AppNewEditTheme"
-            android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".Activities.NewEditActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppNewEditTheme" />
+        <activity android:name=".Activities.SettingsActivity"></activity>
     </application>
 
 </manifest>

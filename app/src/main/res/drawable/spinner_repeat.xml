@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <layer-list>
+            <item>
+                <shape>
+                    <padding
+                        android:bottom="@dimen/app_padding_2dp"
+                        android:top="@dimen/app_padding_2dp" />
+                </shape>
+            </item>
+
+            <item>
+                <bitmap
+                    android:gravity="right"
+                    android:src="@drawable/to_right" />
+            </item>
+        </layer-list>
+    </item>
+</selector>

@@ -133,12 +133,92 @@
 
         <Spinner
             android:id="@+id/spinnerNewEditRepeat"
+            style="@style/NewEditSpinnerRepeat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true" />
 
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/linearNewEditWeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/activity_vertical_margin"
+        android:visibility="gone">
+
+        <ToggleButton
+            android:id="@+id/toggleNewEditSunday"
+            style="@style/NewEditToggleHandler"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:textOff="@string/short_sunday"
+            android:textOn="@string/short_sunday" />
+
+        <ToggleButton
+            android:id="@+id/toggleNewEditMonday"
+            style="@style/NewEditToggleHandler"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:textOff="@string/short_monday"
+            android:textOn="@string/short_monday" />
+
+        <ToggleButton
+            android:id="@+id/toggleNewEditTuesday"
+            style="@style/NewEditToggleHandler"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:textOff="@string/short_tuesday"
+            android:textOn="@string/short_tuesday" />
+
+        <ToggleButton
+            android:id="@+id/toggleNewEditWednesday"
+            style="@style/NewEditToggleHandler"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:textOff="@string/short_wednesday"
+            android:textOn="@string/short_wednesday" />
+
+        <ToggleButton
+            android:id="@+id/toggleNewEditThursday"
+            style="@style/NewEditToggleHandler"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:textOff="@string/short_thursday"
+            android:textOn="@string/short_thursday" />
+
+        <ToggleButton
+            android:id="@+id/toggleNewEditFriday"
+            style="@style/NewEditToggleHandler"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:textOff="@string/short_friday"
+            android:textOn="@string/short_friday" />
+
+        <ToggleButton
+            android:id="@+id/toggleNewEditSaturday"
+            style="@style/NewEditToggleHandler"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:textOff="@string/short_saturday"
+            android:textOn="@string/short_saturday" />
+
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
@@ -161,6 +241,7 @@
 
         <Spinner
             android:id="@+id/spinnerNewEditMusic"
+            style="@style/NewEditSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/tvNewEditMusic"
@@ -203,6 +284,7 @@
 
         <Spinner
             android:id="@+id/spinnerNewEditInterval"
+            style="@style/NewEditSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/tvNewEditInterval"
@@ -245,6 +327,7 @@
 
         <Spinner
             android:id="@+id/spinnerNewEditSocialNetwork"
+            style="@style/NewEditSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/tvNewEditSocialNetwork"

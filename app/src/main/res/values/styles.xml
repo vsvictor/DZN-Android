@@ -75,5 +75,13 @@
         <item name="android:textSize">@dimen/new_edit_activity_text_past_time_size</item>
         <item name="android:textColor">@color/colorNewEditPastLastTime</item>
     </style>
+    
+    <style name="NewEditSpinnerRepeat" >
+        <item name="android:background">@drawable/spinner_repeat</item>
+    </style>
+
+    <style name="NewEditSpinner" >
+        <item name="android:background">@drawable/spinner</item>
+    </style>
 
 </resources>

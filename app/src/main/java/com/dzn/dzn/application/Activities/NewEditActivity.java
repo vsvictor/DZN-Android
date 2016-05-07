@@ -3,6 +3,9 @@ package com.dzn.dzn.application.Activities;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -37,6 +40,8 @@ public class NewEditActivity extends AppCompatActivity {
     private TextView tvNewEditSocialNetwork;
     private Spinner spinnerNewEditSocialNetwork;
 
+    private LinearLayout linearNewEditWeek;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,14 +75,59 @@ public class NewEditActivity extends AppCompatActivity {
         tvNewEditSetting = (TextView) findViewById(R.id.tvNewEditSetting);
         tvNewEditSetting.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
 
+
+        //Initialize section Repeat
+        initSectionRepeat();
+
+        //Initialize section Music
+        initSectionMusic();
+
+        //Initialize section Interval
+        initSectionInterval();
+
+        //Initialize section Social Network
+        initSectionSocialNetwork();
+    }
+
+    /**
+     * Initialize section Repeat
+     */
+    private void initSectionRepeat() {
         tvNewEditRepeat = (TextView) findViewById(R.id.tvNewEditRepeat);
         tvNewEditRepeat.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Regular.ttf"));
         spinnerNewEditRepeat = (Spinner) findViewById(R.id.spinnerNewEditRepeat);
-        spinnerNewEditRepeat.setAdapter( new SpinnerRepeatAdapter(
-                getApplicationContext(),
-                R.layout.new_edit_spinner,
-                Arrays.asList(getResources().getStringArray(R.array.new_edit_activity_spinner_repeat))));
 
+        SpinnerRepeatAdapter spinnerRepeatAdapter = new SpinnerRepeatAdapter(
+                getApplicationContext(),
+                R.layout.new_edit_spinner_repeat,
+                Arrays.asList(getResources().getStringArray(R.array.new_edit_activity_spinner_repeat))
+        );
+        spinnerRepeatAdapter.setDropDownViewResource(R.layout.new_edit_spinner_repeat);
+
+        spinnerNewEditRepeat.setAdapter(spinnerRepeatAdapter);
+
+        linearNewEditWeek = (LinearLayout) findViewById(R.id.linearNewEditWeek);
+        spinnerNewEditRepeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 3) {
+                    linearNewEditWeek.setVisibility(View.VISIBLE);
+                } else {
+                    linearNewEditWeek.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    /**
+     * Initialize section Music
+     */
+    private void initSectionMusic() {
         tvNewEditMusic = (TextView) findViewById(R.id.tvNewEditMusic);
         tvNewEditMusic.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
         spinnerNewEditMusic = (Spinner) findViewById(R.id.spinnerNewEditMusic);
@@ -85,7 +135,12 @@ public class NewEditActivity extends AppCompatActivity {
                 getApplicationContext(),
                 R.layout.new_edit_spinner,
                 Arrays.asList(getResources().getStringArray(R.array.new_edit_activity_spinner_settings))));
+    }
 
+    /**
+     * Initialize section Interval
+     */
+    private void initSectionInterval() {
         tvNewEditInterval = (TextView) findViewById(R.id.tvNewEditInterval);
         tvNewEditInterval.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
         spinnerNewEditInterval = (Spinner) findViewById(R.id.spinnerNewEditInterval);
@@ -93,7 +148,12 @@ public class NewEditActivity extends AppCompatActivity {
                 getApplicationContext(),
                 R.layout.new_edit_spinner,
                 Arrays.asList(getResources().getStringArray(R.array.new_edit_activity_spinner_settings))));
+    }
 
+    /**
+     * Initialize section Social Network
+     */
+    private void initSectionSocialNetwork() {
         tvNewEditSocialNetwork = (TextView) findViewById(R.id.tvNewEditSocialNetwork);
         tvNewEditSocialNetwork.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
         spinnerNewEditSocialNetwork = (Spinner) findViewById(R.id.spinnerNewEditSocialNetwork);
@@ -101,6 +161,5 @@ public class NewEditActivity extends AppCompatActivity {
                 getApplicationContext(),
                 R.layout.new_edit_spinner,
                 Arrays.asList(getResources().getStringArray(R.array.new_edit_activity_spinner_settings))));
-
     }
 }
