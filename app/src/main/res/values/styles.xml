@@ -61,6 +61,12 @@
         <item name="android:disabledAlpha">?android:attr/disabledAlpha</item>
     </style>
 
+    <!-- Day of week toggle style -->
+    <style name="NewEditToggleDay" parent="android:Widget">
+        <item name="android:background">@drawable/new_edit_btn_toggle_day</item>
+        <item name="android:disabledAlpha">?android:attr/disabledAlpha</item>
+    </style>
+
     <style name="NewEditTextCurrentTime" >
         <item name="android:textSize">@dimen/new_edit_activity_text_current_time_size</item>
         <item name="android:textColor">@color/colorWhite</item>
