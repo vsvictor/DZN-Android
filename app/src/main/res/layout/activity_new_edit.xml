@@ -151,7 +151,7 @@
 
         <ToggleButton
             android:id="@+id/toggleNewEditSunday"
-            style="@style/NewEditToggleHandler"
+            style="@style/NewEditToggleDay"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_weight="1"
@@ -161,7 +161,7 @@
 
         <ToggleButton
             android:id="@+id/toggleNewEditMonday"
-            style="@style/NewEditToggleHandler"
+            style="@style/NewEditToggleDay"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_weight="1"
@@ -171,7 +171,7 @@
 
         <ToggleButton
             android:id="@+id/toggleNewEditTuesday"
-            style="@style/NewEditToggleHandler"
+            style="@style/NewEditToggleDay"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_weight="1"
@@ -181,7 +181,7 @@
 
         <ToggleButton
             android:id="@+id/toggleNewEditWednesday"
-            style="@style/NewEditToggleHandler"
+            style="@style/NewEditToggleDay"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_weight="1"
@@ -191,7 +191,7 @@
 
         <ToggleButton
             android:id="@+id/toggleNewEditThursday"
-            style="@style/NewEditToggleHandler"
+            style="@style/NewEditToggleDay"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_weight="1"
@@ -201,7 +201,7 @@
 
         <ToggleButton
             android:id="@+id/toggleNewEditFriday"
-            style="@style/NewEditToggleHandler"
+            style="@style/NewEditToggleDay"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_weight="1"
@@ -211,7 +211,7 @@
 
         <ToggleButton
             android:id="@+id/toggleNewEditSaturday"
-            style="@style/NewEditToggleHandler"
+            style="@style/NewEditToggleDay"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_weight="1"
