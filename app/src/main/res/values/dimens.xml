@@ -3,6 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="app_padding_8dp">8dp</dimen>
+    <dimen name="app_padding_32dp">32dp</dimen>
 
     <!-- Main Activity -->
     <dimen name="main_activity_text_prompt_size">28sp</dimen>
