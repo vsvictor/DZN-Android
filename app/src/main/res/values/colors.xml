@@ -18,6 +18,7 @@
     <color name="colorNewEditAccent">#2C79C5</color>
     <color name="colorNewEditBackground">#2C79C5</color>
     <color name="colorNewEditBackgroundClock">#1D65AC</color>
+    <color name="colorNewEditBackgroundDrum">#1D65AC</color>
     <color name="colorNewEditSpinner">#D7E2F1</color>
     <color name="colorNewEditPastLastTime">#C5CAE0</color>
 

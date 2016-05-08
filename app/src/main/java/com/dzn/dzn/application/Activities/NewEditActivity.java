@@ -3,17 +3,22 @@ package com.dzn.dzn.application.Activities;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.dzn.dzn.application.Adapters.RecyclerViewAdapterDrum;
 import com.dzn.dzn.application.Adapters.SpinnerRepeatAdapter;
+import com.dzn.dzn.application.Objects.AlarmTest;
 import com.dzn.dzn.application.R;
 
-import org.w3c.dom.Text;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class NewEditActivity extends AppCompatActivity {
@@ -31,16 +36,27 @@ public class NewEditActivity extends AppCompatActivity {
 
     private TextView tvNewEditSetting;
 
+    //Section Drum
+    private RecyclerView recyclerViewDrum;
+    private LinearLayoutManager recyclerLayoutManager;
+    private RecyclerViewAdapterDrum recyclerViewAdapterDrum;
+
+    //Section Repeat
     private TextView tvNewEditRepeat;
     private Spinner spinnerNewEditRepeat;
+    private LinearLayout linearNewEditWeek;
+
+    //Section Music
     private TextView tvNewEditMusic;
     private Spinner spinnerNewEditMusic;
+
+    //Section Interval
     private TextView tvNewEditInterval;
     private Spinner spinnerNewEditInterval;
+
+    //Section Social Network
     private TextView tvNewEditSocialNetwork;
     private Spinner spinnerNewEditSocialNetwork;
-
-    private LinearLayout linearNewEditWeek;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +77,7 @@ public class NewEditActivity extends AppCompatActivity {
         tvNewEditReady = (TextView) findViewById(R.id.tvNewEditReady);
         tvNewEditReady.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
 
+        /**
         tvNewEditPastTime = (TextView) findViewById(R.id.tvNewEditPastTime);
         tvNewEditPastTime.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
         tvNewEditLastTime = (TextView) findViewById(R.id.tvNewEditLastTime);
@@ -71,10 +88,13 @@ public class NewEditActivity extends AppCompatActivity {
         tvNewEditNextTime.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
         tvNewEditAfterTime = (TextView) findViewById(R.id.tvNewEditAfterTime);
         tvNewEditAfterTime.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
+         */
 
         tvNewEditSetting = (TextView) findViewById(R.id.tvNewEditSetting);
         tvNewEditSetting.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
 
+        //Initialize section Drum
+        initSectionDrum();
 
         //Initialize section Repeat
         initSectionRepeat();
@@ -87,6 +107,65 @@ public class NewEditActivity extends AppCompatActivity {
 
         //Initialize section Social Network
         initSectionSocialNetwork();
+    }
+
+    /**
+     * Initialize section drum
+     */
+    private void initSectionDrum() {
+        recyclerViewDrum = (RecyclerView) findViewById(R.id.recyclerViewDrum);
+
+        recyclerLayoutManager = new LinearLayoutManager(this);
+        recyclerViewDrum.setLayoutManager(recyclerLayoutManager);
+
+        recyclerViewAdapterDrum = new RecyclerViewAdapterDrum(getListAlarm());
+        recyclerViewDrum.setAdapter(recyclerViewAdapterDrum);
+
+        recyclerViewDrum.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                int pos = recyclerLayoutManager.findFirstVisibleItemPosition();
+                Log.d(TAG, "Drum pos: " + pos);
+
+                Log.d(TAG, "Drum item count: " + recyclerViewAdapterDrum.getItemCount());
+                if (recyclerViewAdapterDrum.getItemCount() == 1) {
+                    LinearLayout ll = (LinearLayout) recyclerLayoutManager.findViewByPosition(pos);
+                    ll.setGravity(Gravity.CENTER);
+
+                    TextView tvTime = (TextView) ll.findViewById(R.id.tvTime);
+                    tvTime.setGravity(Gravity.CENTER);
+                    tvTime.setTextSize(32);
+
+                } else {
+                    LinearLayout ll = (LinearLayout) recyclerLayoutManager.findViewByPosition(pos);
+                    TextView tvTime = (TextView) ll.findViewById(R.id.tvTime);
+                    tvTime.setTextSize(16);
+                }
+
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
+    }
+
+    /**
+     * This method is for tested
+     * @return
+     */
+    private ArrayList<?> getListAlarm() {
+        ArrayList<AlarmTest> list= new ArrayList<AlarmTest>();
+        list.add(new AlarmTest());
+        list.add(new AlarmTest("12", "00"));
+        list.add(new AlarmTest("23", "30"));
+        list.add(new AlarmTest("07", "45"));
+        list.add(new AlarmTest("11", "20"));
+        return list;
     }
 
     /**

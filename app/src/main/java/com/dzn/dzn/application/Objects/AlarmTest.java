@@ -26,4 +26,8 @@ public class AlarmTest {
     public String getMinute() {
         return minute;
     }
+
+    public String getTime() {
+        return hour + " : " + minute;
+    }
 }

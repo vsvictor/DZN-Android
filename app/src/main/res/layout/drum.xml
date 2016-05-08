@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llDrumItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/colorNewEditBackgroundClock"
+    android:paddingTop="@dimen/app_padding_4dp"
+    android:paddingBottom="@dimen/app_padding_4dp">
+
+    <View
+        android:id="@+id/drumUpDivider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_divider_line"
+        android:background="@android:color/white"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/colorWhite"
+        android:text="07:10" />
+
+    <View
+        android:id="@+id/drumDownDivider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_divider_line"
+        android:background="@android:color/white"
+        android:visibility="gone"/>
+
+</LinearLayout>

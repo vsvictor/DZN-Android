@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         btnNew = (Button) findViewById(R.id.btn_new);
         btnNew.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Regular.ttf"));
 
-        recyclerViewMain = (RecyclerView) findViewById(R.id.recyclerViewMain);
+        //initialize recycler of alarms
         initRecyclerViewMain();
     }
 
@@ -59,9 +59,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Initialize recyclerView
+     * Initialize recyclerView of alarms
      */
     private void initRecyclerViewMain() {
+        recyclerViewMain = (RecyclerView) findViewById(R.id.recyclerViewMain);
         recyclerViewMain.setHasFixedSize(true);
 
         recyclerLayoutManager = new LinearLayoutManager(this);
