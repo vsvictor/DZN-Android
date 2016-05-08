@@ -3,6 +3,7 @@ package com.dzn.dzn.application.Activities;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -139,7 +140,25 @@ public class NewEditActivity extends AppCompatActivity {
                 int posLast = recyclerLayoutManager.findLastVisibleItemPosition();
                 Log.d(TAG, "Drum first pos: " + posFirst + " / Drum Last pos: " + posLast);
                 Log.d(TAG, "Drum item count: " + recyclerViewAdapterDrum.getItemCount());
+            }
 
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                Log.d(TAG, "DX: " + dx + " / DY: " + dy);
+                int posFirst = recyclerLayoutManager.findFirstVisibleItemPosition();
+                Log.d(TAG, "Scrolled first position: " + posFirst);
+
+                //change view elements
+                changeView(recyclerView, posFirst);
+            }
+
+            /**
+             * Change view elements of recycler
+             * @param recyclerView
+             * @param posFirst
+             */
+            private void changeView(RecyclerView recyclerView, int posFirst) {
                 //Set first view
                 LinearLayout linearLayoutFirst = (LinearLayout) recyclerLayoutManager.findViewByPosition(posFirst);
                 TextView tvTimeFirst = (TextView) linearLayoutFirst.findViewById(R.id.tvTime);
@@ -194,13 +213,6 @@ public class NewEditActivity extends AppCompatActivity {
                 tvTimeFifth.setTextSize(24);
                 tvTimeFifth.setTypeface(Typeface.createFromAsset(recyclerView.getContext().getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
                 tvTimeFifth.setTextColor(recyclerView.getResources().getColor(R.color.colorNewEditPastLastTime));
-
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                Log.d(TAG, "DX: " + dx + " / DY: " + dy);
             }
         });
 
