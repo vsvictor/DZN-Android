@@ -39,23 +39,16 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewDrum"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerViewDrum"
-            android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:scrollbars="vertical"
-            android:background="@color/colorNewEditBackgroundDrum" />
-
-    </LinearLayout>
-
+        android:layout_height="230dp"
+        android:background="@color/colorNewEditBackgroundDrum"
+        android:scrollbars="vertical" />
 
     <!--
     <LinearLayout
+        android:id="@+id/llTested"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorNewEditBackgroundClock"
@@ -121,8 +114,8 @@
         style="@style/NewEditSetting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/app_padding_8dp"
         android:layout_gravity="center_horizontal"
+        android:paddingTop="@dimen/app_padding_8dp"
         android:text="@string/new_edit_activity_setting" />
 
     <View
@@ -171,8 +164,8 @@
             style="@style/NewEditToggleDay"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_weight="1"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_weight="1"
             android:textOff="@string/short_sunday"
             android:textOn="@string/short_sunday" />
 
@@ -181,8 +174,8 @@
             style="@style/NewEditToggleDay"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_weight="1"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_weight="1"
             android:textOff="@string/short_monday"
             android:textOn="@string/short_monday" />
 
@@ -191,8 +184,8 @@
             style="@style/NewEditToggleDay"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_weight="1"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_weight="1"
             android:textOff="@string/short_tuesday"
             android:textOn="@string/short_tuesday" />
 
@@ -201,8 +194,8 @@
             style="@style/NewEditToggleDay"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_weight="1"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_weight="1"
             android:textOff="@string/short_wednesday"
             android:textOn="@string/short_wednesday" />
 
@@ -211,8 +204,8 @@
             style="@style/NewEditToggleDay"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_weight="1"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_weight="1"
             android:textOff="@string/short_thursday"
             android:textOn="@string/short_thursday" />
 
@@ -221,8 +214,8 @@
             style="@style/NewEditToggleDay"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_weight="1"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_weight="1"
             android:textOff="@string/short_friday"
             android:textOn="@string/short_friday" />
 

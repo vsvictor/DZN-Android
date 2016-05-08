@@ -6,9 +6,10 @@ package com.dzn.dzn.application.Objects;
  * This class is for tested
  */
 public class AlarmTest {
-    String hour;
-    String minute;
-    boolean visibleTime;
+    private String hour;
+    private String minute;
+    private boolean visibleTime;
+
     public AlarmTest() {
         this.hour = "00";
         this.minute = "00";
@@ -33,6 +34,11 @@ public class AlarmTest {
         return hour + " : " + minute;
     }
 
-    public void setVisibleTime(boolean b){this.visibleTime = b;}
-    public boolean getVisibleTime(){return  this.visibleTime;}
+    public void setVisibleTime(boolean b) {
+        this.visibleTime = b;
+    }
+
+    public boolean getVisibleTime() {
+        return  this.visibleTime;
+    }
 }

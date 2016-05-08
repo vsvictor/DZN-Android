@@ -77,18 +77,8 @@ public class NewEditActivity extends AppCompatActivity {
         tvNewEditReady = (TextView) findViewById(R.id.tvNewEditReady);
         tvNewEditReady.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
 
-        /**
-        tvNewEditPastTime = (TextView) findViewById(R.id.tvNewEditPastTime);
-        tvNewEditPastTime.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
-        tvNewEditLastTime = (TextView) findViewById(R.id.tvNewEditLastTime);
-        tvNewEditLastTime.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
-        tvNewEditCurrentTime = (TextView) findViewById(R.id.tvNewEditCurrentTime);
-        tvNewEditCurrentTime.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Black.ttf"));
-        tvNewEditNextTime = (TextView) findViewById(R.id.tvNewEditNextTime);
-        tvNewEditNextTime.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
-        tvNewEditAfterTime = (TextView) findViewById(R.id.tvNewEditAfterTime);
-        tvNewEditAfterTime.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
-         */
+        //Initialize section tested
+        //initSectionTested();
 
         tvNewEditSetting = (TextView) findViewById(R.id.tvNewEditSetting);
         tvNewEditSetting.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
@@ -110,6 +100,24 @@ public class NewEditActivity extends AppCompatActivity {
     }
 
     /**
+     * Tested
+     */
+    private void initSectionTested() {
+        /**
+        tvNewEditPastTime = (TextView) findViewById(R.id.tvNewEditPastTime);
+        tvNewEditPastTime.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
+        tvNewEditLastTime = (TextView) findViewById(R.id.tvNewEditLastTime);
+        tvNewEditLastTime.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
+        tvNewEditCurrentTime = (TextView) findViewById(R.id.tvNewEditCurrentTime);
+        tvNewEditCurrentTime.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Black.ttf"));
+        tvNewEditNextTime = (TextView) findViewById(R.id.tvNewEditNextTime);
+        tvNewEditNextTime.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
+        tvNewEditAfterTime = (TextView) findViewById(R.id.tvNewEditAfterTime);
+        tvNewEditAfterTime.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
+         */
+    }
+
+    /**
      * Initialize section drum
      */
     private void initSectionDrum() {
@@ -126,29 +134,73 @@ public class NewEditActivity extends AppCompatActivity {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                int pos = recyclerLayoutManager.findFirstVisibleItemPosition();
-                Log.d(TAG, "Drum pos: " + pos);
-
+                //debug
+                int posFirst = recyclerLayoutManager.findFirstVisibleItemPosition();
+                int posLast = recyclerLayoutManager.findLastVisibleItemPosition();
+                Log.d(TAG, "Drum first pos: " + posFirst + " / Drum Last pos: " + posLast);
                 Log.d(TAG, "Drum item count: " + recyclerViewAdapterDrum.getItemCount());
-                if (recyclerViewAdapterDrum.getItemCount() == 1) {
-                    LinearLayout ll = (LinearLayout) recyclerLayoutManager.findViewByPosition(pos);
-                    ll.setGravity(Gravity.CENTER);
 
-                    TextView tvTime = (TextView) ll.findViewById(R.id.tvTime);
-                    tvTime.setGravity(Gravity.CENTER);
-                    tvTime.setTextSize(32);
+                //Set first view
+                LinearLayout linearLayoutFirst = (LinearLayout) recyclerLayoutManager.findViewByPosition(posFirst);
+                TextView tvTimeFirst = (TextView) linearLayoutFirst.findViewById(R.id.tvTime);
+                View drumUpDividerFirst = linearLayoutFirst.findViewById(R.id.drumUpDivider);
+                View drumDownDividerFirst = linearLayoutFirst.findViewById(R.id.drumDownDivider);
+                drumUpDividerFirst.setVisibility(View.GONE);
+                drumDownDividerFirst.setVisibility(View.GONE);
+                tvTimeFirst.setTextSize(24);
+                tvTimeFirst.setTypeface(Typeface.createFromAsset(recyclerView.getContext().getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
+                tvTimeFirst.setTextColor(recyclerView.getResources().getColor(R.color.colorNewEditPastLastTime));
 
-                } else {
-                    LinearLayout ll = (LinearLayout) recyclerLayoutManager.findViewByPosition(pos);
-                    TextView tvTime = (TextView) ll.findViewById(R.id.tvTime);
-                    tvTime.setTextSize(16);
-                }
+                //Set second view
+                LinearLayout linearLayoutSecond = (LinearLayout) recyclerLayoutManager.findViewByPosition(posFirst + 1);
+                TextView tvTimeSecond = (TextView) linearLayoutSecond.findViewById(R.id.tvTime);
+                View drumUpDividerSecond = linearLayoutSecond.findViewById(R.id.drumUpDivider);
+                View drumDownDividerSecond = linearLayoutSecond.findViewById(R.id.drumDownDivider);
+                drumUpDividerSecond.setVisibility(View.GONE);
+                drumDownDividerSecond.setVisibility(View.GONE);
+                tvTimeSecond.setTextSize(36);
+                tvTimeSecond.setTypeface(Typeface.createFromAsset(recyclerView.getContext().getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
+                tvTimeSecond.setTextColor(recyclerView.getResources().getColor(R.color.colorNewEditPastLastTime));
+
+                //Set third view
+                LinearLayout linearLayoutThird = (LinearLayout) recyclerLayoutManager.findViewByPosition(posFirst + 2);
+                TextView tvTimeThird = (TextView) linearLayoutThird.findViewById(R.id.tvTime);
+                View drumUpDividerThird = linearLayoutThird.findViewById(R.id.drumUpDivider);
+                View drumDownDividerThird = linearLayoutThird.findViewById(R.id.drumDownDivider);
+                drumDownDividerThird.setVisibility(View.VISIBLE);
+                drumUpDividerThird.setVisibility(View.VISIBLE);
+                tvTimeThird.setTextSize(46);
+                tvTimeThird.setTypeface(Typeface.createFromAsset(recyclerView.getContext().getAssets(), "fonts/PFHandbookPro-Black.ttf"));
+                tvTimeThird.setTextColor(recyclerView.getResources().getColor(R.color.colorWhite));
+
+                //Set fourth view
+                LinearLayout linearLayoutFourth = (LinearLayout) recyclerLayoutManager.findViewByPosition(posFirst + 3);
+                TextView tvTimeFourth = (TextView) linearLayoutFourth.findViewById(R.id.tvTime);
+                View drumUpDividerFourth = linearLayoutFourth.findViewById(R.id.drumUpDivider);
+                View drumDownDividerFourth = linearLayoutFourth.findViewById(R.id.drumDownDivider);
+                drumUpDividerFourth.setVisibility(View.GONE);
+                drumDownDividerFourth.setVisibility(View.GONE);
+                tvTimeFourth.setTextSize(36);
+                tvTimeFourth.setTypeface(Typeface.createFromAsset(recyclerView.getContext().getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
+                tvTimeFourth.setTextColor(recyclerView.getResources().getColor(R.color.colorNewEditPastLastTime));
+
+                //Set fifth view
+                LinearLayout linearLayoutFifth = (LinearLayout) recyclerLayoutManager.findViewByPosition(posFirst + 4);
+                TextView tvTimeFifth = (TextView) linearLayoutFifth.findViewById(R.id.tvTime);
+                View drumUpDividerFifth = linearLayoutFifth.findViewById(R.id.drumUpDivider);
+                View drumDownDividerFifth = linearLayoutFifth.findViewById(R.id.drumDownDivider);
+                drumUpDividerFifth.setVisibility(View.GONE);
+                drumDownDividerFifth.setVisibility(View.GONE);
+                tvTimeFifth.setTextSize(24);
+                tvTimeFifth.setTypeface(Typeface.createFromAsset(recyclerView.getContext().getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
+                tvTimeFifth.setTextColor(recyclerView.getResources().getColor(R.color.colorNewEditPastLastTime));
 
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                Log.d(TAG, "DX: " + dx + " / DY: " + dy);
             }
         });
 
@@ -156,10 +208,11 @@ public class NewEditActivity extends AppCompatActivity {
 
     /**
      * This method is for tested
+     *
      * @return
      */
     private ArrayList<AlarmTest> getListAlarm() {
-        ArrayList<AlarmTest> list= new ArrayList<AlarmTest>();
+        ArrayList<AlarmTest> list = new ArrayList<AlarmTest>();
         //list.add(new AlarmTest());
         list.add(new AlarmTest("12", "00"));
         list.add(new AlarmTest("23", "30"));
@@ -167,7 +220,9 @@ public class NewEditActivity extends AppCompatActivity {
         list.add(new AlarmTest("11", "20"));
         list.add(new AlarmTest("14", "30"));
         list.add(new AlarmTest("15", "45"));
-        list.add(new AlarmTest("16", "50"));
+        list.add(new AlarmTest("17", "25"));
+        list.add(new AlarmTest("18", "10"));
+        list.add(new AlarmTest("19", "35"));
         return list;
     }
 
@@ -213,7 +268,7 @@ public class NewEditActivity extends AppCompatActivity {
         tvNewEditMusic = (TextView) findViewById(R.id.tvNewEditMusic);
         tvNewEditMusic.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
         spinnerNewEditMusic = (Spinner) findViewById(R.id.spinnerNewEditMusic);
-        spinnerNewEditMusic.setAdapter( new SpinnerRepeatAdapter(
+        spinnerNewEditMusic.setAdapter(new SpinnerRepeatAdapter(
                 getApplicationContext(),
                 R.layout.new_edit_spinner,
                 Arrays.asList(getResources().getStringArray(R.array.new_edit_activity_spinner_settings))));
@@ -226,7 +281,7 @@ public class NewEditActivity extends AppCompatActivity {
         tvNewEditInterval = (TextView) findViewById(R.id.tvNewEditInterval);
         tvNewEditInterval.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
         spinnerNewEditInterval = (Spinner) findViewById(R.id.spinnerNewEditInterval);
-        spinnerNewEditInterval.setAdapter( new SpinnerRepeatAdapter(
+        spinnerNewEditInterval.setAdapter(new SpinnerRepeatAdapter(
                 getApplicationContext(),
                 R.layout.new_edit_spinner,
                 Arrays.asList(getResources().getStringArray(R.array.new_edit_activity_spinner_settings))));
@@ -239,7 +294,7 @@ public class NewEditActivity extends AppCompatActivity {
         tvNewEditSocialNetwork = (TextView) findViewById(R.id.tvNewEditSocialNetwork);
         tvNewEditSocialNetwork.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
         spinnerNewEditSocialNetwork = (Spinner) findViewById(R.id.spinnerNewEditSocialNetwork);
-        spinnerNewEditSocialNetwork.setAdapter( new SpinnerRepeatAdapter(
+        spinnerNewEditSocialNetwork.setAdapter(new SpinnerRepeatAdapter(
                 getApplicationContext(),
                 R.layout.new_edit_spinner,
                 Arrays.asList(getResources().getStringArray(R.array.new_edit_activity_spinner_settings))));

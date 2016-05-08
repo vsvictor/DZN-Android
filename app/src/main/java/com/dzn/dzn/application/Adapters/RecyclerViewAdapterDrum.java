@@ -90,34 +90,34 @@ public class RecyclerViewAdapterDrum extends RecyclerView.Adapter<RecyclerViewAd
         AlarmTest alarmTest = (AlarmTest) list.get(position);
         holder.tvTime.setText(alarmTest.getTime());
 
+        /**
         if (list.size() == 1) {
             holder.linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            holder.linearLayout.setGravity(Gravity.CENTER);
             holder.drumUpDivider.setVisibility(View.VISIBLE);
             holder.drumDownDivider.setVisibility(View.VISIBLE);
-            holder.tvTime.setTextSize(42);
+            holder.tvTime.setTextSize(46);
             holder.tvTime.setTypeface(Typeface.createFromAsset(holder.itemView.getContext().getAssets(), "fonts/PFHandbookPro-Black.ttf"));
         } else if (list.size() == 2 || list.size() == 3) {
             if (position == 1) {
-                //holder.linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-                holder.linearLayout.setGravity(Gravity.CENTER);
-                holder.drumUpDivider.setVisibility(View.VISIBLE);
-                holder.drumDownDivider.setVisibility(View.VISIBLE);
-                holder.tvTime.setTextSize(42);
-                holder.tvTime.setTypeface(Typeface.createFromAsset(holder.itemView.getContext().getAssets(), "fonts/PFHandbookPro-Black.ttf"));
-            } else {
-                holder.linearLayout.setGravity(Gravity.CENTER);
-                holder.tvTime.setTextSize(32);
-                holder.tvTime.setTypeface(Typeface.createFromAsset(holder.itemView.getContext().getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
-                holder.tvTime.setTextColor(holder.itemView.getResources().getColor(R.color.colorNewEditPastLastTime));
-            }
-        } else if (list.size() >= 4) {
-            if (position == 2) {
-                //holder.linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 holder.drumUpDivider.setVisibility(View.VISIBLE);
                 holder.drumDownDivider.setVisibility(View.VISIBLE);
                 holder.tvTime.setTextSize(46);
                 holder.tvTime.setTypeface(Typeface.createFromAsset(holder.itemView.getContext().getAssets(), "fonts/PFHandbookPro-Black.ttf"));
+            } else {
+                holder.linearLayout.setGravity(Gravity.CENTER);
+                holder.tvTime.setTextSize(36);
+                holder.tvTime.setTypeface(Typeface.createFromAsset(holder.itemView.getContext().getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
+                holder.tvTime.setTextColor(holder.itemView.getResources().getColor(R.color.colorNewEditPastLastTime));
+            }
+        } else
+         */
+        if (list.size() >= 4) {
+            if (position == 2) {
+                holder.drumUpDivider.setVisibility(View.VISIBLE);
+                holder.drumDownDivider.setVisibility(View.VISIBLE);
+                holder.tvTime.setTextSize(46);
+                holder.tvTime.setTypeface(Typeface.createFromAsset(holder.itemView.getContext().getAssets(), "fonts/PFHandbookPro-Black.ttf"));
+                holder.tvTime.setTextColor(holder.itemView.getResources().getColor(R.color.colorWhite));
             } else if (position == 1 || position == 3) {
                 holder.tvTime.setTextSize(36);
                 holder.tvTime.setTypeface(Typeface.createFromAsset(holder.itemView.getContext().getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
@@ -128,8 +128,13 @@ public class RecyclerViewAdapterDrum extends RecyclerView.Adapter<RecyclerViewAd
                 holder.tvTime.setTextColor(holder.itemView.getResources().getColor(R.color.colorNewEditPastLastTime));
             }
         }
-        if(alarmTest.getVisibleTime()) holder.tvTime.setVisibility(View.VISIBLE);
-        else holder.tvTime.setVisibility(View.INVISIBLE);
+
+        //fix filling
+        if (alarmTest.getVisibleTime()) {
+            holder.tvTime.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvTime.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
