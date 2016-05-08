@@ -23,8 +23,57 @@ public class RecyclerViewAdapterDrum extends RecyclerView.Adapter<RecyclerViewAd
 
     private ArrayList<?> list;
 
-    public RecyclerViewAdapterDrum(ArrayList<?> list) {
-        this.list = list;
+    public RecyclerViewAdapterDrum(ArrayList<AlarmTest> list) {
+        ArrayList<AlarmTest> newList = new ArrayList<AlarmTest>();
+        AlarmTest empty = new AlarmTest();
+        empty.setVisibleTime(false);
+        switch (list.size()){
+            case 0:{
+                newList.add(empty);
+                newList.add(empty);
+                newList.add(new AlarmTest());
+                newList.add(empty);
+                newList.add(empty);
+                break;
+            }
+            case 1:{
+                newList.add(empty);
+                newList.add(empty);
+                newList.add((AlarmTest) list.get(0));
+                newList.add(empty);
+                newList.add(empty);
+                break;
+            }
+            case 2:{
+                newList.add(empty);
+                newList.add((AlarmTest) list.get(0));
+                newList.add((AlarmTest) list.get(1));
+                newList.add(empty);
+                newList.add(empty);
+                break;
+            }
+            case 3:{
+                newList.add(empty);
+                newList.add((AlarmTest) list.get(0));
+                newList.add((AlarmTest) list.get(1));
+                newList.add((AlarmTest) list.get(2));
+                newList.add(empty);
+                break;
+            }
+            case 4:{
+                newList.add((AlarmTest) list.get(0));
+                newList.add((AlarmTest) list.get(1));
+                newList.add((AlarmTest) list.get(2));
+                newList.add((AlarmTest) list.get(3));
+                newList.add(empty);
+            }
+            default:{
+                for (AlarmTest al : list) {
+                    newList.add(al);
+                }
+            }
+        }
+        this.list = newList;
     }
 
     @Override
@@ -79,7 +128,8 @@ public class RecyclerViewAdapterDrum extends RecyclerView.Adapter<RecyclerViewAd
                 holder.tvTime.setTextColor(holder.itemView.getResources().getColor(R.color.colorNewEditPastLastTime));
             }
         }
-
+        if(alarmTest.getVisibleTime()) holder.tvTime.setVisibility(View.VISIBLE);
+        else holder.tvTime.setVisibility(View.INVISIBLE);
     }
 
     @Override

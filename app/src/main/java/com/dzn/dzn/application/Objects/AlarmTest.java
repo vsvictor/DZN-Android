@@ -8,15 +8,17 @@ package com.dzn.dzn.application.Objects;
 public class AlarmTest {
     String hour;
     String minute;
-
+    boolean visibleTime;
     public AlarmTest() {
         this.hour = "00";
         this.minute = "00";
+        visibleTime = true;
     }
 
     public AlarmTest(String hour, String minute) {
         this.hour = hour;
         this.minute = minute;
+        visibleTime = true;
     }
 
     public String getHour() {
@@ -30,4 +32,7 @@ public class AlarmTest {
     public String getTime() {
         return hour + " : " + minute;
     }
+
+    public void setVisibleTime(boolean b){this.visibleTime = b;}
+    public boolean getVisibleTime(){return  this.visibleTime;}
 }

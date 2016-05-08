@@ -158,13 +158,16 @@ public class NewEditActivity extends AppCompatActivity {
      * This method is for tested
      * @return
      */
-    private ArrayList<?> getListAlarm() {
+    private ArrayList<AlarmTest> getListAlarm() {
         ArrayList<AlarmTest> list= new ArrayList<AlarmTest>();
-        list.add(new AlarmTest());
+        //list.add(new AlarmTest());
         list.add(new AlarmTest("12", "00"));
         list.add(new AlarmTest("23", "30"));
         list.add(new AlarmTest("07", "45"));
         list.add(new AlarmTest("11", "20"));
+        list.add(new AlarmTest("14", "30"));
+        list.add(new AlarmTest("15", "45"));
+        list.add(new AlarmTest("16", "50"));
         return list;
     }
 
