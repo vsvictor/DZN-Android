@@ -3,11 +3,9 @@ package com.dzn.dzn.application.Activities;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -29,11 +27,11 @@ public class NewEditActivity extends AppCompatActivity {
     private TextView tvNewEditTune;
     private TextView tvNewEditReady;
 
-    private TextView tvNewEditPastTime;
-    private TextView tvNewEditLastTime;
-    private TextView tvNewEditCurrentTime;
-    private TextView tvNewEditNextTime;
-    private TextView tvNewEditAfterTime;
+    //private TextView tvNewEditPastTime;
+    //private TextView tvNewEditLastTime;
+    //private TextView tvNewEditCurrentTime;
+    //private TextView tvNewEditNextTime;
+    //private TextView tvNewEditAfterTime;
 
     private TextView tvNewEditSetting;
 
@@ -215,7 +213,6 @@ public class NewEditActivity extends AppCompatActivity {
                 tvTimeFifth.setTextColor(recyclerView.getResources().getColor(R.color.colorNewEditPastLastTime));
             }
         });
-
     }
 
     /**
@@ -251,7 +248,7 @@ public class NewEditActivity extends AppCompatActivity {
                 R.layout.new_edit_spinner_repeat,
                 Arrays.asList(getResources().getStringArray(R.array.new_edit_activity_spinner_repeat))
         );
-        spinnerRepeatAdapter.setDropDownViewResource(R.layout.new_edit_spinner_repeat);
+        spinnerRepeatAdapter.setDropDownViewResource(R.layout.new_edit_spinner_drop_repeat);
 
         spinnerNewEditRepeat.setAdapter(spinnerRepeatAdapter);
 
@@ -280,10 +277,14 @@ public class NewEditActivity extends AppCompatActivity {
         tvNewEditMusic = (TextView) findViewById(R.id.tvNewEditMusic);
         tvNewEditMusic.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
         spinnerNewEditMusic = (Spinner) findViewById(R.id.spinnerNewEditMusic);
-        spinnerNewEditMusic.setAdapter(new SpinnerRepeatAdapter(
+
+        SpinnerRepeatAdapter adapter = new SpinnerRepeatAdapter(
                 getApplicationContext(),
                 R.layout.new_edit_spinner,
-                Arrays.asList(getResources().getStringArray(R.array.new_edit_activity_spinner_settings))));
+                Arrays.asList(getResources().getStringArray(R.array.new_edit_activity_spinner_settings)));
+        adapter.setDropDownViewResource(R.layout.new_edit_spinner_drop);
+
+        spinnerNewEditMusic.setAdapter(adapter);
     }
 
     /**
@@ -293,10 +294,14 @@ public class NewEditActivity extends AppCompatActivity {
         tvNewEditInterval = (TextView) findViewById(R.id.tvNewEditInterval);
         tvNewEditInterval.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
         spinnerNewEditInterval = (Spinner) findViewById(R.id.spinnerNewEditInterval);
-        spinnerNewEditInterval.setAdapter(new SpinnerRepeatAdapter(
+
+        SpinnerRepeatAdapter adapter = new SpinnerRepeatAdapter(
                 getApplicationContext(),
                 R.layout.new_edit_spinner,
-                Arrays.asList(getResources().getStringArray(R.array.new_edit_activity_spinner_settings))));
+                Arrays.asList(getResources().getStringArray(R.array.new_edit_activity_spinner_settings)));
+        adapter.setDropDownViewResource(R.layout.new_edit_spinner_drop);
+
+        spinnerNewEditInterval.setAdapter(adapter);
     }
 
     /**
@@ -306,9 +311,13 @@ public class NewEditActivity extends AppCompatActivity {
         tvNewEditSocialNetwork = (TextView) findViewById(R.id.tvNewEditSocialNetwork);
         tvNewEditSocialNetwork.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
         spinnerNewEditSocialNetwork = (Spinner) findViewById(R.id.spinnerNewEditSocialNetwork);
-        spinnerNewEditSocialNetwork.setAdapter(new SpinnerRepeatAdapter(
+
+        SpinnerRepeatAdapter adapter = new SpinnerRepeatAdapter(
                 getApplicationContext(),
                 R.layout.new_edit_spinner,
-                Arrays.asList(getResources().getStringArray(R.array.new_edit_activity_spinner_settings))));
+                Arrays.asList(getResources().getStringArray(R.array.new_edit_activity_spinner_settings)));
+        adapter.setDropDownViewResource(R.layout.new_edit_spinner_drop);
+
+        spinnerNewEditSocialNetwork.setAdapter(adapter);
     }
 }
