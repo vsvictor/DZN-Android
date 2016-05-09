@@ -23,7 +23,12 @@
             android:name=".Activities.NewEditActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppNewEditTheme" />
-        <activity android:name=".Activities.SettingsActivity"></activity>
+
+        <!-- Settings activity -->
+        <activity
+            android:name=".Activities.SettingsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppSettingsTheme" />
     </application>
 
 </manifest>

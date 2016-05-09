@@ -90,4 +90,12 @@
         <item name="android:background">@drawable/spinner</item>
     </style>
 
+    <!-- Settings activity -->
+    <style name="AppSettingsTheme" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorSettingsPrimary</item>
+        <item name="colorPrimaryDark">@color/colorSettingsPrimaryDark</item>
+        <item name="colorAccent">@color/colorSettingsAccent</item>
+    </style>
+
 </resources>
