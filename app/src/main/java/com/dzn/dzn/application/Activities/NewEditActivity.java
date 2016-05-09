@@ -18,6 +18,7 @@ import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.Objects.AlarmTest;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
+import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,12 +32,6 @@ public class NewEditActivity extends AppCompatActivity {
     private TextView tvNewEditBack;
     private TextView tvNewEditTune;
     private TextView tvNewEditReady;
-
-    //private TextView tvNewEditPastTime;
-    //private TextView tvNewEditLastTime;
-    //private TextView tvNewEditCurrentTime;
-    //private TextView tvNewEditNextTime;
-    //private TextView tvNewEditAfterTime;
 
     private TextView tvNewEditSetting;
 
@@ -79,17 +74,16 @@ public class NewEditActivity extends AppCompatActivity {
      */
     private void initView() {
         tvNewEditBack = (TextView) findViewById(R.id.tvNewEditBack);
-        tvNewEditBack.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
-        tvNewEditTune = (TextView) findViewById(R.id.tvNewEditTune);
-        tvNewEditTune.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
-        tvNewEditReady = (TextView) findViewById(R.id.tvNewEditReady);
-        tvNewEditReady.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
+        PFHandbookProTypeFaces.THIN.apply(tvNewEditBack);
 
-        //Initialize section tested
-        //initSectionTested();
+        tvNewEditTune = (TextView) findViewById(R.id.tvNewEditTune);
+        PFHandbookProTypeFaces.THIN.apply(tvNewEditTune);
+
+        tvNewEditReady = (TextView) findViewById(R.id.tvNewEditReady);
+        PFHandbookProTypeFaces.THIN.apply(tvNewEditReady);
 
         tvNewEditSetting = (TextView) findViewById(R.id.tvNewEditSetting);
-        tvNewEditSetting.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
+        PFHandbookProTypeFaces.THIN.apply(tvNewEditSetting);
 
         //Initialize section Drum
         initSectionDrum();
@@ -106,9 +100,9 @@ public class NewEditActivity extends AppCompatActivity {
         //Initialize section Social Network
         initSectionSocialNetwork();
 
-
         //tested
-
+        //Initialize section tested
+        //initSectionTested();
     }
 
     /**
@@ -313,7 +307,7 @@ public class NewEditActivity extends AppCompatActivity {
      */
     private void initSectionMusic() {
         tvNewEditMusic = (TextView) findViewById(R.id.tvNewEditMusic);
-        tvNewEditMusic.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
+        PFHandbookProTypeFaces.THIN.apply(tvNewEditMusic);
         spinnerNewEditMusic = (Spinner) findViewById(R.id.spinnerNewEditMusic);
 
         SpinnerRepeatAdapter adapter = new SpinnerRepeatAdapter(
@@ -330,7 +324,7 @@ public class NewEditActivity extends AppCompatActivity {
      */
     private void initSectionInterval() {
         tvNewEditInterval = (TextView) findViewById(R.id.tvNewEditInterval);
-        tvNewEditInterval.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
+        PFHandbookProTypeFaces.THIN.apply(tvNewEditInterval);
         spinnerNewEditInterval = (Spinner) findViewById(R.id.spinnerNewEditInterval);
 
         SpinnerRepeatAdapter adapter = new SpinnerRepeatAdapter(
@@ -347,7 +341,7 @@ public class NewEditActivity extends AppCompatActivity {
      */
     private void initSectionSocialNetwork() {
         tvNewEditSocialNetwork = (TextView) findViewById(R.id.tvNewEditSocialNetwork);
-        tvNewEditSocialNetwork.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
+        PFHandbookProTypeFaces.THIN.apply(tvNewEditSocialNetwork);
         spinnerNewEditSocialNetwork = (Spinner) findViewById(R.id.spinnerNewEditSocialNetwork);
 
         SpinnerRepeatAdapter adapter = new SpinnerRepeatAdapter(
