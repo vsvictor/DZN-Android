@@ -10,8 +10,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.dzn.dzn.application.Activities.NewEditActivity;
+import com.dzn.dzn.application.Activities.SettingsActivity;
 import com.dzn.dzn.application.Adapters.RecyclerViewAdapterMain;
 import com.dzn.dzn.application.Objects.AlarmTest;
+import com.dzn.dzn.application.Objects.Settings;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 
@@ -53,8 +55,21 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerViewMain();
     }
 
+    /**
+     * Run New-Edit alarm activity
+     * @param view
+     */
     public void onNewEditAlarm(View view) {
         Intent intent = new Intent(MainActivity.this, NewEditActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Run Settings activity
+     * @param view
+     */
+    public void onSettings(View view) {
+        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
         startActivity(intent);
     }
 
