@@ -1,5 +1,7 @@
 package com.dzn.dzn.application.Objects;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;

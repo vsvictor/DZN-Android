@@ -99,6 +99,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ","+ COL_SHORT_NAME+") VALUES ("  + TW_NAME + "," +TW+")");
         db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ","+ COL_SHORT_NAME+") VALUES ("  + VK_NAME + "," +VK+")");
         db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ","+ COL_SHORT_NAME+") VALUES ("  + IS_NAME + "," +IS+")");
+
         Log.d(TAG, "onCreate finish");
     }
 
@@ -118,13 +119,31 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
+        if (alarm.getID() != 0) {
+            contentValues.put(COL_ID, alarm.getID());
+        }
         contentValues.put(COL_TIME, alarm.getDate().getTime());
         contentValues.put(COL_REPEAT, alarm.getRepeat());
         contentValues.put(COL_SOUND, alarm.getSound());
         contentValues.put(COL_MELODY, alarm.getMelody());
         contentValues.put(COL_VIBRO, alarm.isVibro());
 
-        db.insert(TBL_ALARMS, null, contentValues);
+        //db.insert(TBL_ALARMS, null, contentValues);
+        db.insertWithOnConflict(TBL_ALARMS, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+    }
+
+    /**
+     * Remove Alarm
+     * @param alarm
+     */
+    public void removeAlarm(Alarm alarm) {
+        SQLiteDatabase db = getWritableDatabase();
+        try {
+            String[] args = { String.valueOf(alarm.getID()) };
+            db.delete(TBL_ALARMS, COL_ID + "=?", args );
+        } finally {
+            db.close();
+        }
     }
 
     /**
@@ -188,6 +207,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         return list;
     }
+
     public void setSocial(ArrayList<Social> list){
         SQLiteDatabase db = getReadableDatabase();
         for(Social social : list){
