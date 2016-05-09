@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.Objects.AlarmTest;
+import com.dzn.dzn.application.Objects.Social;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,12 +42,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //Table Social
     private static final String TBL_SOCIAL = "social";
     private static final String COL_NAME = "name";
+    private static final String COL_SHORT_NAME = "shortName";
+    private static final String COL_LOGIN = "login";
+    private static final String COL_PASSWORD = "password";
 
     //String Social Network name
     private static final String FB = "FB";
     private static final String VK = "VK";
     private static final String TW = "TW";
     private static final String IS = "IS";
+
+    private static final String FB_NAME = "Facebook";
+    private static final String VK_NAME = "VKontakte";
+    private static final String TW_NAME = "Twitter";
+    private static final String IS_NAME = "Instagramm";
 
     private DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
@@ -77,18 +86,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String CREATE_TBL_SOCIAL = "CREATE TABLE " + TBL_SOCIAL
                 + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
-                + COL_NAME + " TEXT NOT NULL)";
-
+                + COL_NAME + " TEXT NOT NULL,"
+                + COL_SHORT_NAME + " TEXT NOT NULL,"
+                + COL_LOGIN + " TEXT,"
+                + COL_PASSWORD + " TEXT);";
         db.execSQL(CREATE_TBL_ALARMS);
         db.execSQL(CREATE_TBL_PUBLIC);
         db.execSQL(CREATE_TBL_SOCIAL);
 
         //Add social content
-        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ") VALUES ('" + FB + "')");
-        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ") VALUES ('" + VK + "')");
-        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ") VALUES ('" + TW + "')");
-        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ") VALUES ('" + IS + "')");
-
+        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ","+ COL_SHORT_NAME+") VALUES ("  + FB_NAME + "," +FB+")");
+        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ","+ COL_SHORT_NAME+") VALUES ("  + TW_NAME + "," +TW+")");
+        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ","+ COL_SHORT_NAME+") VALUES ("  + VK_NAME + "," +VK+")");
+        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ","+ COL_SHORT_NAME+") VALUES ("  + IS_NAME + "," +IS+")");
         Log.d(TAG, "onCreate finish");
     }
 
@@ -158,4 +168,38 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    public ArrayList<Social> getSocial() {
+        ArrayList<Social> list = new ArrayList<Social>();
+        String strQuery = "SELECT * FROM " + TBL_SOCIAL;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(strQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Social social = new Social();
+                social.setID(cursor.getInt(cursor.getColumnIndex(COL_ID)));
+                social.setName(cursor.getString(cursor.getColumnIndex(COL_NAME)));
+                social.setShortName(cursor.getString(cursor.getColumnIndex(COL_SHORT_NAME)));
+                social.setLogin(cursor.getString(cursor.getColumnIndex(COL_LOGIN)));
+                social.setPassword(cursor.getString(cursor.getColumnIndex(COL_PASSWORD)));
+                list.add(social);
+            } while (cursor.moveToNext());
+        }
+
+        return list;
+    }
+    public void setSocial(ArrayList<Social> list){
+        SQLiteDatabase db = getReadableDatabase();
+        for(Social social : list){
+            ContentValues val = new ContentValues();
+            if(social.getName() != null) val.put(COL_NAME, social.getName());
+            if(social.getShortName() != null) val.put(COL_SHORT_NAME, social.getShortName());
+            if(social.getLogin() != null) val.put(COL_LOGIN, social.getLogin());
+            if(social.getPassword() != null) val.put(COL_PASSWORD, social.getPassword());
+            if(val.size() > 0) {
+                String[] args = {String.valueOf(social.getID())};
+                db.update(TBL_SOCIAL, val, "ID=?", args);
+            }
+        }
+    }
 }
