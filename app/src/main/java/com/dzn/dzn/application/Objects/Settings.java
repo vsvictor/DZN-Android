@@ -23,6 +23,7 @@ public class Settings {
     private boolean isSocial;
     private boolean addTime;
     private boolean addGeo;
+    private String melody;
 
     private ArrayList<Social> list;
 
@@ -46,6 +47,7 @@ public class Settings {
         addGeo = settings.getBoolean("addGeo", false);
         list = dbHelper.getSocial();
     }
+
     public void save(){
         SharedPreferences.Editor ed = settings.edit();
         ed.putInt("locale", locale);
@@ -59,6 +61,7 @@ public class Settings {
         ed.commit();
         dbHelper.setSocial(list);
     }
+
     public void setLocale(int locale) {this.locale = locale;}
     public int getLocale(){return this.locale;}
     public void setSound(int sound) {this.sound = sound;}
@@ -75,4 +78,11 @@ public class Settings {
     public boolean isAddTime(){return this.addTime;}
     public void setAddGeo(boolean addGeo) {this.addGeo = addGeo;}
     public boolean isAddGeo(){return this.addGeo;}
+    public String getMelody() {
+        return melody;
+    }
+    public void setMelody(String melody) {
+        this.melody = melody;
+    }
+
 }

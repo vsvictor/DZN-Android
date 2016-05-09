@@ -19,7 +19,6 @@ public class Social {
     }
     public void setID(int ID){this.ID = ID;}
     public int getID(){return this.ID;}
-
     public void setName(String name){this.name = name;}
     public String getName(){return this.name;}
 
