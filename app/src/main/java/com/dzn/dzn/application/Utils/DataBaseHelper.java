@@ -1,14 +1,21 @@
 package com.dzn.dzn.application.Utils;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import com.dzn.dzn.application.Objects.Alarm;
+import com.dzn.dzn.application.Objects.AlarmTest;
+
+import java.util.ArrayList;
 
 /**
  * Created by zhenya on 03.05.2016.
  */
 public class DataBaseHelper extends SQLiteOpenHelper {
-    private static final String TAG = "dataBaseHelper";
+    private static final String TAG = "DataBaseHelper";
 
     private static final int VERSION = 1;
     private static final String DATABASE_NAME = "dzndzn";
@@ -32,6 +39,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //Table Social
     private static final String TBL_SOCIAL = "social";
     private static final String COL_NAME = "name";
+
+    //String Social Network name
+    private static final String FB = "FB";
+    private static final String VK = "VK";
+    private static final String TW = "TW";
+    private static final String IS = "IS";
 
     private DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
@@ -67,6 +80,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TBL_ALARMS);
         db.execSQL(CREATE_TBL_PUBLIC);
         db.execSQL(CREATE_TBL_SOCIAL);
+
+        //Add social content
+        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ") VALUES ('" + FB + "')");
+        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ") VALUES ('" + VK + "')");
+        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ") VALUES ('" + TW + "')");
+        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ") VALUES ('" + IS + "')");
+
+        Log.d(TAG, "onCreate finish");
     }
 
     @Override
@@ -76,4 +97,37 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TBL_SOCIAL);
         onCreate(db);
     }
+
+    /**
+     * Add to table Alarms
+     * @param alarm
+     */
+    public void addAlarm(Alarm alarm) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_TIME, alarm.getTime().getTime());
+        contentValues.put(COL_REPEAT, alarm.getRepeat());
+        contentValues.put(COL_SOUND, alarm.getSound());
+        contentValues.put(COL_MELODY, alarm.getMelody());
+        contentValues.put(COL_VIBRO, alarm.isVibro());
+
+        db.insert(TBL_ALARMS, null, contentValues);
+    }
+
+    /**
+     * Add to table Public
+     * @param owner
+     * @param social
+     */
+    public void addPublic(int owner, int social) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_OWNER, owner);
+        contentValues.put(COL_SOCIAL, social);
+
+        db.insert(TBL_PUBLIC, null, contentValues);
+    }
+
 }
