@@ -14,11 +14,14 @@ import android.widget.TextView;
 
 import com.dzn.dzn.application.Adapters.RecyclerViewAdapterDrum;
 import com.dzn.dzn.application.Adapters.SpinnerRepeatAdapter;
+import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.Objects.AlarmTest;
 import com.dzn.dzn.application.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 public class NewEditActivity extends AppCompatActivity {
     private static final String TAG = "NewEditActivity";
@@ -216,22 +219,42 @@ public class NewEditActivity extends AppCompatActivity {
     }
 
     /**
+     * Get list of Alarm
+     * @return
+     */
+    private ArrayList<Alarm> getList() {
+        ArrayList<Alarm> list = new ArrayList<Alarm>();
+
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
+
+        Log.d(TAG, "Date: " + date.toString());
+        Log.d(TAG, "Hour: " + calendar.get(Calendar.HOUR) + " : " + calendar.get(Calendar.MINUTE));
+
+        list.add(new Alarm(date));
+
+        return list;
+    }
+
+    /**
      * This method is for tested
      *
      * @return
      */
     private ArrayList<AlarmTest> getListAlarm() {
         ArrayList<AlarmTest> list = new ArrayList<AlarmTest>();
-        //list.add(new AlarmTest());
-        list.add(new AlarmTest("12", "00"));
-        list.add(new AlarmTest("23", "30"));
-        list.add(new AlarmTest("07", "45"));
-        list.add(new AlarmTest("11", "20"));
-        list.add(new AlarmTest("14", "30"));
-        list.add(new AlarmTest("15", "45"));
-        list.add(new AlarmTest("17", "25"));
-        list.add(new AlarmTest("18", "10"));
-        list.add(new AlarmTest("19", "35"));
+
+
+        list.add(new AlarmTest());
+        //list.add(new AlarmTest("12", "00"));
+        //list.add(new AlarmTest("23", "30"));
+        //list.add(new AlarmTest("07", "45"));
+        //list.add(new AlarmTest("11", "20"));
+        //list.add(new AlarmTest("14", "30"));
+        //list.add(new AlarmTest("15", "45"));
+        //list.add(new AlarmTest("17", "25"));
+        //list.add(new AlarmTest("18", "10"));
+        //list.add(new AlarmTest("19", "35"));
         return list;
     }
 

@@ -1,7 +1,6 @@
 package com.dzn.dzn.application;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,11 +45,9 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         tvMainPrompt = (TextView) findViewById(R.id.tvMainPrompt);
         PFHandbookProTypeFaces.EXTRA_THIN.apply(tvMainPrompt);
-        //tvMainPrompt.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-ExtraThin.ttf"));
 
         btnNew = (Button) findViewById(R.id.btn_new);
         PFHandbookProTypeFaces.REGULAR.apply(btnNew);
-        //btnNew.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Regular.ttf"));
 
         //initialize recycler of alarms
         initRecyclerViewMain();

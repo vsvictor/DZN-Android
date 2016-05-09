@@ -6,6 +6,7 @@ package com.dzn.dzn.application.Objects;
  * This class is for tested
  */
 public class AlarmTest {
+
     private String hour;
     private String minute;
     private boolean visibleTime;
