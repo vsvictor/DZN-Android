@@ -14,6 +14,7 @@ import com.dzn.dzn.application.Activities.NewEditActivity;
 import com.dzn.dzn.application.Adapters.RecyclerViewAdapterMain;
 import com.dzn.dzn.application.Objects.AlarmTest;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
+import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 
 import java.util.ArrayList;
 
@@ -44,10 +45,12 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initView() {
         tvMainPrompt = (TextView) findViewById(R.id.tvMainPrompt);
-        tvMainPrompt.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-ExtraThin.ttf"));
+        PFHandbookProTypeFaces.EXTRA_THIN.apply(tvMainPrompt);
+        //tvMainPrompt.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-ExtraThin.ttf"));
 
         btnNew = (Button) findViewById(R.id.btn_new);
-        btnNew.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Regular.ttf"));
+        PFHandbookProTypeFaces.REGULAR.apply(btnNew);
+        //btnNew.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Regular.ttf"));
 
         //initialize recycler of alarms
         initRecyclerViewMain();
