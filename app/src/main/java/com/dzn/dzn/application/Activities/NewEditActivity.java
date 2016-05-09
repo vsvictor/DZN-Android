@@ -17,11 +17,13 @@ import com.dzn.dzn.application.Adapters.SpinnerRepeatAdapter;
 import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.Objects.AlarmTest;
 import com.dzn.dzn.application.R;
+import com.dzn.dzn.application.Utils.DataBaseHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class NewEditActivity extends AppCompatActivity {
     private static final String TAG = "NewEditActivity";
@@ -60,10 +62,14 @@ public class NewEditActivity extends AppCompatActivity {
     private TextView tvNewEditSocialNetwork;
     private Spinner spinnerNewEditSocialNetwork;
 
+    private DataBaseHelper dataBaseHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_edit);
+
+        dataBaseHelper = DataBaseHelper.getInstance(getParent());
 
         initView();
     }
@@ -99,6 +105,10 @@ public class NewEditActivity extends AppCompatActivity {
 
         //Initialize section Social Network
         initSectionSocialNetwork();
+
+
+        //tested
+
     }
 
     /**
@@ -128,7 +138,7 @@ public class NewEditActivity extends AppCompatActivity {
         recyclerLayoutManager = new LinearLayoutManager(this);
         recyclerViewDrum.setLayoutManager(recyclerLayoutManager);
 
-        recyclerViewAdapterDrum = new RecyclerViewAdapterDrum(getListAlarm());
+        recyclerViewAdapterDrum = new RecyclerViewAdapterDrum(getAlarmsList());
         recyclerViewDrum.setAdapter(recyclerViewAdapterDrum);
 
         recyclerViewDrum.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -219,20 +229,25 @@ public class NewEditActivity extends AppCompatActivity {
     }
 
     /**
-     * Get list of Alarm
+     * Create new Alarm with to increase 2 hours
      * @return
      */
-    private ArrayList<Alarm> getList() {
-        ArrayList<Alarm> list = new ArrayList<Alarm>();
-
+    private Alarm getNewAlarm() {
         Calendar calendar = Calendar.getInstance();
-        Date date = calendar.getTime();
+        calendar.add(Calendar.HOUR_OF_DAY, 2);
+        Alarm newAlarm = new Alarm(calendar.getTime());
+        return newAlarm;
+    }
 
-        Log.d(TAG, "Date: " + date.toString());
-        Log.d(TAG, "Hour: " + calendar.get(Calendar.HOUR) + " : " + calendar.get(Calendar.MINUTE));
-
-        list.add(new Alarm(date));
-
+    /**
+     * Get list of Alarms since database
+     * @return
+     */
+    private ArrayList<Alarm> getAlarmsList() {
+        ArrayList<Alarm> list = dataBaseHelper.getAlarmList();
+        Log.d(TAG, "size of alarms list: " + list.size());
+        list.add(getNewAlarm());
+        Log.d(TAG, "size of alarms list: " + list.size());
         return list;
     }
 
@@ -342,5 +357,12 @@ public class NewEditActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(R.layout.new_edit_spinner_drop);
 
         spinnerNewEditSocialNetwork.setAdapter(adapter);
+    }
+
+    /**
+     * Save data to database
+     */
+    public void saveData() {
+
     }
 }

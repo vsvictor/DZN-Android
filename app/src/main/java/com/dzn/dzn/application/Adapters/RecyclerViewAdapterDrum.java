@@ -3,14 +3,13 @@ package com.dzn.dzn.application.Adapters;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.dzn.dzn.application.Objects.AlarmTest;
+import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.R;
 
 import java.util.ArrayList;
@@ -21,17 +20,17 @@ import java.util.ArrayList;
 public class RecyclerViewAdapterDrum extends RecyclerView.Adapter<RecyclerViewAdapterDrum.ViewHolder> {
     private static final String TAG = "RecyclerViewAdapterDrum";
 
-    private ArrayList<?> list;
+    private ArrayList<Alarm> list;
 
-    public RecyclerViewAdapterDrum(ArrayList<AlarmTest> list) {
-        ArrayList<AlarmTest> newList = new ArrayList<AlarmTest>();
-        AlarmTest empty = new AlarmTest();
-        empty.setVisibleTime(false);
+    public RecyclerViewAdapterDrum(ArrayList<Alarm> list) {
+        ArrayList<Alarm> newList = new ArrayList<Alarm>();
+        Alarm empty = new Alarm();
+        empty.setVisible(false);
         switch (list.size()){
             case 0:{
                 newList.add(empty);
                 newList.add(empty);
-                newList.add(new AlarmTest());
+                newList.add(new Alarm());
                 newList.add(empty);
                 newList.add(empty);
                 break;
@@ -39,36 +38,36 @@ public class RecyclerViewAdapterDrum extends RecyclerView.Adapter<RecyclerViewAd
             case 1:{
                 newList.add(empty);
                 newList.add(empty);
-                newList.add((AlarmTest) list.get(0));
+                newList.add(list.get(0));
                 newList.add(empty);
                 newList.add(empty);
                 break;
             }
             case 2:{
                 newList.add(empty);
-                newList.add((AlarmTest) list.get(0));
-                newList.add((AlarmTest) list.get(1));
+                newList.add(list.get(0));
+                newList.add(list.get(1));
                 newList.add(empty);
                 newList.add(empty);
                 break;
             }
             case 3:{
                 newList.add(empty);
-                newList.add((AlarmTest) list.get(0));
-                newList.add((AlarmTest) list.get(1));
-                newList.add((AlarmTest) list.get(2));
+                newList.add(list.get(0));
+                newList.add(list.get(1));
+                newList.add(list.get(2));
                 newList.add(empty);
                 break;
             }
             case 4:{
-                newList.add((AlarmTest) list.get(0));
-                newList.add((AlarmTest) list.get(1));
-                newList.add((AlarmTest) list.get(2));
-                newList.add((AlarmTest) list.get(3));
+                newList.add(list.get(0));
+                newList.add(list.get(1));
+                newList.add(list.get(2));
+                newList.add(list.get(3));
                 newList.add(empty);
             }
             default:{
-                for (AlarmTest al : list) {
+                for (Alarm al : list) {
                     newList.add(al);
                 }
             }
@@ -87,30 +86,9 @@ public class RecyclerViewAdapterDrum extends RecyclerView.Adapter<RecyclerViewAd
     @Override
     public void onBindViewHolder(RecyclerViewAdapterDrum.ViewHolder holder, int position) {
         Log.d(TAG, "position:" + position);
-        AlarmTest alarmTest = (AlarmTest) list.get(position);
-        holder.tvTime.setText(alarmTest.getTime());
+        Alarm alarm = list.get(position);
+        holder.tvTime.setText(alarm.getTime());
 
-        /**
-        if (list.size() == 1) {
-            holder.linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            holder.drumUpDivider.setVisibility(View.VISIBLE);
-            holder.drumDownDivider.setVisibility(View.VISIBLE);
-            holder.tvTime.setTextSize(46);
-            holder.tvTime.setTypeface(Typeface.createFromAsset(holder.itemView.getContext().getAssets(), "fonts/PFHandbookPro-Black.ttf"));
-        } else if (list.size() == 2 || list.size() == 3) {
-            if (position == 1) {
-                holder.drumUpDivider.setVisibility(View.VISIBLE);
-                holder.drumDownDivider.setVisibility(View.VISIBLE);
-                holder.tvTime.setTextSize(46);
-                holder.tvTime.setTypeface(Typeface.createFromAsset(holder.itemView.getContext().getAssets(), "fonts/PFHandbookPro-Black.ttf"));
-            } else {
-                holder.linearLayout.setGravity(Gravity.CENTER);
-                holder.tvTime.setTextSize(36);
-                holder.tvTime.setTypeface(Typeface.createFromAsset(holder.itemView.getContext().getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
-                holder.tvTime.setTextColor(holder.itemView.getResources().getColor(R.color.colorNewEditPastLastTime));
-            }
-        } else
-         */
         if (list.size() >= 4) {
             if (position == 2) {
                 holder.drumUpDivider.setVisibility(View.VISIBLE);
@@ -130,7 +108,7 @@ public class RecyclerViewAdapterDrum extends RecyclerView.Adapter<RecyclerViewAd
         }
 
         //fix filling
-        if (alarmTest.getVisibleTime()) {
+        if (alarm.isVisible()) {
             holder.tvTime.setVisibility(View.VISIBLE);
         } else {
             holder.tvTime.setVisibility(View.INVISIBLE);

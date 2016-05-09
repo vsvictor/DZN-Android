@@ -2,6 +2,7 @@ package com.dzn.dzn.application.Utils;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -10,6 +11,7 @@ import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.Objects.AlarmTest;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zhenya on 03.05.2016.
@@ -106,7 +108,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(COL_TIME, alarm.getTime().getTime());
+        contentValues.put(COL_TIME, alarm.getDate().getTime());
         contentValues.put(COL_REPEAT, alarm.getRepeat());
         contentValues.put(COL_SOUND, alarm.getSound());
         contentValues.put(COL_MELODY, alarm.getMelody());
@@ -128,6 +130,32 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_SOCIAL, social);
 
         db.insert(TBL_PUBLIC, null, contentValues);
+    }
+
+    /**
+     * Return list of alarms
+     * @return
+     */
+    public ArrayList<Alarm> getAlarmList() {
+        ArrayList<Alarm> list = new ArrayList<>();
+        String strQuery = "SELECT * FROM " + TBL_ALARMS;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(strQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Alarm alarm = new Alarm();
+                alarm.setID(cursor.getInt(cursor.getColumnIndex(COL_ID)));
+                alarm.setTime(cursor.getInt(cursor.getColumnIndex(COL_TIME)));
+                alarm.setRepeat(cursor.getInt(cursor.getColumnIndex(COL_REPEAT)));
+                alarm.setSound(cursor.getInt(cursor.getColumnIndex(COL_SOUND)));
+                alarm.setMelody(cursor.getString(cursor.getColumnIndex(COL_MELODY)));
+                alarm.setVibro(cursor.getInt(cursor.getColumnIndex(COL_VIBRO)));
+                list.add(alarm);
+            } while (cursor.moveToNext());
+        }
+
+        return list;
     }
 
 }
