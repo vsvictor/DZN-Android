@@ -3,11 +3,177 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/colorSettingsBackground"
+    android:orientation="vertical"
     tools:context="com.dzn.dzn.application.Activities.SettingsActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_vertical_margin">
+
+        <ImageButton
+            android:id="@+id/ibSettingsMenu"
+            android:layout_width="26dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/menu" />
+
+        <TextView
+            android:id="@+id/tvSettingsTune"
+            style="@style/NewEditActivityTextTune"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/settings_activity_settings" />
+
+        <TextView
+            android:id="@+id/tvSettingsReady"
+            style="@style/NewEditActivityTextBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:onClick="saveSettings"
+            android:text="@string/ready" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_divider_line"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@android:color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <!-- Section of Sound -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_divider_line"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@android:color/white" />
+
+    <TextView
+        android:id="@+id/tvSettingsSectionSound"
+        style="@style/NameOfSectionTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="@dimen/app_padding_8dp"
+        android:paddingTop="@dimen/app_padding_8dp"
+        android:text="@string/settings_activity_sound_of_alarms" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_divider_line"
+        android:background="@android:color/white" />
+
+    <!-- Section of Set Alarm -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_divider_line"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@android:color/white" />
+
+    <TextView
+        android:id="@+id/tvSettingsSectionAlarm"
+        style="@style/NameOfSectionTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="@dimen/app_padding_8dp"
+        android:paddingTop="@dimen/app_padding_8dp"
+        android:text="@string/settings_activity_section_alarm" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_divider_line"
+        android:background="@android:color/white" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/tvSettingsVibro"
+            style="@style/NameOfPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/settings_activity_vibro" />
+
+        <ToggleButton
+            android:id="@+id/toggleSettingsVibro"
+            style="@style/CommonToggle"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textOff=""
+            android:textOn="" />
+
+    </RelativeLayout>
+
+    <!-- Section of Social network -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_divider_line"
+        android:background="@android:color/white" />
+
+    <TextView
+        android:id="@+id/tvSettingsSectionSocialNetwork"
+        style="@style/NameOfSectionTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="@dimen/app_padding_8dp"
+        android:paddingTop="@dimen/app_padding_8dp"
+        android:text="@string/settings_activity_section_social_network" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_divider_line"
+        android:background="@android:color/white" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/tvSettingsUploadPhoto"
+            style="@style/NameOfPoint"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/settings_activity_upload_photo" />
+
+        <ToggleButton
+            android:id="@+id/toggleSettingsUploadPhoto"
+            style="@style/CommonToggle"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textOff=""
+            android:textOn="" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_divider_line"
+        android:background="@android:color/white" />
 
 </LinearLayout>

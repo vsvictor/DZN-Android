@@ -98,4 +98,20 @@
         <item name="colorAccent">@color/colorSettingsAccent</item>
     </style>
 
+    <!-- Common styles -->
+    <style name="NameOfSectionTheme">
+        <item name="android:textSize">@dimen/app_section_text_size</item>
+        <item name="android:textColor">@color/colorSectionText</item>
+    </style>
+
+    <style name="NameOfPoint" >
+        <item name="android:textSize">@dimen/app_point_text_size</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="CommonToggle" parent="android:Widget">
+        <item name="android:background">@drawable/common_btn_toggle</item>
+        <item name="android:disabledAlpha">?android:attr/disabledAlpha</item>
+    </style>
+
 </resources>

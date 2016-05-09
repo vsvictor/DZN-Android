@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Dzn-Dzn</string>
 
+    <!-- Common strings -->
+    <string name="ready">ГОТОВО</string>
+
     <!-- Main activity -->
     <string name="app_colon">:</string>
     <string name="main_activity_text">У вас установлены селфи будильники на:</string>
@@ -8,7 +11,6 @@
 
     <!-- New_Edit activity -->
     <string name="new_edit_activity_tune">Настроить</string>
-    <string name="new_edit_activity_ready">ГОТОВО</string>
     <string name="new_edit_activity_back">ОТМЕНИТЬ</string>
     <string name="new_edit_activity_setting">Настройка будильника</string>
     <string name="new_edit_activity_repeat">Повторять</string>
@@ -35,5 +37,19 @@
     <string-array name="new_edit_activity_spinner_settings">
         <item>общие настройки</item>
     </string-array>
+
+    <!-- Settings activity -->
+    <string name="settings_activity_settings">Настройки</string>
+    <string name="settings_activity_language_ru">Русский</string>
+    <string name="settings_activity_language_en">English</string>
+    <string name="settings_activity_sound_of_alarms">Звук будильника</string>
+    <string name="settings_activity_sound">Звук</string>
+    <string name="settings_activity_wake_up">Wake Up</string>
+    <string name="settings_activity_section_alarm">Настройка будильника</string>
+    <string name="settings_activity_interval_wake_up">Интервал пробуждения</string>
+    <string name="settings_activity_interval_repeat">Интервал повтора</string>
+    <string name="settings_activity_vibro">Вибросигнал</string>
+    <string name="settings_activity_section_social_network">Настройка соцсетей</string>
+    <string name="settings_activity_upload_photo">Включить публикацию фотографий</string>
 
 </resources>

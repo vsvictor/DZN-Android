@@ -6,6 +6,7 @@
 
     //Common colors
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorSectionText">#D7E2F1</color>
 
     //Main Activity colors
     <color name="colorBackgroundMain">#FF0000</color>
