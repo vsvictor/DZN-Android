@@ -102,6 +102,8 @@
     <style name="NameOfSectionTheme">
         <item name="android:textSize">@dimen/app_section_text_size</item>
         <item name="android:textColor">@color/colorSectionText</item>
+        <item name="android:paddingTop">@dimen/activity_vertical_margin</item>
+        <item name="android:paddingBottom">@dimen/activity_vertical_margin</item>
     </style>
 
     <style name="NameOfPoint" >
@@ -112,6 +114,12 @@
     <style name="CommonToggle" parent="android:Widget">
         <item name="android:background">@drawable/common_btn_toggle</item>
         <item name="android:disabledAlpha">?android:attr/disabledAlpha</item>
+    </style>
+
+    <style name="Language">
+        <item name="android:textSize">@dimen/settings_activity_text_language_size</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:background">@drawable/tv_button_language</item>
     </style>
 
 </resources>

@@ -7,6 +7,8 @@
     //Common colors
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorSectionText">#D7E2F1</color>
+    <color name="colorYellow">#FFBB33</color>
+    <color name="colorGrey">#FF878787</color>
 
     //Main Activity colors
     <color name="colorBackgroundMain">#FF0000</color>

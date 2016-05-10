@@ -7,6 +7,7 @@
     android:orientation="vertical"
     tools:context="com.dzn.dzn.application.Activities.SettingsActivity">
 
+    <!-- Section Menu -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,40 +42,146 @@
 
     </RelativeLayout>
 
+    <!-- Section language -->
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_divider_line"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:background="@android:color/white" />
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:background="@color/colorYellow" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tvSettingsRU"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:paddingTop="@dimen/app_padding_8dp"
+            android:paddingBottom="@dimen/app_padding_8dp"
+            android:text="@string/settings_activity_language_ru"
+            style="@style/Language" />
+
+        <TextView
+            android:id="@+id/tvSettingsEN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:paddingTop="@dimen/app_padding_8dp"
+            android:paddingBottom="@dimen/app_padding_8dp"
+            android:text="@string/settings_activity_language_en"
+            style="@style/Language" />
 
     </LinearLayout>
 
-    <!-- Section of Sound -->
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_divider_line"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:background="@android:color/white" />
+        android:background="@color/colorYellow" />
 
+    <!-- Section of Sound -->
     <TextView
         android:id="@+id/tvSettingsSectionSound"
         style="@style/NameOfSectionTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:paddingBottom="@dimen/app_padding_8dp"
-        android:paddingTop="@dimen/app_padding_8dp"
         android:text="@string/settings_activity_sound_of_alarms" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_divider_line"
         android:background="@android:color/white" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/tvSettingsSound"
+            style="@style/NameOfPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/settings_activity_sound" />
+
+    </RelativeLayout>
+
+    <!--
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin" >
+
+        <ImageButton
+            android:id="@+id/idSettingsSoundOff"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/settings" />
+
+        <SeekBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentTop="true"
+            />
+
+        <ImageButton
+            android:id="@+id/idSettingsSoundOn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/settings" />
+
+    </RelativeLayout>
+    -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:weightSum="100">
+
+        <ImageButton
+            android:id="@+id/idSettingsSoundOff"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@mipmap/settings"
+            android:layout_gravity="center"
+            android:layout_weight="1"/>
+
+        <SeekBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="98"
+            />
+
+        <ImageButton
+            android:id="@+id/idSettingsSoundOn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:background="@mipmap/settings"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
 
     <!-- Section of Set Alarm -->
     <View
@@ -89,8 +196,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:paddingBottom="@dimen/app_padding_8dp"
-        android:paddingTop="@dimen/app_padding_8dp"
         android:text="@string/settings_activity_section_alarm" />
 
     <View
@@ -136,8 +241,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:paddingBottom="@dimen/app_padding_8dp"
-        android:paddingTop="@dimen/app_padding_8dp"
         android:text="@string/settings_activity_section_social_network" />
 
     <View

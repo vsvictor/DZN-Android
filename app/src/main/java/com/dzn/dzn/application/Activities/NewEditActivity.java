@@ -356,7 +356,7 @@ public class NewEditActivity extends AppCompatActivity {
     /**
      * Save data to database
      */
-    public void saveData() {
+    public void saveData(View view) {
 
     }
 }

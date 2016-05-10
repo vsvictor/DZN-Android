@@ -19,6 +19,8 @@ public class SettingsActivity extends AppCompatActivity {
     private TextView tvSettingsSectionSocialNetwork;
     private TextView tvSettingsVibro;
     private TextView tvSettingsUploadPhoto;
+    private TextView tvSettingsRU;
+    private TextView tvSettingsEN;
 
     private ToggleButton toggleSettingsVibro;
     private ToggleButton toggleSettingsUploadPhoto;
@@ -41,6 +43,28 @@ public class SettingsActivity extends AppCompatActivity {
 
         tvSettingsReady = (TextView) findViewById(R.id.tvSettingsReady);
         PFHandbookProTypeFaces.THIN.apply(tvSettingsReady);
+
+        tvSettingsRU = (TextView) findViewById(R.id.tvSettingsRU);
+        PFHandbookProTypeFaces.THIN.apply(tvSettingsRU);
+        tvSettingsRU.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setSelected(!v.isSelected());
+                tvSettingsEN.setSelected(!tvSettingsEN.isSelected());
+            }
+        });
+        tvSettingsRU.setSelected(true);
+
+        tvSettingsEN = (TextView) findViewById(R.id.tvSettingsEN);
+        PFHandbookProTypeFaces.THIN.apply(tvSettingsEN);
+        tvSettingsEN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setSelected(!v.isSelected());
+                tvSettingsRU.setSelected(!tvSettingsRU.isSelected());
+            }
+        });
+        tvSettingsEN.setSelected(false);
 
         tvSettingsSectionSound = (TextView) findViewById(R.id.tvSettingsSectionSound);
         PFHandbookProTypeFaces.THIN.apply(tvSettingsSectionSound);

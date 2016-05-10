@@ -29,6 +29,9 @@
     <dimen name="new_edit_activity_text_last_time_size">32sp</dimen>
     <dimen name="new_edit_activity_text_past_time_size">22sp</dimen>
 
+    <!-- Settings Activity -->
+    <dimen name="settings_activity_text_language_size">32sp</dimen>
+
     <!-- Common dimension-->
     <dimen name="app_section_text_size">24sp</dimen>
     <dimen name="app_point_text_size">24sp</dimen>

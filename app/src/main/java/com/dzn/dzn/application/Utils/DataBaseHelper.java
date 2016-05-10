@@ -89,7 +89,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + COL_NAME + " TEXT NOT NULL,"
                 + COL_SHORT_NAME + " TEXT NOT NULL,"
                 + COL_LOGIN + " TEXT,"
-                + COL_PASSWORD + " TEXT);";
+                + COL_PASSWORD + " TEXT)";
         db.execSQL(CREATE_TBL_ALARMS);
         db.execSQL(CREATE_TBL_PUBLIC);
         db.execSQL(CREATE_TBL_SOCIAL);
