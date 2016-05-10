@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -31,6 +32,8 @@ public class SettingsActivity extends AppCompatActivity {
     private TextView tvSettingsRU;
     private TextView tvSettingsEN;
     private TextView tvSettingsIntervalWakeUp;
+    private TextView tvIntervalWakeUP;
+    private TextView tvIntervalRepeat;
 
     private ToggleButton toggleSettingsVibro;
     private ToggleButton toggleSettingsUploadPhoto;
@@ -134,6 +137,12 @@ public class SettingsActivity extends AppCompatActivity {
         PFHandbookProTypeFaces.THIN.apply(tvSettingsVibro);
 
         toggleSettingsVibro = (ToggleButton) findViewById(R.id.toggleSettingsVibro);
+
+        tvIntervalWakeUP = (TextView) findViewById(R.id.tvIntervalWakeUP);
+        PFHandbookProTypeFaces.THIN.apply(tvIntervalWakeUP);
+
+        tvIntervalRepeat = (TextView) findViewById(R.id.tvIntervalRepeat);
+        PFHandbookProTypeFaces.THIN.apply(tvIntervalRepeat);
     }
 
     /**
@@ -164,5 +173,21 @@ public class SettingsActivity extends AppCompatActivity {
 
         //Save settings
         settings.save();
+    }
+
+    public void decreaseWakeUp(View view) {
+
+    }
+
+    public void increaseWakeUp(View view) {
+
+    }
+
+    public void decreaseRepeatInterval(View view) {
+
+    }
+
+    public void increaseRepeatInterval(View view) {
+
     }
 }
