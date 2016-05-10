@@ -357,6 +357,19 @@ public class NewEditActivity extends AppCompatActivity {
      * Save data to database
      */
     public void saveData(View view) {
+        finish();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    /**
+     * Cancel - close activity
+     * @param view
+     */
+    public void onCancel(View view) {
+        finish();
     }
 }

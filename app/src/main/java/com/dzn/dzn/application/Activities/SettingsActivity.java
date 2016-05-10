@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -21,15 +22,20 @@ public class SettingsActivity extends AppCompatActivity {
     private TextView tvSettingsTune;
     private TextView tvSettingsReady;
     private TextView tvSettingsSectionSound;
+    private TextView tvSettingsSound;
     private TextView tvSettingsSectionAlarm;
+    private TextView tvSettingsIntervalRepeat;
     private TextView tvSettingsSectionSocialNetwork;
     private TextView tvSettingsVibro;
     private TextView tvSettingsUploadPhoto;
     private TextView tvSettingsRU;
     private TextView tvSettingsEN;
+    private TextView tvSettingsIntervalWakeUp;
 
     private ToggleButton toggleSettingsVibro;
     private ToggleButton toggleSettingsUploadPhoto;
+
+    private SeekBar sbSettingsSound;
 
     private Settings settings;
 
@@ -57,24 +63,14 @@ public class SettingsActivity extends AppCompatActivity {
         //Initialize section of Locale
         initSectionLocale();
 
-        tvSettingsSectionSound = (TextView) findViewById(R.id.tvSettingsSectionSound);
-        PFHandbookProTypeFaces.THIN.apply(tvSettingsSectionSound);
+        //Initialize section of Sound
+        initSectionSound();
 
-        tvSettingsSectionAlarm = (TextView) findViewById(R.id.tvSettingsSectionAlarm);
-        PFHandbookProTypeFaces.THIN.apply(tvSettingsSectionAlarm);
+        //initialize section of Alarm
+        initSectionAlarm();
 
-        tvSettingsSectionSocialNetwork = (TextView) findViewById(R.id.tvSettingsSectionSocialNetwork);
-        PFHandbookProTypeFaces.THIN.apply(tvSettingsSectionSocialNetwork);
-
-        tvSettingsVibro = (TextView) findViewById(R.id.tvSettingsVibro);
-        PFHandbookProTypeFaces.THIN.apply(tvSettingsVibro);
-
-        toggleSettingsVibro = (ToggleButton) findViewById(R.id.toggleSettingsVibro);
-
-        tvSettingsUploadPhoto = (TextView) findViewById(R.id.tvSettingsUploadPhoto);
-        PFHandbookProTypeFaces.THIN.apply(tvSettingsUploadPhoto);
-
-        toggleSettingsUploadPhoto = (ToggleButton) findViewById(R.id.toggleSettingsUploadPhoto);
+        //Initialize section of Social Network
+        initSectionSocialNetwork();
     }
 
     /**
@@ -106,6 +102,51 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
         tvSettingsRU.setSelected(settings.getLocale() == 0 ? true : false);
+    }
+
+    /**
+     * Initialize section of sound
+     */
+    private void initSectionSound() {
+        tvSettingsSectionSound = (TextView) findViewById(R.id.tvSettingsSectionSound);
+        PFHandbookProTypeFaces.THIN.apply(tvSettingsSectionSound);
+
+        tvSettingsSound = (TextView) findViewById(R.id.tvSettingsSound);
+        PFHandbookProTypeFaces.THIN.apply(tvSettingsSound);
+
+        sbSettingsSound = (SeekBar) findViewById(R.id.sbSettingsSound);
+    }
+
+    /**
+     * Initialize section of alarm
+     */
+    private void initSectionAlarm() {
+        tvSettingsSectionAlarm = (TextView) findViewById(R.id.tvSettingsSectionAlarm);
+        PFHandbookProTypeFaces.THIN.apply(tvSettingsSectionAlarm);
+
+        tvSettingsIntervalWakeUp = (TextView) findViewById(R.id.tvSettingsIntervalWakeUp);
+        PFHandbookProTypeFaces.THIN.apply(tvSettingsIntervalWakeUp);
+
+        tvSettingsIntervalRepeat = (TextView) findViewById(R.id.tvSettingsIntervalRepeat);
+        PFHandbookProTypeFaces.THIN.apply(tvSettingsIntervalRepeat);
+
+        tvSettingsVibro = (TextView) findViewById(R.id.tvSettingsVibro);
+        PFHandbookProTypeFaces.THIN.apply(tvSettingsVibro);
+
+        toggleSettingsVibro = (ToggleButton) findViewById(R.id.toggleSettingsVibro);
+    }
+
+    /**
+     * Initialize section of Social Network
+     */
+    private void initSectionSocialNetwork() {
+        tvSettingsSectionSocialNetwork = (TextView) findViewById(R.id.tvSettingsSectionSocialNetwork);
+        PFHandbookProTypeFaces.THIN.apply(tvSettingsSectionSocialNetwork);
+
+        tvSettingsUploadPhoto = (TextView) findViewById(R.id.tvSettingsUploadPhoto);
+        PFHandbookProTypeFaces.THIN.apply(tvSettingsUploadPhoto);
+
+        toggleSettingsUploadPhoto = (ToggleButton) findViewById(R.id.toggleSettingsUploadPhoto);
     }
 
     /**

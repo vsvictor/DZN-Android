@@ -141,6 +141,7 @@
             android:layout_weight="1"/>
 
         <SeekBar
+            android:id="@+id/sbSettingsSound"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -185,6 +186,7 @@
         android:padding="@dimen/activity_vertical_margin">
 
         <TextView
+            android:id="@+id/tvSettingsIntervalWakeUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -224,6 +226,7 @@
             android:padding="@dimen/activity_vertical_margin">
 
             <TextView
+                android:id="@+id/tvSettingsIntervalRepeat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

@@ -18,7 +18,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/new_edit_activity_back" />
+            android:paddingTop="@dimen/app_padding_8dp"
+            android:paddingBottom="@dimen/app_padding_8dp"
+            android:paddingRight="@dimen/app_padding_8dp"
+            android:text="@string/new_edit_activity_back"
+            android:onClick="onCancel"/>
 
         <TextView
             android:id="@+id/tvNewEditTune"
@@ -33,6 +37,9 @@
             style="@style/NewEditActivityTextBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/app_padding_8dp"
+            android:paddingBottom="@dimen/app_padding_8dp"
+            android:paddingLeft="@dimen/app_padding_8dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:text="@string/ready"
