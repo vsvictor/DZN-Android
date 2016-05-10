@@ -29,6 +29,16 @@ public class Settings {
 
     private DataBaseHelper dbHelper;
 
+    private static final String LOCALE = "locale";
+    private static final String SOUND = "sound";
+    private static final String INTERVAL = "interval";
+    private static final String REPEAT = "repeat";
+    private static final String VIBRO = "vibro";
+    private static final String SOCIAL = "social";
+    private static final String ADD_TIME = "addTime";
+    private static final String ADD_GEO = "addGeo";
+    private static final String MELODY = "melody";
+
     public Settings(Context context){
         this.context = context;
         settings = this.context.getSharedPreferences(context.getResources().getString(R.string.app_name), context.MODE_PRIVATE);
@@ -37,27 +47,29 @@ public class Settings {
     }
 
     public void load(){
-        locale = settings.getInt("locale", 1);
-        sound = settings.getInt("sound", 80);
-        interval = settings.getInt("interval", 30);
-        repeat = settings.getInt("repeat", 5);
-        vibro = settings.getBoolean("vibro", true);
-        isSocial = settings.getBoolean("social", true);
-        addTime = settings.getBoolean("addTime", false);
-        addGeo = settings.getBoolean("addGeo", false);
+        locale = settings.getInt(LOCALE, 1);
+        sound = settings.getInt(SOUND, 80);
+        interval = settings.getInt(INTERVAL, 30);
+        repeat = settings.getInt(REPEAT, 5);
+        vibro = settings.getBoolean(VIBRO, true);
+        isSocial = settings.getBoolean(SOCIAL, true);
+        addTime = settings.getBoolean(ADD_TIME, false);
+        addGeo = settings.getBoolean(ADD_GEO, false);
+        melody = settings.getString(MELODY, "");
         list = dbHelper.getSocial();
     }
 
     public void save(){
         SharedPreferences.Editor ed = settings.edit();
-        ed.putInt("locale", locale);
-        ed.putInt("sound", sound);
-        ed.putInt("interval", interval);
-        ed.putInt("repeat", repeat);
-        ed.putBoolean("vibro", vibro);
-        ed.putBoolean("social", isSocial);
-        ed.putBoolean("addTime", addTime);
-        ed.putBoolean("addGeo", addGeo);
+        ed.putInt(LOCALE, locale);
+        ed.putInt(SOUND, sound);
+        ed.putInt(INTERVAL, interval);
+        ed.putInt(REPEAT, repeat);
+        ed.putBoolean(VIBRO, vibro);
+        ed.putBoolean(SOCIAL, isSocial);
+        ed.putBoolean(ADD_TIME, addTime);
+        ed.putBoolean(ADD_GEO, addGeo);
+        ed.putString(MELODY, melody);
         ed.commit();
         dbHelper.setSocial(list);
     }
