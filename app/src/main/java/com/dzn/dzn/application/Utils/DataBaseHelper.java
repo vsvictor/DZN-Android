@@ -86,19 +86,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String CREATE_TBL_SOCIAL = "CREATE TABLE " + TBL_SOCIAL
                 + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
-                + COL_NAME + " TEXT NOT NULL,"
-                + COL_SHORT_NAME + " TEXT NOT NULL,"
-                + COL_LOGIN + " TEXT,"
+                + COL_NAME + " TEXT NOT NULL, "
+                + COL_SHORT_NAME + " TEXT NOT NULL, "
+                + COL_LOGIN + " TEXT, "
                 + COL_PASSWORD + " TEXT)";
         db.execSQL(CREATE_TBL_ALARMS);
         db.execSQL(CREATE_TBL_PUBLIC);
         db.execSQL(CREATE_TBL_SOCIAL);
 
         //Add social content
-        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ","+ COL_SHORT_NAME+") VALUES ("  + FB_NAME + "," +FB+")");
-        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ","+ COL_SHORT_NAME+") VALUES ("  + TW_NAME + "," +TW+")");
-        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ","+ COL_SHORT_NAME+") VALUES ("  + VK_NAME + "," +VK+")");
-        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ","+ COL_SHORT_NAME+") VALUES ("  + IS_NAME + "," +IS+")");
+        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ", " + COL_SHORT_NAME +") VALUES ('" + FB_NAME + "', '" + FB +"')");
+        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ", " + COL_SHORT_NAME +") VALUES ('" + TW_NAME + "', '" + TW +"')");
+        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ", " + COL_SHORT_NAME +") VALUES ('" + VK_NAME + "', '" + VK +"')");
+        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ", " + COL_SHORT_NAME +") VALUES ('" + IS_NAME + "', '" + IS +"')");
 
         Log.d(TAG, "onCreate finish");
     }
@@ -130,6 +130,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         //db.insert(TBL_ALARMS, null, contentValues);
         db.insertWithOnConflict(TBL_ALARMS, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+
+        db.close();
     }
 
     /**
@@ -159,6 +161,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_SOCIAL, social);
 
         db.insert(TBL_PUBLIC, null, contentValues);
+
+        db.close();
     }
 
     /**
@@ -184,6 +188,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
+        db.close();
         return list;
     }
 
@@ -205,6 +210,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
+        db.close();
         return list;
     }
 
@@ -221,5 +227,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 db.update(TBL_SOCIAL, val, "ID=?", args);
             }
         }
+
+        db.close();
     }
 }
