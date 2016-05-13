@@ -126,7 +126,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_REPEAT, alarm.getRepeat());
         contentValues.put(COL_SOUND, alarm.getSound());
         contentValues.put(COL_MELODY, alarm.getMelody());
-        contentValues.put(COL_VIBRO, alarm.isVibro());
+//        contentValues.put(COL_VIBRO, alarm.isVibro()?1:0);
 
         //db.insert(TBL_ALARMS, null, contentValues);
         db.insertWithOnConflict(TBL_ALARMS, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
@@ -152,6 +152,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * Add to table Public
      * @param owner
      * @param social
+     * @the table
      */
     public void addPublic(int owner, int social) {
         SQLiteDatabase db = getWritableDatabase();
@@ -170,11 +171,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * @return
      */
     public ArrayList<Alarm> getAlarmList() {
-        ArrayList<Alarm> list = new ArrayList<>();
-        String strQuery = "SELECT * FROM " + TBL_ALARMS;
+        ArrayList<Alarm> list = new ArrayList<Alarm>();
+        //String strQuery = "SELECT * FROM " + TBL_ALARMS;
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(strQuery, null);
-
+        Cursor cursor = db.query(TBL_ALARMS,null,null,null,null,null,null);
         if (cursor.moveToFirst()) {
             do {
                 Alarm alarm = new Alarm();
@@ -183,7 +183,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 alarm.setRepeat(cursor.getInt(cursor.getColumnIndex(COL_REPEAT)));
                 alarm.setSound(cursor.getInt(cursor.getColumnIndex(COL_SOUND)));
                 alarm.setMelody(cursor.getString(cursor.getColumnIndex(COL_MELODY)));
-                alarm.setVibro(cursor.getInt(cursor.getColumnIndex(COL_VIBRO)));
+                alarm.setVibro(true);
                 list.add(alarm);
             } while (cursor.moveToNext());
         }

@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.Objects.AlarmTest;
 import com.dzn.dzn.application.R;
+import com.dzn.dzn.application.Utils.DateTimeOperator;
 
 import java.util.ArrayList;
 
@@ -21,7 +23,7 @@ public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAd
 
     private ArrayList<?> list;
 
-    public RecyclerViewAdapterMain(ArrayList<?> list) {
+    public RecyclerViewAdapterMain(ArrayList<Alarm> list) {
         this.list = list;
     }
 
@@ -35,9 +37,11 @@ public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAd
 
     @Override
     public void onBindViewHolder(RecyclerViewAdapterMain.ViewHolder holder, int position) {
-        AlarmTest alarmTest = (AlarmTest) list.get(position);
-        holder.tvHour.setText(alarmTest.getHour());
-        holder.tvMinute.setText(alarmTest.getMinute());
+        Alarm alarm = (Alarm) list.get(position);
+        String s = DateTimeOperator.dateToTimeString(alarm.getDate());
+        String[] ss = s.split(":");
+        holder.tvHour.setText(ss[0]);
+        holder.tvMinute.setText(ss[1]);
     }
 
     @Override

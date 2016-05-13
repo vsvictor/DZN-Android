@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -56,6 +57,9 @@ public class NewEditActivity extends AppCompatActivity {
     //Section Social Network
     private TextView tvNewEditSocialNetwork;
     private Spinner spinnerNewEditSocialNetwork;
+
+    private NumberPicker npHours;
+    private NumberPicker npMinutes;
 
     private DataBaseHelper dataBaseHelper;
 
@@ -127,145 +131,14 @@ public class NewEditActivity extends AppCompatActivity {
      * Initialize section drum
      */
     private void initSectionDrum() {
-        recyclerViewDrum = (RecyclerView) findViewById(R.id.recyclerViewDrum);
-
-        recyclerLayoutManager = new LinearLayoutManager(this);
-        recyclerViewDrum.setLayoutManager(recyclerLayoutManager);
-
-        recyclerViewAdapterDrum = new RecyclerViewAdapterDrum(getAlarmsList());
-        recyclerViewDrum.setAdapter(recyclerViewAdapterDrum);
-
-        recyclerViewDrum.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                //debug
-                int posFirst = recyclerLayoutManager.findFirstVisibleItemPosition();
-                int posLast = recyclerLayoutManager.findLastVisibleItemPosition();
-                Log.d(TAG, "Drum first pos: " + posFirst + " / Drum Last pos: " + posLast);
-                Log.d(TAG, "Drum item count: " + recyclerViewAdapterDrum.getItemCount());
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                Log.d(TAG, "DX: " + dx + " / DY: " + dy);
-                int posFirst = recyclerLayoutManager.findFirstVisibleItemPosition();
-                Log.d(TAG, "Scrolled first position: " + posFirst);
-
-                //change view elements
-                changeView(recyclerView, posFirst);
-            }
-
-            /**
-             * Change view elements of recycler
-             * @param recyclerView
-             * @param posFirst
-             */
-            private void changeView(RecyclerView recyclerView, int posFirst) {
-                //Set first view
-                LinearLayout linearLayoutFirst = (LinearLayout) recyclerLayoutManager.findViewByPosition(posFirst);
-                TextView tvTimeFirst = (TextView) linearLayoutFirst.findViewById(R.id.tvTime);
-                View drumUpDividerFirst = linearLayoutFirst.findViewById(R.id.drumUpDivider);
-                View drumDownDividerFirst = linearLayoutFirst.findViewById(R.id.drumDownDivider);
-                drumUpDividerFirst.setVisibility(View.GONE);
-                drumDownDividerFirst.setVisibility(View.GONE);
-                tvTimeFirst.setTextSize(24);
-                tvTimeFirst.setTypeface(Typeface.createFromAsset(recyclerView.getContext().getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
-                tvTimeFirst.setTextColor(recyclerView.getResources().getColor(R.color.colorNewEditPastLastTime));
-
-                //Set second view
-                LinearLayout linearLayoutSecond = (LinearLayout) recyclerLayoutManager.findViewByPosition(posFirst + 1);
-                TextView tvTimeSecond = (TextView) linearLayoutSecond.findViewById(R.id.tvTime);
-                View drumUpDividerSecond = linearLayoutSecond.findViewById(R.id.drumUpDivider);
-                View drumDownDividerSecond = linearLayoutSecond.findViewById(R.id.drumDownDivider);
-                drumUpDividerSecond.setVisibility(View.GONE);
-                drumDownDividerSecond.setVisibility(View.GONE);
-                tvTimeSecond.setTextSize(36);
-                tvTimeSecond.setTypeface(Typeface.createFromAsset(recyclerView.getContext().getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
-                tvTimeSecond.setTextColor(recyclerView.getResources().getColor(R.color.colorNewEditPastLastTime));
-
-                //Set third view
-                LinearLayout linearLayoutThird = (LinearLayout) recyclerLayoutManager.findViewByPosition(posFirst + 2);
-                TextView tvTimeThird = (TextView) linearLayoutThird.findViewById(R.id.tvTime);
-                View drumUpDividerThird = linearLayoutThird.findViewById(R.id.drumUpDivider);
-                View drumDownDividerThird = linearLayoutThird.findViewById(R.id.drumDownDivider);
-                drumDownDividerThird.setVisibility(View.VISIBLE);
-                drumUpDividerThird.setVisibility(View.VISIBLE);
-                tvTimeThird.setTextSize(46);
-                tvTimeThird.setTypeface(Typeface.createFromAsset(recyclerView.getContext().getAssets(), "fonts/PFHandbookPro-Black.ttf"));
-                tvTimeThird.setTextColor(recyclerView.getResources().getColor(R.color.colorWhite));
-
-                //Set fourth view
-                LinearLayout linearLayoutFourth = (LinearLayout) recyclerLayoutManager.findViewByPosition(posFirst + 3);
-                TextView tvTimeFourth = (TextView) linearLayoutFourth.findViewById(R.id.tvTime);
-                View drumUpDividerFourth = linearLayoutFourth.findViewById(R.id.drumUpDivider);
-                View drumDownDividerFourth = linearLayoutFourth.findViewById(R.id.drumDownDivider);
-                drumUpDividerFourth.setVisibility(View.GONE);
-                drumDownDividerFourth.setVisibility(View.GONE);
-                tvTimeFourth.setTextSize(36);
-                tvTimeFourth.setTypeface(Typeface.createFromAsset(recyclerView.getContext().getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
-                tvTimeFourth.setTextColor(recyclerView.getResources().getColor(R.color.colorNewEditPastLastTime));
-
-                //Set fifth view
-                LinearLayout linearLayoutFifth = (LinearLayout) recyclerLayoutManager.findViewByPosition(posFirst + 4);
-                TextView tvTimeFifth = (TextView) linearLayoutFifth.findViewById(R.id.tvTime);
-                View drumUpDividerFifth = linearLayoutFifth.findViewById(R.id.drumUpDivider);
-                View drumDownDividerFifth = linearLayoutFifth.findViewById(R.id.drumDownDivider);
-                drumUpDividerFifth.setVisibility(View.GONE);
-                drumDownDividerFifth.setVisibility(View.GONE);
-                tvTimeFifth.setTextSize(24);
-                tvTimeFifth.setTypeface(Typeface.createFromAsset(recyclerView.getContext().getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
-                tvTimeFifth.setTextColor(recyclerView.getResources().getColor(R.color.colorNewEditPastLastTime));
-            }
-        });
+        npHours = (NumberPicker) findViewById(R.id.npHours);
+        npHours.setMinValue(0);
+        npHours.setMaxValue(23);
+        npMinutes = (NumberPicker) findViewById(R.id.npMinutes);
+        npMinutes.setMaxValue(0);
+        npMinutes.setMaxValue(59);
     }
 
-    /**
-     * Create new Alarm with to increase 2 hours
-     * @return
-     */
-    private Alarm getNewAlarm() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR_OF_DAY, 2);
-        Alarm newAlarm = new Alarm(calendar.getTime());
-        return newAlarm;
-    }
-
-    /**
-     * Get list of Alarms since database
-     * @return
-     */
-    private ArrayList<Alarm> getAlarmsList() {
-        ArrayList<Alarm> list = dataBaseHelper.getAlarmList();
-        Log.d(TAG, "size of alarms list: " + list.size());
-        list.add(getNewAlarm());
-        Log.d(TAG, "size of alarms list: " + list.size());
-        return list;
-    }
-
-    /**
-     * This method is for tested
-     *
-     * @return
-     */
-    private ArrayList<AlarmTest> getListAlarm() {
-        ArrayList<AlarmTest> list = new ArrayList<AlarmTest>();
-
-
-        list.add(new AlarmTest());
-        //list.add(new AlarmTest("12", "00"));
-        //list.add(new AlarmTest("23", "30"));
-        //list.add(new AlarmTest("07", "45"));
-        //list.add(new AlarmTest("11", "20"));
-        //list.add(new AlarmTest("14", "30"));
-        //list.add(new AlarmTest("15", "45"));
-        //list.add(new AlarmTest("17", "25"));
-        //list.add(new AlarmTest("18", "10"));
-        //list.add(new AlarmTest("19", "35"));
-        return list;
-    }
 
     /**
      * Initialize section Repeat
@@ -357,6 +230,15 @@ public class NewEditActivity extends AppCompatActivity {
      * Save data to database
      */
     public void saveData(View view) {
+        Alarm al = new Alarm();
+        Date d = new Date();
+        d.UTC(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, npHours.getValue(), npMinutes.getValue(),0);
+        al.setTime(d);
+        al.setMelody("aaa");
+        al.setRepeat(5);
+        al.setVibro(true);
+        al.setSound(80);
+        dataBaseHelper.addAlarm(al);
         finish();
     }
 

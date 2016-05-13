@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.dzn.dzn.application.Activities.NewEditActivity;
 import com.dzn.dzn.application.Activities.SettingsActivity;
 import com.dzn.dzn.application.Adapters.RecyclerViewAdapterMain;
+import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.Objects.AlarmTest;
 import com.dzn.dzn.application.Objects.Settings;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
@@ -35,10 +37,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        dataBaseHelper = DataBaseHelper.getInstance(this);
         initView();
 
-        dataBaseHelper = DataBaseHelper.getInstance(this);
+
     }
 
     /**
@@ -91,14 +93,11 @@ public class MainActivity extends AppCompatActivity {
      * This method is for tested
      * @return
      */
-    private ArrayList<?> getListAlarm() {
-        ArrayList<AlarmTest> list= new ArrayList<AlarmTest>();
-        list.add(new AlarmTest());
-        list.add(new AlarmTest("12", "00"));
-        list.add(new AlarmTest("23", "30"));
-        list.add(new AlarmTest("07", "45"));
-        list.add(new AlarmTest("11", "20"));
-        return list;
+    private ArrayList<Alarm> getListAlarm() {
+        if(dataBaseHelper == null) {Log.i(TAG, "DNHelper is null"); dataBaseHelper = DataBaseHelper.getInstance(this);}
+        ArrayList<Alarm> ar = dataBaseHelper.getAlarmList();
+        if(ar == null) return new ArrayList<Alarm>();
+        return ar;
     }
 
 }

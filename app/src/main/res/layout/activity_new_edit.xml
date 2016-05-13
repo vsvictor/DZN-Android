@@ -46,14 +46,32 @@
             android:onClick="saveData"/>
 
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <NumberPicker
+        android:id="@+id/npHours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </NumberPicker>
+        <NumberPicker
+            android:id="@+id/npMinutes"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/npHours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </NumberPicker>
 
+    </RelativeLayout>
+<!--
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewDrum"
         android:layout_width="match_parent"
         android:layout_height="230dp"
         android:background="@color/colorNewEditBackgroundDrum"
         android:scrollbars="vertical" />
-
+-->
     <TextView
         android:id="@+id/tvNewEditSetting"
         style="@style/NewEditSetting"
