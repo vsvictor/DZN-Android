@@ -57,4 +57,8 @@
     <string name="alarms_activity_name">Будильники</string>
     <string name="alarms_activity_add">добавить</string>
 
+    <!-- Start activity -->
+    <string name="start_activity_set">Установите свой первый селфи-будильник</string>
+    <string name="start_activity">старт</string>
+
 </resources>

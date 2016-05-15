@@ -15,6 +15,7 @@ import com.dzn.dzn.application.Activities.AlarmsActivity;
 import com.dzn.dzn.application.Activities.EditListAlarmsActivity;
 import com.dzn.dzn.application.Activities.NewEditActivity;
 import com.dzn.dzn.application.Activities.SettingsActivity;
+import com.dzn.dzn.application.Activities.StartActivity;
 import com.dzn.dzn.application.Adapters.RecyclerViewAdapterMain;
 import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.Objects.AlarmTest;
@@ -41,6 +42,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dataBaseHelper = DataBaseHelper.getInstance(this);
+
+        if (getListAlarm().size() == 0) {
+            Intent intent = new Intent(MainActivity.this, StartActivity.class);
+            startActivity(intent);
+        }
+
         initView();
 
 

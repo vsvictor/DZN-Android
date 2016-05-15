@@ -127,27 +127,6 @@ public class NewEditActivity extends AppCompatActivity {
         //Initialize section Social Network
         initSectionSocialNetwork();
 
-        //tested
-        //Initialize section tested
-        //initSectionTested();
-    }
-
-    /**
-     * Tested
-     */
-    private void initSectionTested() {
-        /**
-        tvNewEditPastTime = (TextView) findViewById(R.id.tvNewEditPastTime);
-        tvNewEditPastTime.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
-        tvNewEditLastTime = (TextView) findViewById(R.id.tvNewEditLastTime);
-        tvNewEditLastTime.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
-        tvNewEditCurrentTime = (TextView) findViewById(R.id.tvNewEditCurrentTime);
-        tvNewEditCurrentTime.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Black.ttf"));
-        tvNewEditNextTime = (TextView) findViewById(R.id.tvNewEditNextTime);
-        tvNewEditNextTime.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
-        tvNewEditAfterTime = (TextView) findViewById(R.id.tvNewEditAfterTime);
-        tvNewEditAfterTime.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/PFHandbookPro-Thin.ttf"));
-         */
     }
 
     /**
