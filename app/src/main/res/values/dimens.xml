@@ -35,5 +35,6 @@
     <!-- Common dimension-->
     <dimen name="app_section_text_size">24sp</dimen>
     <dimen name="app_point_text_size">24sp</dimen>
+    <dimen name="app_activity_name">34sp</dimen>
 
 </resources>

@@ -20,7 +20,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:background="@mipmap/menu" />
+            android:background="@mipmap/menu"
+            android:onClick="onList" />
 
         <TextView
             android:id="@+id/tvSettingsTune"
@@ -134,11 +135,11 @@
 
                 <ImageButton
                     android:id="@+id/idSettingsSoundOff"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@mipmap/settings" />
+                    android:background="@mipmap/ic_sound_min" />
 
                 <SeekBar
                     android:id="@+id/sbSettingsSound"
@@ -149,11 +150,11 @@
 
                 <ImageButton
                     android:id="@+id/idSettingsSoundOn"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@mipmap/settings" />
+                    android:background="@mipmap/ic_sound_max" />
 
             </LinearLayout>
 
@@ -180,8 +181,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center"
+                android:orientation="horizontal"
                 android:padding="@dimen/activity_vertical_margin"
                 android:weightSum="100">
 
@@ -195,29 +196,29 @@
                     android:text="@string/settings_activity_interval_wake_up" />
 
                 <ImageButton
+                    style="@style/MinusButton"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:background="@drawable/btn_decrease"
                     android:layout_weight="5"
-                    android:onClick="decreaseWakeUp"/>
+                    android:onClick="decreaseWakeUp" />
 
                 <TextView
                     android:id="@+id/tvIntervalWakeUP"
                     style="@style/NameOfPoint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="60"
                     android:gravity="center"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:layout_weight="60"
-                    android:text="15 мин"/>
+                    android:text="15 мин" />
 
                 <ImageButton
+                    style="@style/PlusButton"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:background="@drawable/btn_increase"
                     android:layout_weight="5"
-                    android:onClick="increaseWakeUp"/>
+                    android:onClick="increaseWakeUp" />
 
             </LinearLayout>
 
@@ -229,8 +230,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center"
+                android:orientation="horizontal"
                 android:padding="@dimen/activity_vertical_margin"
                 android:weightSum="100">
 
@@ -243,32 +244,30 @@
                     android:paddingRight="@dimen/activity_horizontal_margin"
                     android:text="@string/settings_activity_interval_repeat" />
 
-
                 <ImageButton
+                    style="@style/MinusButton"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_weight="5"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:background="@drawable/btn_decrease"
-                    android:onClick="decreaseRepeatInterval"/>
+                    android:onClick="decreaseRepeatInterval" />
 
                 <TextView
                     android:id="@+id/tvIntervalRepeat"
                     style="@style/NameOfPoint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:layout_weight="60"
-                    android:text="15 мин"/>
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:text="15 мин" />
 
                 <ImageButton
+                    style="@style/PlusButton"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_weight="5"
-                    android:background="@drawable/btn_increase"
-                    android:onClick="increaseRepeatInterval"/>
+                    android:onClick="increaseRepeatInterval" />
 
             </LinearLayout>
 

@@ -29,6 +29,11 @@
             android:name=".Activities.SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppSettingsTheme" />
+
+        <!-- Alarms activity -->
+        <activity android:name=".Activities.AlarmsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppAlarmsTheme"/>
     </application>
 
 </manifest>

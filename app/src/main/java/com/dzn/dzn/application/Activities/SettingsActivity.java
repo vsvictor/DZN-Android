@@ -1,21 +1,17 @@
 package com.dzn.dzn.application.Activities;
 
-import android.content.res.Configuration;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.dzn.dzn.application.MainActivity;
 import com.dzn.dzn.application.Objects.Settings;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
-
-import java.util.Locale;
 
 public class SettingsActivity extends AppCompatActivity {
     private static final String TAG = "SettingsActivity";
@@ -164,6 +160,15 @@ public class SettingsActivity extends AppCompatActivity {
      */
     public void saveSettings(View view) {
         finish();
+    }
+
+    /**
+     * Run Alarms activity
+     * @param view
+     */
+    public void onList(View view) {
+        Intent intent = new Intent(SettingsActivity.this, AlarmsActivity.class);
+        startActivity(intent);
     }
 
     @Override

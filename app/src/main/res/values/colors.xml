@@ -4,17 +4,17 @@
     <color name="colorPrimaryDark">#FF0000</color>
     <color name="colorAccent">#FF0000</color>
 
-    //Common colors
+    <!-- Common colors -->
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorSectionText">#D7E2F1</color>
     <color name="colorYellow">#FFBB33</color>
     <color name="colorGrey">#FF878787</color>
 
-    //Main Activity colors
+    <!-- Main Activity colors -->
     <color name="colorBackgroundMain">#FF0000</color>
     <color name="colorTransparent">#00000000</color>
 
-    //New Edit Activity colors
+    <!-- New Edit Activity colors -->
     <color name="colorNewEditPrimary">#3F51B5</color>
     <color name="colorNewEditPrimaryDark">#2C79C5</color>
     <color name="colorNewEditAccent">#2C79C5</color>
@@ -24,10 +24,13 @@
     <color name="colorNewEditSpinner">#D7E2F1</color>
     <color name="colorNewEditPastLastTime">#C5CAE0</color>
 
-    //Settings Activity colors
+    <!-- Settings Activity colors -->
     <color name="colorSettingsPrimary">#3F51B5</color>
     <color name="colorSettingsPrimaryDark">#FF878787</color>
     <color name="colorSettingsAccent">#2C79C5</color>
     <color name="colorSettingsBackground">#FF878787</color>
+
+    <!-- Alarms Activity colors-->
+    <color name="colorAlarmsBackground">#2C79C5</color>
 
 </resources>

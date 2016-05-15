@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.dzn.dzn.application.Activities.AlarmsActivity;
 import com.dzn.dzn.application.Activities.NewEditActivity;
 import com.dzn.dzn.application.Activities.SettingsActivity;
 import com.dzn.dzn.application.Adapters.RecyclerViewAdapterMain;
@@ -76,6 +77,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Run Alarms activity
+     * @param view
+     */
+    public void onList(View view) {
+        Intent intent = new Intent(MainActivity.this, AlarmsActivity.class);
+        startActivity(intent);
+    }
+
+    /**
      * Initialize recyclerView of alarms
      */
     private void initRecyclerViewMain() {
@@ -94,9 +104,14 @@ public class MainActivity extends AppCompatActivity {
      * @return
      */
     private ArrayList<Alarm> getListAlarm() {
-        if(dataBaseHelper == null) {Log.i(TAG, "DNHelper is null"); dataBaseHelper = DataBaseHelper.getInstance(this);}
+        if(dataBaseHelper == null) {
+            Log.i(TAG, "DNHelper is null");
+            dataBaseHelper = DataBaseHelper.getInstance(this);
+        }
+
         ArrayList<Alarm> ar = dataBaseHelper.getAlarmList();
         if(ar == null) return new ArrayList<Alarm>();
+
         return ar;
     }
 

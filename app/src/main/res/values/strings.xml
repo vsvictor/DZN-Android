@@ -52,4 +52,8 @@
     <string name="settings_activity_section_social_network">Настройка соцсетей</string>
     <string name="settings_activity_upload_photo">Включить публикацию фотографий</string>
 
+    <!-- Alarms activity -->
+    <string name="alarms_activity_name">Будильники</string>
+    <string name="alarms_activity_add">добавить</string>
+
 </resources>

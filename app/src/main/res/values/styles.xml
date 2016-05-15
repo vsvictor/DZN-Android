@@ -81,7 +81,7 @@
         <item name="android:textSize">@dimen/new_edit_activity_text_past_time_size</item>
         <item name="android:textColor">@color/colorNewEditPastLastTime</item>
     </style>
-    
+
     <style name="NewEditSpinnerRepeat" >
         <item name="android:background">@drawable/spinner_repeat</item>
     </style>
@@ -120,6 +120,34 @@
         <item name="android:textSize">@dimen/settings_activity_text_language_size</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:background">@drawable/tv_button_language</item>
+    </style>
+
+    <style name="MinusButton">
+        <item name="android:background">@drawable/toggle_day_on</item>
+        <item name="android:src">@drawable/ic_minus</item>
+    </style>
+
+    <style name="PlusButton">
+        <item name="android:background">@drawable/toggle_day_on</item>
+        <item name="android:src">@drawable/ic_plus</item>
+    </style>
+
+    <!-- Alarms activity -->
+    <style name="AppAlarmsTheme" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorNewEditPrimary</item>
+        <item name="colorPrimaryDark">@color/colorNewEditPrimaryDark</item>
+        <item name="colorAccent">@color/colorNewEditAccent</item>
+    </style>
+
+    <style name="ActivityName" >
+        <item name="android:textSize">@dimen/new_edit_activity_text_tune_size</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="AlarmsActivityAdd" >
+        <item name="android:textSize">@dimen/main_activity_button_new</item>
+        <item name="android:textColor">@color/colorSettingsAccent</item>
     </style>
 
 </resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorAlarmsBackground"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/delete"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/tvAlarmTime"
+            style="@style/MainActivityTextClock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/app_padding_16dp"
+            android:text="00:00"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/btnDelete"
+            android:layout_toEndOf="@+id/btnDelete"/>
+
+        <Button
+            android:id="@+id/btnAlarm"
+            android:layout_width="15dp"
+            android:layout_height="25dp"
+            android:background="@drawable/to_right"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_divider_line"
+        android:background="@android:color/white" />
+
+</LinearLayout>
