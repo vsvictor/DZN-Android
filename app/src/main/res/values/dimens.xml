@@ -10,6 +10,8 @@
     <dimen name="app_padding_16dp">16dp</dimen>
     <dimen name="app_padding_32dp">32dp</dimen>
 
+    <dimen name="app_padding_45dp">45dp</dimen>
+
     <!-- Main Activity -->
     <dimen name="main_activity_text_prompt_size">28sp</dimen>
     <dimen name="main_activity_text_clock_size">40sp</dimen>

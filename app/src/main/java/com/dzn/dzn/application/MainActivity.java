@@ -1,6 +1,7 @@
 package com.dzn.dzn.application;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.dzn.dzn.application.Activities.AlarmsActivity;
+import com.dzn.dzn.application.Activities.EditListAlarmsActivity;
 import com.dzn.dzn.application.Activities.NewEditActivity;
 import com.dzn.dzn.application.Activities.SettingsActivity;
 import com.dzn.dzn.application.Adapters.RecyclerViewAdapterMain;
@@ -42,6 +44,24 @@ public class MainActivity extends AppCompatActivity {
         initView();
 
 
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        new AsyncTask<Void, Void, Void>(){
+            private ArrayList<Alarm> list = new ArrayList<Alarm>();
+            @Override
+            protected Void doInBackground(Void... params) {
+                list = getListAlarm();
+                return null;
+            }
+            @Override
+            protected void onPostExecute(Void v) {
+                recycleViewAdapter = new RecyclerViewAdapterMain(getListAlarm());
+                recyclerViewMain.setAdapter(recycleViewAdapter);
+            }
+        }.execute();
     }
 
     /**
@@ -81,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void onList(View view) {
-        Intent intent = new Intent(MainActivity.this, AlarmsActivity.class);
+        Intent intent = new Intent(MainActivity.this, EditListAlarmsActivity.class);
         startActivity(intent);
     }
 
@@ -94,9 +114,6 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerLayoutManager = new LinearLayoutManager(this);
         recyclerViewMain.setLayoutManager(recyclerLayoutManager);
-
-        recycleViewAdapter = new RecyclerViewAdapterMain(getListAlarm());
-        recyclerViewMain.setAdapter(recycleViewAdapter);
     }
 
     /**

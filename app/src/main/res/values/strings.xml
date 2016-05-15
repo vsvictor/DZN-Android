@@ -3,6 +3,7 @@
 
     <!-- Common strings -->
     <string name="ready">ГОТОВО</string>
+    <string name="edit">ИЗМЕНИТЬ</string>
 
     <!-- Main activity -->
     <string name="app_colon">:</string>

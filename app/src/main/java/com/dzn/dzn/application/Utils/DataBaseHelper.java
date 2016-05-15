@@ -179,7 +179,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             do {
                 Alarm alarm = new Alarm();
                 alarm.setID(cursor.getInt(cursor.getColumnIndex(COL_ID)));
-                alarm.setTime(cursor.getInt(cursor.getColumnIndex(COL_TIME)));
+                alarm.setTime(cursor.getLong(cursor.getColumnIndex(COL_TIME)));
                 alarm.setRepeat(cursor.getInt(cursor.getColumnIndex(COL_REPEAT)));
                 alarm.setSound(cursor.getInt(cursor.getColumnIndex(COL_SOUND)));
                 alarm.setMelody(cursor.getString(cursor.getColumnIndex(COL_MELODY)));

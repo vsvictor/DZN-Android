@@ -232,7 +232,9 @@ public class NewEditActivity extends AppCompatActivity {
     public void saveData(View view) {
         Alarm al = new Alarm();
         Date d = new Date();
-        d.UTC(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, npHours.getValue(), npMinutes.getValue(),0);
+        d.setHours(npHours.getValue());
+        d.setMinutes(npMinutes.getValue());
+        //d.UTC(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, npHours.getValue(), npMinutes.getValue(),0);
         al.setTime(d);
         al.setMelody("aaa");
         al.setRepeat(5);

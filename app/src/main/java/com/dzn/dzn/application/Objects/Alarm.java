@@ -74,7 +74,7 @@ public class Alarm implements Serializable {
         this.date = date;
     }
 
-    public void setTime(int time) {
+    public void setTime(long time) {
         this.date = new Date(time);
     }
 
