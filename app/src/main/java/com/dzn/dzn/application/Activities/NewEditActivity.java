@@ -248,6 +248,8 @@ public class NewEditActivity extends AppCompatActivity {
             dataBaseHelper.addAlarm(al);
         }
         else{
+            edAlarm.getDate().setHours(npHours.getValue());
+            edAlarm.getDate().setMinutes(npMinutes.getValue());
             dataBaseHelper.updateAlarm(edAlarm);
         }
         finish();

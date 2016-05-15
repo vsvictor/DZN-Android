@@ -149,5 +149,4 @@
         <item name="android:textSize">@dimen/main_activity_button_new</item>
         <item name="android:textColor">@color/colorSettingsAccent</item>
     </style>
-
 </resources>

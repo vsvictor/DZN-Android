@@ -123,6 +123,8 @@ public class AlarmsActivity extends AppCompatActivity {
         recyclerLayoutManager = new LinearLayoutManager(this);
         recyclerViewAlarms.setLayoutManager(recyclerLayoutManager);
 
+
+
         //recyclerViewAdapter = new RecyclerViewAdapterAlarms(this, getListAlarm());
         //recyclerViewAlarms.setAdapter(recyclerViewAdapter);
     }

@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         if (getListAlarm().size() == 0) {
             Intent intent = new Intent(MainActivity.this, StartActivity.class);
             startActivity(intent);
+
         }
 
         initView();

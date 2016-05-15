@@ -24,8 +24,8 @@ import java.util.ArrayList;
  */
 public class RecyclerViewAdapterAlarms extends RecyclerView.Adapter<RecyclerViewAdapterAlarms.ViewHolder> {
     private static final String TAG = "RVAdapterAlarms";
-    private static Context context;
-    private static Alarm alarm;
+    private Context context;
+    private Alarm alarm;
     private ArrayList<?> list;
 
     public RecyclerViewAdapterAlarms(Context context, ArrayList<Alarm> list) {
@@ -36,16 +36,24 @@ public class RecyclerViewAdapterAlarms extends RecyclerView.Adapter<RecyclerView
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.alarm_list_item, parent, false);
-
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         alarm = (Alarm) list.get(position);
         String s = DateTimeOperator.dateToTimeString(alarm.getDate());
         holder.tvAlarmTime.setText(s);
+        holder.rlClicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, NewEditActivity.class);
+                intent.putExtra("idAlarm", position+1);
+                context.startActivity(intent);
+            }
+        });
+
         Log.d(TAG, "Date: " + s);
     }
 
@@ -58,8 +66,8 @@ public class RecyclerViewAdapterAlarms extends RecyclerView.Adapter<RecyclerView
     /**
      * Class is like the helper
      */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final RelativeLayout rlClicker;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public RelativeLayout rlClicker;
         public Button btnDelete;
         public TextView tvAlarmTime;
         public Button btnAlarm;
@@ -73,14 +81,6 @@ public class RecyclerViewAdapterAlarms extends RecyclerView.Adapter<RecyclerView
             btnAlarm = (Button) itemView.findViewById(R.id.btnAlarm);
 
             rlClicker = (RelativeLayout) itemView.findViewById(R.id.rlClicker);
-            rlClicker.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, NewEditActivity.class);
-                    intent.putExtra("idAlarm", alarm.getID());
-                    context.startActivity(intent);
-                }
-            });
         }
     }
 }

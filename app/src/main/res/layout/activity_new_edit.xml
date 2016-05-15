@@ -52,17 +52,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal">
 
-        <NumberPicker
+        <com.dzn.dzn.application.Widget.NumberPicker
             android:id="@+id/npHours"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></NumberPicker>
+            android:layout_height="wrap_content"/>
 
-        <NumberPicker
+        <com.dzn.dzn.application.Widget.NumberPicker
             android:id="@+id/npMinutes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@id/npHours"></NumberPicker>
+            android:layout_toRightOf="@id/npHours"/>
 
     </RelativeLayout>
     <!--
