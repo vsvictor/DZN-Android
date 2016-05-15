@@ -61,14 +61,37 @@ public class NewEditActivity extends AppCompatActivity {
     private NumberPicker npHours;
     private NumberPicker npMinutes;
 
+    private int iHours;
+    private int iMinutes;
+
+    private Alarm edAlarm;
+    private int id = -1;
     private DataBaseHelper dataBaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_edit);
-
         dataBaseHelper = DataBaseHelper.getInstance(getParent());
+        Bundle b = getIntent().getExtras();
+        if(b != null){
+            id = b.getInt("idAlarm", -1);
+            edAlarm = dataBaseHelper.getAlarm(id);
+            if(edAlarm != null) {
+                iHours = edAlarm.getDate().getHours();
+                iMinutes = edAlarm.getDate().getMinutes();
+            }
+            else{
+                Date d = new Date();
+                iHours = d.getHours();
+                iMinutes = d.getMinutes();
+            }
+        }
+        else{
+            Date d = new Date();
+            iHours = d.getHours();
+            iMinutes = d.getMinutes();
+        }
 
         initView();
     }
@@ -137,6 +160,8 @@ public class NewEditActivity extends AppCompatActivity {
         npMinutes = (NumberPicker) findViewById(R.id.npMinutes);
         npMinutes.setMaxValue(0);
         npMinutes.setMaxValue(59);
+        npHours.setValue(iHours);
+        npMinutes.setValue(iMinutes);
     }
 
 
@@ -230,17 +255,22 @@ public class NewEditActivity extends AppCompatActivity {
      * Save data to database
      */
     public void saveData(View view) {
-        Alarm al = new Alarm();
-        Date d = new Date();
-        d.setHours(npHours.getValue());
-        d.setMinutes(npMinutes.getValue());
-        //d.UTC(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, npHours.getValue(), npMinutes.getValue(),0);
-        al.setTime(d);
-        al.setMelody("aaa");
-        al.setRepeat(5);
-        al.setVibro(true);
-        al.setSound(80);
-        dataBaseHelper.addAlarm(al);
+        if(id == -1) {
+            Alarm al = new Alarm();
+            Date d = new Date();
+            d.setHours(npHours.getValue());
+            d.setMinutes(npMinutes.getValue());
+            //d.UTC(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, npHours.getValue(), npMinutes.getValue(),0);
+            al.setTime(d);
+            al.setMelody("aaa");
+            al.setRepeat(5);
+            al.setVibro(true);
+            al.setSound(80);
+            dataBaseHelper.addAlarm(al);
+        }
+        else{
+            dataBaseHelper.updateAlarm(edAlarm);
+        }
         finish();
     }
 

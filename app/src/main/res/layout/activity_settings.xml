@@ -139,7 +139,7 @@
                     android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@mipmap/ic_sound_min" />
+                    android:background="@mipmap/ic_sound_off" />
 
                 <SeekBar
                     android:id="@+id/sbSettingsSound"
@@ -157,7 +157,7 @@
                     android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@mipmap/ic_sound_max" />
+                    android:background="@mipmap/ic_sound_on" />
 
             </LinearLayout>
 

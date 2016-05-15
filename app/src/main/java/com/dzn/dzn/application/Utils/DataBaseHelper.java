@@ -133,6 +133,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         db.close();
     }
+    public void updateAlarm(Alarm alarm) {
+        String[] args = {String.valueOf(alarm.getID())};
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_TIME, alarm.getDate().getTime());
+        contentValues.put(COL_REPEAT, alarm.getRepeat());
+        contentValues.put(COL_SOUND, alarm.getSound());
+        contentValues.put(COL_MELODY, alarm.getMelody());
+//        contentValues.put(COL_VIBRO, alarm.isVibro()?1:0);
+
+        //db.insert(TBL_ALARMS, null, contentValues);
+        db.update(TBL_ALARMS, contentValues, COL_ID+"=?", args);
+
+        db.close();
+    }
 
     /**
      * Remove Alarm
@@ -190,6 +206,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         db.close();
         return list;
+    }
+    public Alarm getAlarm(int id) {
+        Alarm alarm = null;
+        //String strQuery = "SELECT * FROM " + TBL_ALARMS;
+        SQLiteDatabase db = getReadableDatabase();
+        String[] args = {String.valueOf(id)};
+
+        Cursor cursor = db.query(TBL_ALARMS,null,COL_ID+"=?",args,null,null,null);
+        if (cursor.moveToFirst()) {
+                alarm = new Alarm();
+                alarm.setID(cursor.getInt(cursor.getColumnIndex(COL_ID)));
+                alarm.setTime(cursor.getLong(cursor.getColumnIndex(COL_TIME)));
+                alarm.setRepeat(cursor.getInt(cursor.getColumnIndex(COL_REPEAT)));
+                alarm.setSound(cursor.getInt(cursor.getColumnIndex(COL_SOUND)));
+                alarm.setMelody(cursor.getString(cursor.getColumnIndex(COL_MELODY)));
+                alarm.setVibro(true);
+        }
+        db.close();
+        return alarm;
     }
 
     public ArrayList<Social> getSocial() {

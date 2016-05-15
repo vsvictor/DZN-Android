@@ -1,6 +1,7 @@
 package com.dzn.dzn.application.Activities;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.dzn.dzn.application.Adapters.RecyclerViewAdapterAlarms;
 import com.dzn.dzn.application.Adapters.RecyclerViewAdapterMain;
+import com.dzn.dzn.application.Adapters.RecyclerViewAdapterOnOff;
 import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
@@ -43,6 +45,23 @@ public class AlarmsActivity extends AppCompatActivity {
         //Initialize view elements
         initView();
 
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        new AsyncTask<Void, Void, Void>(){
+            private ArrayList<Alarm> list = new ArrayList<Alarm>();
+            @Override
+            protected Void doInBackground(Void... params) {
+                list = getListAlarm();
+                return null;
+            }
+            @Override
+            protected void onPostExecute(Void v) {
+                recyclerViewAdapter = new RecyclerViewAdapterAlarms(AlarmsActivity.this, getListAlarm());
+                recyclerViewAlarms.setAdapter(recyclerViewAdapter);
+            }
+        }.execute();
     }
 
     /**
@@ -104,8 +123,8 @@ public class AlarmsActivity extends AppCompatActivity {
         recyclerLayoutManager = new LinearLayoutManager(this);
         recyclerViewAlarms.setLayoutManager(recyclerLayoutManager);
 
-        recyclerViewAdapter = new RecyclerViewAdapterAlarms(getListAlarm());
-        recyclerViewAlarms.setAdapter(recyclerViewAdapter);
+        //recyclerViewAdapter = new RecyclerViewAdapterAlarms(this, getListAlarm());
+        //recyclerViewAlarms.setAdapter(recyclerViewAdapter);
     }
 
 }

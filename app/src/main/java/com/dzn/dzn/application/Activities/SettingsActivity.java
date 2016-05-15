@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -37,6 +38,8 @@ public class SettingsActivity extends AppCompatActivity {
     private SeekBar sbSettingsSound;
 
     private Settings settings;
+    private ImageButton ibSoundMin;
+    private ImageButton ibSoundMax;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +117,22 @@ public class SettingsActivity extends AppCompatActivity {
         PFHandbookProTypeFaces.THIN.apply(tvSettingsSound);
 
         sbSettingsSound = (SeekBar) findViewById(R.id.sbSettingsSound);
+
+        ibSoundMin = (ImageButton) findViewById(R.id.idSettingsSoundOff);
+        ibSoundMin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sbSettingsSound.setProgress(0);
+            }
+        });
+        ibSoundMax = (ImageButton) findViewById(R.id.idSettingsSoundOn);
+        ibSoundMax.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sbSettingsSound.setProgress(100);
+            }
+        });
+
     }
 
     /**
