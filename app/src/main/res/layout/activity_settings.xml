@@ -148,8 +148,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="98"
                     android:progressDrawable="@drawable/seek_bar_progress"
-                    android:thumb="@drawable/toggle_day_on"/>
-
+                    android:thumb="@drawable/toggle_day_on" />
 
                 <ImageButton
                     android:id="@+id/idSettingsSoundOn"
