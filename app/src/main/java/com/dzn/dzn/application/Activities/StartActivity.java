@@ -80,8 +80,8 @@ public class StartActivity extends AppCompatActivity {
 
         dataBaseHelper.addAlarm(alarm);
 
-        Intent intent = new Intent(StartActivity.this, MainActivity.class);
-        startActivity(intent);
+        //Intent intent = new Intent(StartActivity.this, MainActivity.class);
+        //startActivity(intent);
         finish();
     }
 

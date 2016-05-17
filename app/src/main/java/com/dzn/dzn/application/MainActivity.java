@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.dzn.dzn.application.Activities.AlarmsActivity;
+import com.dzn.dzn.application.Activities.CreateSelfieActivity;
 import com.dzn.dzn.application.Activities.EditListAlarmsActivity;
 import com.dzn.dzn.application.Activities.NewEditActivity;
 import com.dzn.dzn.application.Activities.SettingsActivity;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         dataBaseHelper = DataBaseHelper.getInstance(this);
 
         if (getListAlarm().size() == 0) {
@@ -138,6 +140,11 @@ public class MainActivity extends AppCompatActivity {
         if(ar == null) return new ArrayList<Alarm>();
 
         return ar;
+    }
+
+    public void onCreateSelfie(View view) {
+        Intent intent = new Intent(MainActivity.this, CreateSelfieActivity.class);
+        startActivity(intent);
     }
 
 }

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorNewEditBackground"
+    android:orientation="vertical"
+    tools:context="com.dzn.dzn.application.Activities.CreateSelfieActivity">
+
+    <!-- Section Menu -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_vertical_margin">
+
+        <ImageView
+            android:id="@+id/ivFlash"
+            android:background="@mipmap/flash"
+            android:onClick="onFlash"
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ImageView
+            android:id="@+id/ivName"
+            android:background="@mipmap/dzn_dzn"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:text="@string/alarms_activity_name"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:id="@+id/ivSpread"
+            android:background="@mipmap/camera"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:onClick="onCamera"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <SurfaceView
+        android:id="@+id/surfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</LinearLayout>
