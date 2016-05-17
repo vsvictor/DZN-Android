@@ -44,8 +44,8 @@ public class AlarmsActivity extends AppCompatActivity {
 
         //Initialize view elements
         initView();
-
     }
+
     @Override
     protected void onResume(){
         super.onResume();
@@ -122,11 +122,6 @@ public class AlarmsActivity extends AppCompatActivity {
 
         recyclerLayoutManager = new LinearLayoutManager(this);
         recyclerViewAlarms.setLayoutManager(recyclerLayoutManager);
-
-
-
-        //recyclerViewAdapter = new RecyclerViewAdapterAlarms(this, getListAlarm());
-        //recyclerViewAlarms.setAdapter(recyclerViewAdapter);
     }
 
 }

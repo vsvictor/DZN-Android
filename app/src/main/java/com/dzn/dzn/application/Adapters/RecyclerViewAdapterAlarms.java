@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dzn.dzn.application.Activities.NewEditActivity;
 import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.R;
+import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.DateTimeOperator;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 
@@ -26,7 +28,7 @@ public class RecyclerViewAdapterAlarms extends RecyclerView.Adapter<RecyclerView
     private static final String TAG = "RVAdapterAlarms";
     private Context context;
     private Alarm alarm;
-    private ArrayList<?> list;
+    private ArrayList<Alarm> list;
 
     public RecyclerViewAdapterAlarms(Context context, ArrayList<Alarm> list) {
         this.context = context;
@@ -42,15 +44,31 @@ public class RecyclerViewAdapterAlarms extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        alarm = (Alarm) list.get(position);
+        alarm = list.get(position);
         String s = DateTimeOperator.dateToTimeString(alarm.getDate());
+
         holder.tvAlarmTime.setText(s);
-        holder.rlClicker.setOnClickListener(new View.OnClickListener() {
+        holder.tvAlarmTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, NewEditActivity.class);
-                intent.putExtra("idAlarm", position+1);
+                intent.putExtra("idAlarm", position + 1);
                 context.startActivity(intent);
+            }
+        });
+
+        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Position: " + position);
+                DataBaseHelper db = DataBaseHelper.getInstance(context);
+                if (db != null) {
+                     db.removeAlarm(list.get(position));
+                } else {
+                    Log.d(TAG, "database null");
+                }
+                list.remove(position);
+                notifyDataSetChanged();
             }
         });
 
@@ -62,12 +80,10 @@ public class RecyclerViewAdapterAlarms extends RecyclerView.Adapter<RecyclerView
         return list.size();
     }
 
-
     /**
      * Class is like the helper
      */
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public RelativeLayout rlClicker;
         public Button btnDelete;
         public TextView tvAlarmTime;
         public Button btnAlarm;
@@ -79,8 +95,6 @@ public class RecyclerViewAdapterAlarms extends RecyclerView.Adapter<RecyclerView
 
             btnDelete = (Button) itemView.findViewById(R.id.btnDelete);
             btnAlarm = (Button) itemView.findViewById(R.id.btnAlarm);
-
-            rlClicker = (RelativeLayout) itemView.findViewById(R.id.rlClicker);
         }
     }
 }
