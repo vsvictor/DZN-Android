@@ -15,39 +15,83 @@
 
         <ImageView
             android:id="@+id/ivFlash"
-            android:background="@mipmap/flash"
-            android:onClick="onFlash"
             android:layout_width="20dp"
-            android:layout_height="40dp"
-            android:layout_alignParentTop="true"
+            android:layout_height="30dp"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@mipmap/flash"
+            android:onClick="onFlash" />
 
         <ImageView
             android:id="@+id/ivName"
-            android:background="@mipmap/dzn_dzn"
-            android:layout_width="150dp"
-            android:layout_height="40dp"
-            android:text="@string/alarms_activity_name"
+            android:layout_width="140dp"
+            android:layout_height="30dp"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:background="@mipmap/dzn_dzn"
+            android:text="@string/alarms_activity_name" />
 
         <ImageView
             android:id="@+id/ivSpread"
-            android:background="@mipmap/camera"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:onClick="onCamera"
-            android:layout_alignParentTop="true"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentTop="true"
+            android:background="@mipmap/camera"
+            android:onClick="onCamera" />
 
     </RelativeLayout>
 
-    <SurfaceView
-        android:id="@+id/surfaceView"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
+        <SurfaceView
+            android:id="@+id/surfaceView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/linearLayout"
+            android:layout_alignParentTop="true" />
+
+        <FrameLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="140dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@mipmap/stop"
+                android:foregroundGravity="fill"
+                android:onClick="onStopAlarm" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvCreateSelfie"
+                style="@style/MainActivityTextPrompt"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/create_selfie_activity_create" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

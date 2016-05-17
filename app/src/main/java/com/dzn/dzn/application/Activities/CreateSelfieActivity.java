@@ -7,11 +7,15 @@ import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.dzn.dzn.application.R;
+import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 
 public class CreateSelfieActivity extends AppCompatActivity {
     private static final String TAG = "CreateSelfieActivity";
+
+    private TextView tvCreateSelfie;
 
     private Camera camera;
     private SurfaceView surfaceView;
@@ -24,7 +28,6 @@ public class CreateSelfieActivity extends AppCompatActivity {
 
         //Initialize view elements
         initView();
-
 
     }
 
@@ -44,25 +47,12 @@ public class CreateSelfieActivity extends AppCompatActivity {
      * Initialize view elements
      */
     private void initView() {
+        tvCreateSelfie = (TextView) findViewById(R.id.tvCreateSelfie);
+        PFHandbookProTypeFaces.THIN.apply(tvCreateSelfie);
+
         surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
 
         surfaceHolder = surfaceView.getHolder();
-        surfaceHolder.addCallback(new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-
-            }
-        });
     }
 
     /**
@@ -78,6 +68,14 @@ public class CreateSelfieActivity extends AppCompatActivity {
      * @param view
      */
     public void onCamera(View view) {
+
+    }
+
+    /**
+     * Click on stop alarm
+     * @param view
+     */
+    public void onStopAlarm(View view) {
 
     }
 
