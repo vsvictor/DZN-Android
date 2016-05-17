@@ -4,6 +4,7 @@ package com.dzn.dzn.application.Activities;
 import android.hardware.Camera;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -40,7 +41,9 @@ public class CreateSelfieActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        camera.release();
+        if (camera != null) {
+            camera.release();
+        }
     }
 
     /**
@@ -53,6 +56,29 @@ public class CreateSelfieActivity extends AppCompatActivity {
         surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
 
         surfaceHolder = surfaceView.getHolder();
+
+        surfaceHolder.addCallback(new SurfaceHolder.Callback() {
+            @Override
+            public void surfaceCreated(SurfaceHolder holder) {
+                try {
+                    camera.setPreviewDisplay(surfaceHolder);
+                    camera.setDisplayOrientation(90);
+                    camera.startPreview();
+                } catch (Exception ex) {
+                    Log.d(TAG, ex.getMessage());
+                }
+            }
+
+            @Override
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+            }
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder holder) {
+
+            }
+        });
     }
 
     /**
