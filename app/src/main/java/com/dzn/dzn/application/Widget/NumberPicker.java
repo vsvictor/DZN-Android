@@ -3,6 +3,7 @@ package com.dzn.dzn.application.Widget;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.EditText;
 
@@ -35,7 +36,7 @@ public class NumberPicker extends android.widget.NumberPicker {
 
     private void updateView(View view) {
         if(view instanceof EditText){
-            ((EditText) view).setTextSize(25);
+            ((EditText) view).setTextSize(TypedValue.COMPLEX_UNIT_SP, 46);
             ((EditText) view).setTextColor(Color.parseColor("#333333"));
         }
     }
