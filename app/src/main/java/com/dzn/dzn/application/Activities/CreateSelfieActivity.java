@@ -1,14 +1,20 @@
 package com.dzn.dzn.application.Activities;
 
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.hardware.Camera;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
@@ -16,7 +22,12 @@ import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 public class CreateSelfieActivity extends AppCompatActivity {
     private static final String TAG = "CreateSelfieActivity";
 
+    private static final int CAMERA_PICTURE = 1;
+
     private TextView tvCreateSelfie;
+    private ImageView ivPhoto;
+    private ImageButton ibFlash;
+    private ImageButton ibSpread;
 
     private Camera camera;
     private SurfaceView surfaceView;
@@ -79,6 +90,12 @@ public class CreateSelfieActivity extends AppCompatActivity {
 
             }
         });
+
+        ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
+        ibFlash = (ImageButton) findViewById(R.id.ibFlash);
+        ibSpread = (ImageButton) findViewById(R.id.ibSpread);
+
+
     }
 
     /**
@@ -102,7 +119,12 @@ public class CreateSelfieActivity extends AppCompatActivity {
      * @param view
      */
     public void onStopAlarm(View view) {
+        camera.takePicture(null, null, null, new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] data, Camera camera) {
 
+            }
+        });
     }
 
 

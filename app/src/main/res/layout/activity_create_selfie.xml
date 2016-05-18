@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/activity_vertical_margin">
 
-        <ImageView
-            android:id="@+id/ivFlash"
+        <ImageButton
+            android:id="@+id/ibFlash"
             android:layout_width="20dp"
             android:layout_height="30dp"
             android:layout_alignParentLeft="true"
@@ -23,17 +23,16 @@
             android:background="@mipmap/flash"
             android:onClick="onFlash" />
 
-        <ImageView
-            android:id="@+id/ivName"
+        <ImageButton
+            android:id="@+id/ibName"
             android:layout_width="140dp"
             android:layout_height="30dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:background="@mipmap/dzn_dzn"
-            android:text="@string/alarms_activity_name" />
+            android:background="@mipmap/dzn_dzn" />
 
-        <ImageView
-            android:id="@+id/ivSpread"
+        <ImageButton
+            android:id="@+id/ibSpread"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
@@ -54,6 +53,12 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/linearLayout"
             android:layout_alignParentTop="true" />
+
+        <ImageView
+            android:id="@+id/ivPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"/>
 
         <FrameLayout
             android:layout_width="80dp"
