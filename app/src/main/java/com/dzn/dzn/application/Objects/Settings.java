@@ -15,6 +15,8 @@ public class Settings {
     private SharedPreferences settings;
     private Context context;
 
+    private static Settings mInstance = null;
+
     private int locale;
     private int sound;
     private int interval;
@@ -39,14 +41,24 @@ public class Settings {
     private static final String ADD_GEO = "addGeo";
     private static final String MELODY = "melody";
 
-    public Settings(Context context){
+    public static final String LOCALE_RU = "ru";
+    public static final String LOCALE_EN = "en";
+
+    private Settings(Context context){
         this.context = context;
         settings = this.context.getSharedPreferences(context.getResources().getString(R.string.app_name), context.MODE_PRIVATE);
         list = new ArrayList<Social>();
         dbHelper = DataBaseHelper.getInstance(context);
     }
 
-    public void load(){
+    public static Settings getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new Settings(context);
+        }
+        return mInstance;
+    }
+
+    public synchronized void load(){
         locale = settings.getInt(LOCALE, 1);
         sound = settings.getInt(SOUND, 80);
         interval = settings.getInt(INTERVAL, 30);
@@ -59,7 +71,7 @@ public class Settings {
         list = dbHelper.getSocial();
     }
 
-    public void save(){
+    public synchronized void save(){
         SharedPreferences.Editor ed = settings.edit();
         ed.putInt(LOCALE, locale);
         ed.putInt(SOUND, sound);
@@ -95,6 +107,26 @@ public class Settings {
     }
     public void setMelody(String melody) {
         this.melody = melody;
+    }
+
+    @Override
+    public String toString() {
+        return "Settings{" +
+                "locale=" + locale +
+                ", sound=" + sound +
+                ", interval=" + interval +
+                ", repeat=" + repeat +
+                ", vibro=" + vibro +
+                ", isSocial=" + isSocial +
+                ", addTime=" + addTime +
+                ", addGeo=" + addGeo +
+                ", melody='" + melody + '\'' +
+                ", list=" + list +
+                '}';
+    }
+
+    public Context getContext() {
+        return context;
     }
 
 }

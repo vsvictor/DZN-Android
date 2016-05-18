@@ -1,6 +1,7 @@
 package com.dzn.dzn.application.Activities;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,9 +11,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.dzn.dzn.application.MainActivity;
 import com.dzn.dzn.application.Objects.Settings;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
+
+import java.util.Locale;
 
 public class SettingsActivity extends AppCompatActivity {
     private static final String TAG = "SettingsActivity";
@@ -38,6 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
     private SeekBar sbSettingsSound;
 
     private Settings settings;
+
     private ImageButton ibSoundMin;
     private ImageButton ibSoundMax;
 
@@ -46,10 +51,28 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        settings = new Settings(getApplicationContext());
+        settings = Settings.getInstance(getParent());
 
         //Initialize view element
         initView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+
+        //Load settings
+        settings.load();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
+
+        //Save settings
+        settings.save();
     }
 
     /**
@@ -79,31 +102,63 @@ public class SettingsActivity extends AppCompatActivity {
      * Initialize section of Locale
      */
     private void initSectionLocale() {
+        Log.d(TAG, "locale: " + settings.getLocale());
+
         tvSettingsRU = (TextView) findViewById(R.id.tvSettingsRU);
         PFHandbookProTypeFaces.THIN.apply(tvSettingsRU);
-        tvSettingsRU.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.setSelected(!v.isSelected());
-                tvSettingsEN.setSelected(!tvSettingsEN.isSelected());
-                settings.setLocale(v.isSelected() ? 1 : 0);
-                Log.d(TAG, "Locale: " + settings.getLocale());
-            }
-        });
-        tvSettingsRU.setSelected(settings.getLocale() == 1 ? true : false);
-
         tvSettingsEN = (TextView) findViewById(R.id.tvSettingsEN);
         PFHandbookProTypeFaces.THIN.apply(tvSettingsEN);
-        tvSettingsEN.setOnClickListener(new View.OnClickListener() {
+
+        if (settings.getLocale() == 1) {
+            tvSettingsRU.setSelected(true);
+        } else {
+            tvSettingsEN.setSelected(true);
+        }
+
+        //tvSettingsRU.setSelected(settings.getLocale() == 1 ? true : false);
+        tvSettingsRU.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                v.setSelected(!v.isSelected());
-                tvSettingsRU.setSelected(!tvSettingsRU.isSelected());
-                settings.setLocale(v.isSelected() ? 0 : 1);
+            public void onClick(View view) {
+                view.setSelected(true);
+                tvSettingsEN.setSelected(false);
+                settings.setLocale(1);
+                settings.save();
                 Log.d(TAG, "Locale: " + settings.getLocale());
+
+                Locale locale = new Locale("ru");
+                Locale.setDefault(locale);
+                Configuration config = new Configuration();
+                config.locale = locale;
+                getResources().updateConfiguration(config, null);
+
+                MainActivity activity = (MainActivity) settings.getContext();
+                activity.recreate();
+                recreate();
             }
         });
-        tvSettingsRU.setSelected(settings.getLocale() == 0 ? true : false);
+
+
+        //tvSettingsEN.setSelected(settings.getLocale() == 0 ? true : false);
+        tvSettingsEN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.setSelected(true);
+                tvSettingsRU.setSelected(false);
+                settings.setLocale(0);
+                settings.save();
+                Log.d(TAG, "Locale: " + settings.getLocale());
+
+                Locale locale = new Locale("en");
+                Locale.setDefault(locale);
+                Configuration config = new Configuration();
+                config.locale = locale;
+                getResources().updateConfiguration(config, null);
+
+                MainActivity activity = (MainActivity) settings.getContext();
+                activity.recreate();
+                recreate();
+            }
+        });
     }
 
     /**
@@ -175,28 +230,22 @@ public class SettingsActivity extends AppCompatActivity {
 
     /**
      * Save all settings
+     *
      * @param view
      */
     public void saveSettings(View view) {
+        settings.save();
         finish();
     }
 
     /**
      * Run Alarms activity
+     *
      * @param view
      */
     public void onList(View view) {
         Intent intent = new Intent(SettingsActivity.this, AlarmsActivity.class);
         startActivity(intent);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause");
-
-        //Save settings
-        settings.save();
     }
 
     public void decreaseWakeUp(View view) {

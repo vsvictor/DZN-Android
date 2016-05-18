@@ -1,6 +1,7 @@
 package com.dzn.dzn.application;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.dzn.dzn.application.Activities.AlarmsActivity;
 import com.dzn.dzn.application.Activities.CreateSelfieActivity;
 import com.dzn.dzn.application.Activities.EditListAlarmsActivity;
 import com.dzn.dzn.application.Activities.NewEditActivity;
@@ -19,12 +19,12 @@ import com.dzn.dzn.application.Activities.SettingsActivity;
 import com.dzn.dzn.application.Activities.StartActivity;
 import com.dzn.dzn.application.Adapters.RecyclerViewAdapterMain;
 import com.dzn.dzn.application.Objects.Alarm;
-import com.dzn.dzn.application.Objects.AlarmTest;
 import com.dzn.dzn.application.Objects.Settings;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
 
     private DataBaseHelper dataBaseHelper;
 
+    private Settings settings;
+    private Locale locale;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,17 +51,40 @@ public class MainActivity extends AppCompatActivity {
         if (getListAlarm().size() == 0) {
             Intent intent = new Intent(MainActivity.this, StartActivity.class);
             startActivity(intent);
-
         }
 
+        //Initialize view elements
         initView();
 
+        //Initialize settings and locale
+        settings = Settings.getInstance(this);
+        settings.load();
+
+        Log.d(TAG, settings.toString());
+        Log.d(TAG, "Locale: " + Locale.getDefault().getDisplayName());
+        //Initialize Locale
+
+        if (settings.getLocale() == 0) {
+            locale = new Locale(Settings.LOCALE_EN);
+        } else {
+            locale = new Locale(Settings.LOCALE_RU);
+        }
+        Locale.setDefault(locale);
+
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getResources().updateConfiguration(config, null);
+
+        Log.d(TAG, "Locale: " + Locale.getDefault().getDisplayName());
 
     }
 
     @Override
     protected void onResume(){
         super.onResume();
+        Log.d(TAG, "locale: " + settings.getLocale());
+        Log.d(TAG, settings.toString());
+
         new AsyncTask<Void, Void, Void>(){
             private ArrayList<Alarm> list = new ArrayList<Alarm>();
             @Override
@@ -72,6 +98,14 @@ public class MainActivity extends AppCompatActivity {
                 recyclerViewMain.setAdapter(recycleViewAdapter);
             }
         }.execute();
+    }
+
+    /**
+     * Initialize settings and locale
+     */
+    private void initSettings() {
+        //Initialize settings
+
     }
 
     /**

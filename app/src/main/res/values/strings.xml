@@ -2,31 +2,31 @@
     <string name="app_name">Dzn-Dzn</string>
 
     <!-- Common strings -->
-    <string name="ready">ГОТОВО</string>
-    <string name="edit">ИЗМЕНИТЬ</string>
+    <string name="ready">READY</string>
+    <string name="edit">CHANGE</string>
 
     <!-- Main activity -->
     <string name="app_colon">:</string>
-    <string name="main_activity_text">У вас установлены селфи будильники на:</string>
-    <string name="main_activity_button_new">Новый</string>
+    <string name="main_activity_text">У вас установлены селфи будильники on:</string>
+    <string name="main_activity_button_new">NEW</string>
 
     <!-- New_Edit activity -->
     <string name="new_edit_activity_tune">Настроить</string>
-    <string name="new_edit_activity_back">ОТМЕНИТЬ</string>
+    <string name="new_edit_activity_back">CANCEL</string>
     <string name="new_edit_activity_setting">Настройка будильника</string>
-    <string name="new_edit_activity_repeat">Повторять</string>
+    <string name="new_edit_activity_repeat">Repeat</string>
     <string name="new_edit_activity_music">Музыка:</string>
     <string name="new_edit_activity_interval">Интервалы:</string>
     <string name="new_edit_activity_social_network">Соцсети:</string>
 
     <!-- Short Days of week -->
-    <string name="short_sunday">Вc</string>
-    <string name="short_monday">Пн</string>
-    <string name="short_tuesday">Вт</string>
-    <string name="short_wednesday">Ср</string>
-    <string name="short_thursday">Чт</string>
-    <string name="short_friday">Пт</string>
-    <string name="short_saturday">Сб</string>
+    <string name="short_sunday">Su</string>
+    <string name="short_monday">Mo</string>
+    <string name="short_tuesday">Tu</string>
+    <string name="short_wednesday">We</string>
+    <string name="short_thursday">Th</string>
+    <string name="short_friday">Fr</string>
+    <string name="short_saturday">Sa</string>
 
     <string-array name="new_edit_activity_spinner_repeat">
         <item>Каждый день</item>
@@ -40,11 +40,11 @@
     </string-array>
 
     <!-- Settings activity -->
-    <string name="settings_activity_settings">Настройки</string>
+    <string name="settings_activity_settings">Settings</string>
     <string name="settings_activity_language_ru">Русский</string>
     <string name="settings_activity_language_en">English</string>
     <string name="settings_activity_sound_of_alarms">Звук будильника</string>
-    <string name="settings_activity_sound">Звук</string>
+    <string name="settings_activity_sound">Language</string>
     <string name="settings_activity_wake_up">Wake Up</string>
     <string name="settings_activity_section_alarm">Настройка будильника</string>
     <string name="settings_activity_interval_wake_up">Интервал пробуждения</string>
