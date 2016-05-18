@@ -44,7 +44,7 @@
     <string name="settings_activity_language_ru">Русский</string>
     <string name="settings_activity_language_en">English</string>
     <string name="settings_activity_sound_of_alarms">Звук будильника</string>
-    <string name="settings_activity_sound">Language</string>
+    <string name="settings_activity_sound">Sound</string>
     <string name="settings_activity_wake_up">Wake Up</string>
     <string name="settings_activity_section_alarm">Настройка будильника</string>
     <string name="settings_activity_interval_wake_up">Интервал пробуждения</string>
@@ -52,6 +52,7 @@
     <string name="settings_activity_vibro">Вибросигнал</string>
     <string name="settings_activity_section_social_network">Настройка соцсетей</string>
     <string name="settings_activity_upload_photo">Включить публикацию фотографий</string>
+    <string name="settings_activity_minutes">мин</string>
 
     <!-- Alarms activity -->
     <string name="alarms_activity_name">Будильники</string>

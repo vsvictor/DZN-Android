@@ -199,8 +199,8 @@
 
                 <ImageButton
                     style="@style/MinusButton"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_weight="5"
                     android:onClick="decreaseWakeUp" />
 
@@ -217,8 +217,8 @@
 
                 <ImageButton
                     style="@style/PlusButton"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_weight="5"
                     android:onClick="increaseWakeUp" />
 
@@ -248,8 +248,8 @@
 
                 <ImageButton
                     style="@style/MinusButton"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_weight="5"
                     android:onClick="decreaseRepeatInterval" />
 
@@ -266,8 +266,8 @@
 
                 <ImageButton
                     style="@style/PlusButton"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_weight="5"
                     android:onClick="increaseRepeatInterval" />
 

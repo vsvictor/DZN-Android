@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -115,7 +116,6 @@ public class SettingsActivity extends AppCompatActivity {
             tvSettingsEN.setSelected(true);
         }
 
-        //tvSettingsRU.setSelected(settings.getLocale() == 1 ? true : false);
         tvSettingsRU.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,8 +137,6 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-
-        //tvSettingsEN.setSelected(settings.getLocale() == 0 ? true : false);
         tvSettingsEN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -172,6 +170,25 @@ public class SettingsActivity extends AppCompatActivity {
         PFHandbookProTypeFaces.THIN.apply(tvSettingsSound);
 
         sbSettingsSound = (SeekBar) findViewById(R.id.sbSettingsSound);
+        sbSettingsSound.setProgress(settings.getSound());
+        sbSettingsSound.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                settings.setSound(progress);
+                settings.save();
+                Log.d(TAG, "Sound is: " + progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         ibSoundMin = (ImageButton) findViewById(R.id.idSettingsSoundOff);
         ibSoundMin.setOnClickListener(new View.OnClickListener() {
@@ -180,6 +197,7 @@ public class SettingsActivity extends AppCompatActivity {
                 sbSettingsSound.setProgress(0);
             }
         });
+
         ibSoundMax = (ImageButton) findViewById(R.id.idSettingsSoundOn);
         ibSoundMax.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,12 +225,22 @@ public class SettingsActivity extends AppCompatActivity {
         PFHandbookProTypeFaces.THIN.apply(tvSettingsVibro);
 
         toggleSettingsVibro = (ToggleButton) findViewById(R.id.toggleSettingsVibro);
+        toggleSettingsVibro.setChecked(settings.isVibro());
+        toggleSettingsVibro.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                settings.setVibro(isChecked);
+                settings.save();
+            }
+        });
 
         tvIntervalWakeUP = (TextView) findViewById(R.id.tvIntervalWakeUP);
         PFHandbookProTypeFaces.THIN.apply(tvIntervalWakeUP);
+        setTvIntervalWakeUp();
 
         tvIntervalRepeat = (TextView) findViewById(R.id.tvIntervalRepeat);
         PFHandbookProTypeFaces.THIN.apply(tvIntervalRepeat);
+        setTvIntervalRepeat();
     }
 
     /**
@@ -226,6 +254,14 @@ public class SettingsActivity extends AppCompatActivity {
         PFHandbookProTypeFaces.THIN.apply(tvSettingsUploadPhoto);
 
         toggleSettingsUploadPhoto = (ToggleButton) findViewById(R.id.toggleSettingsUploadPhoto);
+        toggleSettingsUploadPhoto.setChecked(settings.isSocial());
+        toggleSettingsUploadPhoto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                settings.setSocial(isChecked);
+                settings.save();
+            }
+        });
     }
 
     /**
@@ -248,19 +284,65 @@ public class SettingsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Decrease interval wakeup
+     * @param view
+     */
     public void decreaseWakeUp(View view) {
-
+        int interval = settings.getInterval();
+        interval--;
+        settings.setInterval(interval);
+        setTvIntervalWakeUp();
+        Log.d(TAG, "Interval wakeup: " + interval);
     }
 
+    /**
+     * Increase interval wakeup
+     * @param view
+     */
     public void increaseWakeUp(View view) {
-
+        int interval = settings.getInterval();
+        interval++;
+        settings.setInterval(interval);
+        setTvIntervalWakeUp();
+        Log.d(TAG, "Interval wakeup: " + interval);
     }
 
+    /**
+     * Decrease interval repeat
+     * @param view
+     */
     public void decreaseRepeatInterval(View view) {
-
+        int interval = settings.getRepeat();
+        interval--;
+        settings.setRepeat(interval);
+        setTvIntervalRepeat();
+        Log.d(TAG, "Interval repeat: " + interval);
     }
 
+    /**
+     * Increase interval repeat
+     * @param view
+     */
     public void increaseRepeatInterval(View view) {
+        int interval = settings.getRepeat();
+        interval++;
+        settings.setRepeat(interval);
+        setTvIntervalRepeat();
+        Log.d(TAG, "Interval repeat: " + interval);
+    }
 
+    /**
+     * Show interval wakeup
+     */
+    private void setTvIntervalWakeUp() {
+        tvIntervalWakeUP.setText(settings.getInterval() + " " + getResources().getString(R.string.settings_activity_minutes));
+    }
+
+    /**
+     * Show interval repeat
+     */
+    private void setTvIntervalRepeat() {
+        tvIntervalRepeat.setText(settings.getRepeat() + " " + getResources().getString(R.string.settings_activity_minutes));
     }
 }
