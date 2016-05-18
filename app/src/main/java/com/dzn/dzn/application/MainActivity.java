@@ -44,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Initialize settings and locale
+        initSettings();
+
         setContentView(R.layout.activity_main);
 
         dataBaseHelper = DataBaseHelper.getInstance(this);
@@ -55,27 +59,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Initialize view elements
         initView();
-
-        //Initialize settings and locale
-        settings = Settings.getInstance(this);
-        settings.load();
-
-        Log.d(TAG, settings.toString());
-        Log.d(TAG, "Locale: " + Locale.getDefault().getDisplayName());
-        //Initialize Locale
-
-        if (settings.getLocale() == 0) {
-            locale = new Locale(Settings.LOCALE_EN);
-        } else {
-            locale = new Locale(Settings.LOCALE_RU);
-        }
-        Locale.setDefault(locale);
-
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getResources().updateConfiguration(config, null);
-
-        Log.d(TAG, "Locale: " + Locale.getDefault().getDisplayName());
 
     }
 
@@ -105,7 +88,20 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initSettings() {
         //Initialize settings
+        settings = Settings.getInstance(this);
+        settings.load();
+        Log.d(TAG, settings.toString());
 
+        //Initialize Locale
+        if (settings.getLocale() == 0) {
+            locale = new Locale(Settings.LOCALE_EN);
+        } else {
+            locale = new Locale(Settings.LOCALE_RU);
+        }
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getResources().updateConfiguration(config, null);
     }
 
     /**

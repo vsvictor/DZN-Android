@@ -186,7 +186,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * Return list of alarms
      * @return
      */
-    public ArrayList<Alarm> getAlarmList() {
+    public synchronized ArrayList<Alarm> getAlarmList() {
         ArrayList<Alarm> list = new ArrayList<Alarm>();
         //String strQuery = "SELECT * FROM " + TBL_ALARMS;
         SQLiteDatabase db = getReadableDatabase();
@@ -207,7 +207,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
         return list;
     }
-    public Alarm getAlarm(int id) {
+
+    public synchronized Alarm getAlarm(int id) {
         Alarm alarm = null;
         //String strQuery = "SELECT * FROM " + TBL_ALARMS;
         SQLiteDatabase db = getReadableDatabase();
@@ -227,7 +228,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return alarm;
     }
 
-    public ArrayList<Social> getSocial() {
+    public synchronized ArrayList<Social> getSocial() {
         ArrayList<Social> list = new ArrayList<Social>();
         String strQuery = "SELECT * FROM " + TBL_SOCIAL;
         SQLiteDatabase db = getReadableDatabase();
@@ -249,7 +250,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
-    public void setSocial(ArrayList<Social> list){
+    public synchronized void setSocial(ArrayList<Social> list){
         SQLiteDatabase db = getReadableDatabase();
         for(Social social : list){
             ContentValues val = new ContentValues();
