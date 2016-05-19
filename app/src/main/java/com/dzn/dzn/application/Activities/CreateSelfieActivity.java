@@ -1,10 +1,10 @@
 package com.dzn.dzn.application.Activities;
 
 
-import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +13,8 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
@@ -22,12 +22,13 @@ import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 public class CreateSelfieActivity extends AppCompatActivity {
     private static final String TAG = "CreateSelfieActivity";
 
-    private static final int CAMERA_PICTURE = 1;
-
     private TextView tvCreateSelfie;
     private ImageView ivPhoto;
     private ImageButton ibFlash;
     private ImageButton ibSpread;
+    private ImageButton ibStop;
+    private LinearLayout llSpreadSelfie;
+    private TextView tvSelfieSpread;
 
     private Camera camera;
     private SurfaceView surfaceView;
@@ -94,7 +95,11 @@ public class CreateSelfieActivity extends AppCompatActivity {
         ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
         ibFlash = (ImageButton) findViewById(R.id.ibFlash);
         ibSpread = (ImageButton) findViewById(R.id.ibSpread);
+        ibStop = (ImageButton) findViewById(R.id.ibStop);
+        llSpreadSelfie = (LinearLayout) findViewById(R.id.llSpreadSelfie);
 
+        tvSelfieSpread = (TextView) findViewById(R.id.tvSelfieSpread);
+        PFHandbookProTypeFaces.THIN.apply(tvSelfieSpread);
 
     }
 
@@ -119,13 +124,38 @@ public class CreateSelfieActivity extends AppCompatActivity {
      * @param view
      */
     public void onStopAlarm(View view) {
-        camera.takePicture(null, null, null, new Camera.PictureCallback() {
+        ibFlash.setVisibility(View.INVISIBLE);
+        ibSpread.setVisibility(View.INVISIBLE);
+        surfaceView.setVisibility(View.GONE);
+        ibStop.setVisibility(View.INVISIBLE);
+
+        ivPhoto.setVisibility(View.VISIBLE);
+
+        tvCreateSelfie.setText(getResources().getString(R.string.good_morning));
+
+        tvCreateSelfie.setTextSize(getResources().getDimension(R.dimen.app_padding_16dp));
+
+        llSpreadSelfie.setVisibility(View.VISIBLE);
+
+        camera.takePicture(null, null, new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
+                Log.d(TAG, "Bitmap length: " + data.length);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
 
+                //rotate bitmap
+                Matrix matrix = new Matrix();
+                matrix.postRotate(-90);
+                Bitmap btm = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+                //set photo
+                ivPhoto.setImageBitmap(btm);
+
+                camera.stopPreview();
             }
         });
-    }
 
+        //camera.stopPreview();
+    }
 
 }

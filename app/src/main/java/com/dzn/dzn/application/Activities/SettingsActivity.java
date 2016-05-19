@@ -131,12 +131,13 @@ public class SettingsActivity extends AppCompatActivity {
                 config.locale = locale;
                 getResources().updateConfiguration(config, null);
 
-                //MainActivity activity = (MainActivity) settings.getContext();
-                //activity.recreate();
-                //recreate();
-                Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
-                startActivity(intent);
-                finish();
+                MainActivity activity = (MainActivity) settings.getContext();
+                activity.recreate();
+                recreate();
+
+                //Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
+                //startActivity(intent);
+                //finish();
             }
         });
 
@@ -155,13 +156,13 @@ public class SettingsActivity extends AppCompatActivity {
                 config.locale = locale;
                 getResources().updateConfiguration(config, null);
 
-                Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
-                startActivity(intent);
-                finish();
+                //Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
+                //startActivity(intent);
+                //finish();
 
-                //MainActivity activity = (MainActivity) settings.getContext();
-                //activity.recreate();
-                //recreate();
+                MainActivity activity = (MainActivity) settings.getContext();
+                activity.recreate();
+                recreate();
             }
         });
     }

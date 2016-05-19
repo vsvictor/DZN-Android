@@ -58,16 +58,20 @@
             android:id="@+id/ivPhoto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible"/>
+            android:layout_above="@+id/linearLayout"
+            android:layout_alignParentTop="true"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:visibility="gone" />
 
         <FrameLayout
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="140dp">
+            android:layout_marginBottom="160dp">
 
-            <ImageView
+            <ImageButton
+                android:id="@+id/ibStop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -80,11 +84,35 @@
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="200dp"
             android:layout_alignParentBottom="true"
             android:layout_gravity="center"
             android:gravity="center"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llSpreadSelfie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:paddingBottom="@dimen/app_padding_32dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="35dp"
+                    android:background="@mipmap/spread_social_network" />
+
+                <TextView
+                    android:id="@+id/tvSelfieSpread"
+                    style="@style/MainActivityTextPrompt"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorYellow"
+                    android:text="@string/create_selfie_activity_spread" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tvCreateSelfie"
