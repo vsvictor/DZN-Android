@@ -9,6 +9,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.hardware.Camera;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -55,6 +58,9 @@ public class CreateSelfieActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_selfie);
         alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         dataBaseHelper = DataBaseHelper.getInstance(this);
+        Uri alarmTone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        Ringtone ringtoneAlarm = RingtoneManager.getRingtone(getApplicationContext(), alarmTone);
+        ringtoneAlarm.play();
         //Initialize view elements
         initView();
 
