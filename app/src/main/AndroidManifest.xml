@@ -8,6 +8,20 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
+
+        <!-- Integrity Facebook -->
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id" />
+
+        <provider android:authorities="com.facebook.app.FacebookContentProvider476773322496190"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true" />
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
+
+        <!-- Main activity -->
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">

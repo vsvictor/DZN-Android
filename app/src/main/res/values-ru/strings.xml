@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Dzn-Dzn</string>
+    <style name="facebook_app_id">476773322496190</style>
 
     <!-- Common strings -->
     <string name="ready">ГОТОВО</string>
