@@ -1,5 +1,8 @@
 package com.dzn.dzn.application;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -24,6 +27,8 @@ import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Settings settings;
     private Locale locale;
+    private AlarmManager alarmManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, StartActivity.class);
             startActivity(intent);
         }
-
+        alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         //Initialize view elements
         initView();
 
@@ -79,6 +85,21 @@ public class MainActivity extends AppCompatActivity {
             protected void onPostExecute(Void v) {
                 recycleViewAdapter = new RecyclerViewAdapterMain(getListAlarm());
                 recyclerViewMain.setAdapter(recycleViewAdapter);
+                int counter = 1;
+                for(Alarm alarm : list){
+                    Date d = alarm.getDate();
+                    Date today = Calendar.getInstance().getTime();
+                    today.setHours(d.getHours());
+                    today.setMinutes(d.getMinutes());
+                    if(today.getTime()>System.currentTimeMillis()) {
+                        Intent intent = new Intent(MainActivity.this, CreateSelfieActivity.class);
+                        intent.putExtra("counter", counter);
+                        intent.putExtra("time", today.getTime());
+                        PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, counter, intent, PendingIntent.FLAG_ONE_SHOT);
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, today.getTime(), pendingIntent);
+                        counter++;
+                    }
+                }
             }
         }.execute();
     }

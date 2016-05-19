@@ -1,6 +1,10 @@
 package com.dzn.dzn.application.Activities;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -16,8 +20,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.R;
+import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class CreateSelfieActivity extends AppCompatActivity {
     private static final String TAG = "CreateSelfieActivity";
@@ -33,12 +43,18 @@ public class CreateSelfieActivity extends AppCompatActivity {
     private Camera camera;
     private SurfaceView surfaceView;
     private SurfaceHolder surfaceHolder;
+    private DataBaseHelper dataBaseHelper;
+    private AlarmManager alarmManager;
+
+    private boolean created;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        created = false;
         setContentView(R.layout.activity_create_selfie);
-
+        alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        dataBaseHelper = DataBaseHelper.getInstance(this);
         //Initialize view elements
         initView();
 
@@ -48,6 +64,7 @@ public class CreateSelfieActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
+        created = false;
     }
 
     @Override
@@ -56,6 +73,11 @@ public class CreateSelfieActivity extends AppCompatActivity {
         if (camera != null) {
             camera.release();
         }
+    }
+
+    @Override
+    public void onBackPressed(){
+        if(created) super.onBackPressed();
     }
 
     /**
@@ -155,7 +177,40 @@ public class CreateSelfieActivity extends AppCompatActivity {
             }
         });
 
-        //camera.stopPreview();
+        int counter = getIntent().getExtras().getInt("counter");
+        long time = getIntent().getExtras().getLong("time");
+        Intent intent = new Intent(this, CreateSelfieActivity.class);
+        intent.putExtra("counter", counter);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, counter, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        alarmManager.cancel(pendingIntent);
+
+        counter = 1;
+        for(Alarm alarm : getListAlarm()){
+            Date d = alarm.getDate();
+            Date today = Calendar.getInstance().getTime();
+            today.setHours(d.getHours());
+            today.setMinutes(d.getMinutes());
+            if(today.getTime()>System.currentTimeMillis()) {
+                Intent intentNew = new Intent(this, CreateSelfieActivity.class);
+                intentNew.putExtra("counter", counter);
+                intentNew.putExtra("time", today.getTime());
+                PendingIntent pendingIntentNew = PendingIntent.getActivity(this, counter, intentNew, PendingIntent.FLAG_ONE_SHOT);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, today.getTime(), pendingIntentNew);
+                counter++;
+            }
+        }
+        created = true;
+    }
+    private ArrayList<Alarm> getListAlarm() {
+        if(dataBaseHelper == null) {
+            Log.i(TAG, "DNHelper is null");
+            dataBaseHelper = DataBaseHelper.getInstance(this);
+        }
+
+        ArrayList<Alarm> ar = dataBaseHelper.getAlarmList();
+        if(ar == null) return new ArrayList<Alarm>();
+
+        return ar;
     }
 
 }
