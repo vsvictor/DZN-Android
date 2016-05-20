@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dzn.dzn.application.Activities.NewEditActivity;
@@ -57,13 +55,22 @@ public class RecyclerViewAdapterAlarms extends RecyclerView.Adapter<RecyclerView
             }
         });
 
+        holder.btnAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, NewEditActivity.class);
+                intent.putExtra("idAlarm", position + 1);
+                context.startActivity(intent);
+            }
+        });
+
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Position: " + position);
                 DataBaseHelper db = DataBaseHelper.getInstance(context);
                 if (db != null) {
-                     db.removeAlarm(list.get(position));
+                    db.removeAlarm(list.get(position));
                 } else {
                     Log.d(TAG, "database null");
                 }
