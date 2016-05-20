@@ -28,6 +28,7 @@ import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -54,6 +55,8 @@ public class CreateSelfieActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate");
+
         created = false;
         setContentView(R.layout.activity_create_selfie);
         alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
@@ -61,23 +64,41 @@ public class CreateSelfieActivity extends AppCompatActivity {
         Uri alarmTone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         Ringtone ringtoneAlarm = RingtoneManager.getRingtone(getApplicationContext(), alarmTone);
         ringtoneAlarm.play();
+
         //Initialize view elements
         initView();
+
+        //Initialize Surface
+        initSurface();
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
+        Log.d(TAG, "onResume");
+        if (camera == null) {
+            Log.d(TAG, "Camera null");
+            camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
+            try {
+                camera.setPreviewDisplay(surfaceHolder);
+                camera.setDisplayOrientation(90);
+                camera.startPreview();
+            } catch (IOException ex) {
+                Log.d(TAG, ex.getMessage());
+            }
+        }
         created = false;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d(TAG, "onPause");
         if (camera != null) {
+            camera.stopPreview();
             camera.release();
+            camera = null;
         }
     }
 
@@ -90,9 +111,23 @@ public class CreateSelfieActivity extends AppCompatActivity {
      * Initialize view elements
      */
     private void initView() {
+        Log.d(TAG, "initView");
+
         tvCreateSelfie = (TextView) findViewById(R.id.tvCreateSelfie);
         PFHandbookProTypeFaces.THIN.apply(tvCreateSelfie);
 
+        ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
+        ibFlash = (ImageButton) findViewById(R.id.ibFlash);
+        ibSpread = (ImageButton) findViewById(R.id.ibSpread);
+        ibStop = (ImageButton) findViewById(R.id.ibStop);
+        llSpreadSelfie = (LinearLayout) findViewById(R.id.llSpreadSelfie);
+
+        tvSelfieSpread = (TextView) findViewById(R.id.tvSelfieSpread);
+        PFHandbookProTypeFaces.THIN.apply(tvSelfieSpread);
+    }
+
+    //Initialize SurfaceView & SurfaceHolder
+    private void initSurface() {
         surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
 
         surfaceHolder = surfaceView.getHolder();
@@ -100,6 +135,7 @@ public class CreateSelfieActivity extends AppCompatActivity {
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
+                Log.d(TAG, "surfaceCreated");
                 try {
                     camera.setPreviewDisplay(surfaceHolder);
                     camera.setDisplayOrientation(90);
@@ -111,24 +147,14 @@ public class CreateSelfieActivity extends AppCompatActivity {
 
             @Override
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
+                Log.d(TAG, "surfaceChanged");
             }
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
-
+                Log.d(TAG, "surfaceDestroyed");
             }
         });
-
-        ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
-        ibFlash = (ImageButton) findViewById(R.id.ibFlash);
-        ibSpread = (ImageButton) findViewById(R.id.ibSpread);
-        ibStop = (ImageButton) findViewById(R.id.ibStop);
-        llSpreadSelfie = (LinearLayout) findViewById(R.id.llSpreadSelfie);
-
-        tvSelfieSpread = (TextView) findViewById(R.id.tvSelfieSpread);
-        PFHandbookProTypeFaces.THIN.apply(tvSelfieSpread);
-
     }
 
     /**
@@ -207,6 +233,7 @@ public class CreateSelfieActivity extends AppCompatActivity {
         }
         created = true;
     }
+
     private ArrayList<Alarm> getListAlarm() {
         if(dataBaseHelper == null) {
             Log.i(TAG, "DNHelper is null");
