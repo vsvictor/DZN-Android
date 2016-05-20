@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.R;
@@ -53,17 +54,15 @@ public class RecyclerViewAdapterOnOff extends RecyclerView.Adapter<RecyclerViewA
      * Class is like the helper
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public Button btnDelete;
         public TextView tvAlarmTime;
-        public Button btnAlarm;
+        public ToggleButton toggleAlarmOnOff;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvAlarmTime = (TextView) itemView.findViewById(R.id.tvAlarmTime);
             PFHandbookProTypeFaces.BLACK.apply(tvAlarmTime);
 
-            btnDelete = (Button) itemView.findViewById(R.id.btnDelete);
-            btnAlarm = (Button) itemView.findViewById(R.id.btnAlarm);
+            toggleAlarmOnOff = (ToggleButton) itemView.findViewById(R.id.toggleAlarmOnOff);
         }
     }
 }

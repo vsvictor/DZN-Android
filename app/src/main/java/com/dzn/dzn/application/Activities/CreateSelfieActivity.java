@@ -27,14 +27,31 @@ import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.share.ShareApi;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class CreateSelfieActivity extends AppCompatActivity {
     private static final String TAG = "CreateSelfieActivity";
+
+    //integrate Facebook
+    private CallbackManager callbackManager;
+    private LoginManager loginManager;
+    private List<String> permissions = Arrays.asList("publish_actions");
+    private Bitmap btm;
 
     private TextView tvCreateSelfie;
     private ImageView ivPhoto;
@@ -56,6 +73,13 @@ public class CreateSelfieActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
+
+        //Initialize Facebook
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
+
+
+
 
         created = false;
         setContentView(R.layout.activity_create_selfie);
@@ -103,8 +127,14 @@ public class CreateSelfieActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed(){
-        if(created) super.onBackPressed();
+    public void onBackPressed() {
+        if (created) super.onBackPressed();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
@@ -159,6 +189,7 @@ public class CreateSelfieActivity extends AppCompatActivity {
 
     /**
      * Click on flash
+     *
      * @param view
      */
     public void onFlash(View view) {
@@ -167,6 +198,7 @@ public class CreateSelfieActivity extends AppCompatActivity {
 
     /**
      * Click on camera
+     *
      * @param view
      */
     public void onCamera(View view) {
@@ -175,6 +207,7 @@ public class CreateSelfieActivity extends AppCompatActivity {
 
     /**
      * Click on stop alarm
+     *
      * @param view
      */
     public void onStopAlarm(View view) {
@@ -200,14 +233,36 @@ public class CreateSelfieActivity extends AppCompatActivity {
                 //rotate bitmap
                 Matrix matrix = new Matrix();
                 matrix.postRotate(-90);
-                Bitmap btm = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                btm = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
                 //set photo
                 ivPhoto.setImageBitmap(btm);
 
+                callbackManager = CallbackManager.Factory.create();
+                loginManager = LoginManager.getInstance();
+                loginManager.logInWithPublishPermissions(CreateSelfieActivity.this, permissions);
+                loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        sharePhotoToFacebook(btm);
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        System.out.println("onCancel");
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        System.out.println("onError");
+                    }
+                });
+
                 camera.stopPreview();
             }
         });
+
+
 
         int counter = getIntent().getExtras().getInt("counter");
         long time = getIntent().getExtras().getLong("time");
@@ -217,12 +272,12 @@ public class CreateSelfieActivity extends AppCompatActivity {
         alarmManager.cancel(pendingIntent);
 
         counter = 1;
-        for(Alarm alarm : getListAlarm()){
+        for (Alarm alarm : getListAlarm()) {
             Date d = alarm.getDate();
             Date today = Calendar.getInstance().getTime();
             today.setHours(d.getHours());
             today.setMinutes(d.getMinutes());
-            if(today.getTime()>System.currentTimeMillis()) {
+            if (today.getTime() > System.currentTimeMillis()) {
                 Intent intentNew = new Intent(this, CreateSelfieActivity.class);
                 intentNew.putExtra("counter", counter);
                 intentNew.putExtra("time", today.getTime());
@@ -235,15 +290,29 @@ public class CreateSelfieActivity extends AppCompatActivity {
     }
 
     private ArrayList<Alarm> getListAlarm() {
-        if(dataBaseHelper == null) {
+        if (dataBaseHelper == null) {
             Log.i(TAG, "DNHelper is null");
             dataBaseHelper = DataBaseHelper.getInstance(this);
         }
 
         ArrayList<Alarm> ar = dataBaseHelper.getAlarmList();
-        if(ar == null) return new ArrayList<Alarm>();
+        if (ar == null) return new ArrayList<Alarm>();
 
         return ar;
+    }
+
+    private void sharePhotoToFacebook(Bitmap bitmap) {
+        Log.d(TAG, "sharePhotoToFacebook");
+        SharePhoto photo = new SharePhoto.Builder()
+                .setBitmap(bitmap)
+                .setCaption("My photo tested...")
+                .build();
+
+        SharePhotoContent content = new SharePhotoContent.Builder()
+                .addPhoto(photo)
+                .build();
+
+        ShareApi.share(content, null);
     }
 
 }

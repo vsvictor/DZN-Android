@@ -23,7 +23,7 @@
             android:text="00:00" />
 
         <ToggleButton
-            android:id="@+id/toggleNewEditMusic"
+            android:id="@+id/toggleAlarmOnOff"
             style="@style/NewEditToggleHandler"
             android:layout_width="50dp"
             android:layout_height="25dp"
