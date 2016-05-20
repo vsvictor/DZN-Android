@@ -58,11 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
         dataBaseHelper = DataBaseHelper.getInstance(this);
 
-        if (getListAlarm().size() == 0) {
-            Intent intent = new Intent(MainActivity.this, StartActivity.class);
-            startActivity(intent);
-        }
         alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+
         //Initialize view elements
         initView();
 
@@ -83,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             protected void onPostExecute(Void v) {
+                runFirstActivity();
                 recycleViewAdapter = new RecyclerViewAdapterMain(getListAlarm());
                 recyclerViewMain.setAdapter(recycleViewAdapter);
                 int counter = 1;
@@ -196,6 +194,16 @@ public class MainActivity extends AppCompatActivity {
     public void onCreateSelfie(View view) {
         Intent intent = new Intent(MainActivity.this, CreateSelfieActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     * Check list of alarms is empty and run StartActivity
+     */
+    private void runFirstActivity() {
+        if (getListAlarm().size() == 0) {
+            Intent intent = new Intent(MainActivity.this, StartActivity.class);
+            startActivity(intent);
+        }
     }
 
 }
