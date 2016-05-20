@@ -33,6 +33,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String COL_SOUND = "sound";
     private static final String COL_MELODY = "melody";
     private static final String COL_VIBRO = "vibro";
+    private static final String COL_TURN_ON = "turnon";
 
     //Table Public
     private static final String TBL_PUBLIC = "public";
@@ -77,7 +78,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + COL_REPEAT + " INTEGER NOT NULL DEFAULT 5, "
                 + COL_SOUND + " INTEGER NOT NULL DEFAULT 80, "
                 + COL_MELODY + " TEXT NOT NULL, "
-                + COL_VIBRO + "INTEGER NOT NULL DEFAULT 1)";
+                + COL_VIBRO + "INTEGER NOT NULL DEFAULT 1, "
+                + COL_TURN_ON + "INTEGER NOT NULL DEFAULT 1)";
 
         String CREATE_TBL_PUBLIC = "CREATE TABLE " + TBL_PUBLIC
                 + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
@@ -95,10 +97,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TBL_SOCIAL);
 
         //Add social content
-        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ", " + COL_SHORT_NAME +") VALUES ('" + FB_NAME + "', '" + FB +"')");
-        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ", " + COL_SHORT_NAME +") VALUES ('" + TW_NAME + "', '" + TW +"')");
-        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ", " + COL_SHORT_NAME +") VALUES ('" + VK_NAME + "', '" + VK +"')");
-        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ", " + COL_SHORT_NAME +") VALUES ('" + IS_NAME + "', '" + IS +"')");
+        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ", " + COL_SHORT_NAME + ") VALUES ('" + FB_NAME + "', '" + FB + "')");
+        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ", " + COL_SHORT_NAME + ") VALUES ('" + TW_NAME + "', '" + TW + "')");
+        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ", " + COL_SHORT_NAME + ") VALUES ('" + VK_NAME + "', '" + VK + "')");
+        db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ", " + COL_SHORT_NAME + ") VALUES ('" + IS_NAME + "', '" + IS + "')");
 
         Log.d(TAG, "onCreate finish");
     }
@@ -113,6 +115,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     /**
      * Add to table Alarms
+     *
      * @param alarm
      */
     public void addAlarm(Alarm alarm) {
@@ -127,12 +130,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_SOUND, alarm.getSound());
         contentValues.put(COL_MELODY, alarm.getMelody());
 //        contentValues.put(COL_VIBRO, alarm.isVibro()?1:0);
+        contentValues.put(COL_TURN_ON, alarm.isTurnOn() ? 1 : 0);
 
         //db.insert(TBL_ALARMS, null, contentValues);
         db.insertWithOnConflict(TBL_ALARMS, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
 
         db.close();
     }
+
     public void updateAlarm(Alarm alarm) {
         String[] args = {String.valueOf(alarm.getID())};
         SQLiteDatabase db = getWritableDatabase();
@@ -143,22 +148,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_SOUND, alarm.getSound());
         contentValues.put(COL_MELODY, alarm.getMelody());
 //        contentValues.put(COL_VIBRO, alarm.isVibro()?1:0);
+        contentValues.put(COL_TURN_ON, alarm.isTurnOn() ? 1 : 0);
 
         //db.insert(TBL_ALARMS, null, contentValues);
-        db.update(TBL_ALARMS, contentValues, COL_ID+"=?", args);
+        db.update(TBL_ALARMS, contentValues, COL_ID + "=?", args);
 
         db.close();
     }
 
     /**
      * Remove Alarm
+     *
      * @param alarm
      */
     public void removeAlarm(Alarm alarm) {
         SQLiteDatabase db = getWritableDatabase();
         try {
-            String[] args = { String.valueOf(alarm.getID()) };
-            db.delete(TBL_ALARMS, COL_ID + "=?", args );
+            String[] args = {String.valueOf(alarm.getID())};
+            db.delete(TBL_ALARMS, COL_ID + "=?", args);
         } finally {
             db.close();
         }
@@ -166,6 +173,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     /**
      * Add to table Public
+     *
      * @param owner
      * @param social
      * @the table
@@ -184,13 +192,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     /**
      * Return list of alarms
+     *
      * @return
      */
     public synchronized ArrayList<Alarm> getAlarmList() {
         ArrayList<Alarm> list = new ArrayList<Alarm>();
         //String strQuery = "SELECT * FROM " + TBL_ALARMS;
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.query(TBL_ALARMS,null,null,null,null,null,null);
+        Cursor cursor = db.query(TBL_ALARMS, null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 Alarm alarm = new Alarm();
@@ -200,6 +209,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 alarm.setSound(cursor.getInt(cursor.getColumnIndex(COL_SOUND)));
                 alarm.setMelody(cursor.getString(cursor.getColumnIndex(COL_MELODY)));
                 alarm.setVibro(true);
+                if (cursor.getInt(cursor.getColumnIndex(COL_TURN_ON)) == 1) {
+                    alarm.setTurnOn(true);
+                } else {
+                    alarm.setTurnOn(false);
+                }
                 list.add(alarm);
             } while (cursor.moveToNext());
         }
@@ -214,16 +228,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         String[] args = {String.valueOf(id)};
 
-        Cursor cursor = db.query(TBL_ALARMS,null,COL_ID+"=?",args,null,null,null);
+        Cursor cursor = db.query(TBL_ALARMS, null, COL_ID + "=?", args, null, null, null);
         if (cursor.moveToFirst()) {
-                alarm = new Alarm();
-                alarm.setID(cursor.getInt(cursor.getColumnIndex(COL_ID)));
-                alarm.setTime(cursor.getLong(cursor.getColumnIndex(COL_TIME)));
-                alarm.setRepeat(cursor.getInt(cursor.getColumnIndex(COL_REPEAT)));
-                alarm.setSound(cursor.getInt(cursor.getColumnIndex(COL_SOUND)));
-                alarm.setMelody(cursor.getString(cursor.getColumnIndex(COL_MELODY)));
-                alarm.setVibro(true);
+            alarm = new Alarm();
+            alarm.setID(cursor.getInt(cursor.getColumnIndex(COL_ID)));
+            alarm.setTime(cursor.getLong(cursor.getColumnIndex(COL_TIME)));
+            alarm.setRepeat(cursor.getInt(cursor.getColumnIndex(COL_REPEAT)));
+            alarm.setSound(cursor.getInt(cursor.getColumnIndex(COL_SOUND)));
+            alarm.setMelody(cursor.getString(cursor.getColumnIndex(COL_MELODY)));
+            alarm.setVibro(true);
+            if (cursor.getInt(cursor.getColumnIndex(COL_TURN_ON)) == 1) {
+                alarm.setTurnOn(true);
+            } else {
+                alarm.setTurnOn(false);
+            }
         }
+
         db.close();
         return alarm;
     }
@@ -250,15 +270,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
-    public synchronized void setSocial(ArrayList<Social> list){
+    public synchronized void setSocial(ArrayList<Social> list) {
         SQLiteDatabase db = getReadableDatabase();
-        for(Social social : list){
+        for (Social social : list) {
             ContentValues val = new ContentValues();
-            if(social.getName() != null) val.put(COL_NAME, social.getName());
-            if(social.getShortName() != null) val.put(COL_SHORT_NAME, social.getShortName());
-            if(social.getLogin() != null) val.put(COL_LOGIN, social.getLogin());
-            if(social.getPassword() != null) val.put(COL_PASSWORD, social.getPassword());
-            if(val.size() > 0) {
+            if (social.getName() != null) val.put(COL_NAME, social.getName());
+            if (social.getShortName() != null) val.put(COL_SHORT_NAME, social.getShortName());
+            if (social.getLogin() != null) val.put(COL_LOGIN, social.getLogin());
+            if (social.getPassword() != null) val.put(COL_PASSWORD, social.getPassword());
+            if (val.size() > 0) {
                 String[] args = {String.valueOf(social.getID())};
                 db.update(TBL_SOCIAL, val, "ID=?", args);
             }

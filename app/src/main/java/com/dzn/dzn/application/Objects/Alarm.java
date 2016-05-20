@@ -1,6 +1,5 @@
 package com.dzn.dzn.application.Objects;
 
-import android.util.Log;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -18,6 +17,7 @@ public class Alarm implements Serializable {
     private String melody;
     private boolean vibro;
     private boolean visible;
+    private boolean turnOn;
 
     public Alarm () {
         this.visible = true;
@@ -66,6 +66,10 @@ public class Alarm implements Serializable {
         return visible;
     }
 
+    public boolean isTurnOn() {
+        return turnOn;
+    }
+
     public void setID(int ID) {
         this.ID = ID;
     }
@@ -102,6 +106,10 @@ public class Alarm implements Serializable {
         this.visible = visible;
     }
 
+    public void setTurnOn(boolean turnOn) {
+        this.turnOn = turnOn;
+    }
+
     /**
      * Set default settings
      */
@@ -110,5 +118,6 @@ public class Alarm implements Serializable {
         this.setRepeat(5);
         this.setVibro(true);
         this.setSound(80);
+        this.setTurnOn(true);
     }
 }
