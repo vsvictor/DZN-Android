@@ -8,17 +8,17 @@
 
     <!-- Main activity -->
     <string name="app_colon">:</string>
-    <string name="main_activity_text">У вас установлены селфи будильники on:</string>
+    <string name="main_activity_text">You have installed alarms on selfie:</string>
     <string name="main_activity_button_new">NEW</string>
 
     <!-- New_Edit activity -->
-    <string name="new_edit_activity_tune">Настроить</string>
+    <string name="new_edit_activity_tune">Tune</string>
     <string name="new_edit_activity_back">CANCEL</string>
-    <string name="new_edit_activity_setting">Настройка будильника</string>
+    <string name="new_edit_activity_setting">Setting alarm</string>
     <string name="new_edit_activity_repeat">Repeat</string>
-    <string name="new_edit_activity_music">Музыка:</string>
-    <string name="new_edit_activity_interval">Интервалы:</string>
-    <string name="new_edit_activity_social_network">Соцсети:</string>
+    <string name="new_edit_activity_music">Music:</string>
+    <string name="new_edit_activity_interval">Intervals:</string>
+    <string name="new_edit_activity_social_network">Social network:</string>
 
     <!-- Short Days of week -->
     <string name="short_sunday">Su</string>
@@ -30,42 +30,42 @@
     <string name="short_saturday">Sa</string>
 
     <string-array name="new_edit_activity_spinner_repeat">
-        <item>Каждый день</item>
-        <item>Рабочие дни</item>
-        <item>Выходные дни</item>
-        <item>Другое...</item>
+        <item>Everyday</item>
+        <item>Working days</item>
+        <item>Weekend</item>
+        <item>Other...</item>
     </string-array>
 
     <string-array name="new_edit_activity_spinner_settings">
-        <item>общие настройки</item>
+        <item>general settings</item>
     </string-array>
 
     <!-- Settings activity -->
     <string name="settings_activity_settings">Settings</string>
-    <string name="settings_activity_language_ru">Русский</string>
+    <string name="settings_activity_language_ru">Russian</string>
     <string name="settings_activity_language_en">English</string>
-    <string name="settings_activity_sound_of_alarms">Звук будильника</string>
+    <string name="settings_activity_sound_of_alarms">Sound alarm</string>
     <string name="settings_activity_sound">Sound</string>
     <string name="settings_activity_wake_up">Wake Up</string>
-    <string name="settings_activity_section_alarm">Настройка будильника</string>
-    <string name="settings_activity_interval_wake_up">Интервал пробуждения</string>
-    <string name="settings_activity_interval_repeat">Интервал повтора</string>
-    <string name="settings_activity_vibro">Вибросигнал</string>
-    <string name="settings_activity_section_social_network">Настройка соцсетей</string>
-    <string name="settings_activity_upload_photo">Включить публикацию фотографий</string>
-    <string name="settings_activity_minutes">мин</string>
+    <string name="settings_activity_section_alarm">Setting alarm</string>
+    <string name="settings_activity_interval_wake_up">Interval awakening</string>
+    <string name="settings_activity_interval_repeat">Retry interval</string>
+    <string name="settings_activity_vibro">Vibration</string>
+    <string name="settings_activity_section_social_network">Settings social networks</string>
+    <string name="settings_activity_upload_photo">Turn on photos pf the publication</string>
+    <string name="settings_activity_minutes">min</string>
 
     <!-- Alarms activity -->
-    <string name="alarms_activity_name">Будильники</string>
-    <string name="alarms_activity_add">добавить</string>
+    <string name="alarms_activity_name">Alarms</string>
+    <string name="alarms_activity_add">add</string>
 
     <!-- Start activity -->
-    <string name="start_activity_set">Установите свой первый селфи-будильник</string>
-    <string name="start_activity">старт</string>
+    <string name="start_activity_set">Set your first selfie alarm</string>
+    <string name="start_activity">start</string>
 
     <!-- Create Selfie activity -->
-    <string name="create_selfie_activity_create">Сделай селфи, чтобы выключить будильник!</string>
-    <string name="good_morning">ДОБРОЕ УТРО!</string>
-    <string name="create_selfie_activity_spread">публикую селфи...</string>
+    <string name="create_selfie_activity_create">Take a selfie to turn off the alarm clock!</string>
+    <string name="good_morning">GOOD MORNING!</string>
+    <string name="create_selfie_activity_spread">publish selfie...</string>
 
 </resources>
