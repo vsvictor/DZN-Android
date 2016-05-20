@@ -44,14 +44,16 @@ public class EditListAlarmsActivity extends AppCompatActivity {
         super.onResume();
         new AsyncTask<Void, Void, Void>(){
             private ArrayList<Alarm> list = new ArrayList<Alarm>();
+
             @Override
             protected Void doInBackground(Void... params) {
                 list = getListAlarm();
                 return null;
             }
+
             @Override
             protected void onPostExecute(Void v) {
-                recyclerViewAdapter = new RecyclerViewAdapterOnOff(getListAlarm());
+                recyclerViewAdapter = new RecyclerViewAdapterOnOff(getListAlarm(), dataBaseHelper);
                 recyclerViewAlarms.setAdapter(recyclerViewAdapter);
             }
         }.execute();

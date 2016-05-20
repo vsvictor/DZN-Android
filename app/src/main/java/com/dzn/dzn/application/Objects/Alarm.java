@@ -98,10 +98,6 @@ public class Alarm implements Serializable {
         this.vibro = vibro;
     }
 
-    public void setVibro(int vibro) {
-        this.vibro = (vibro == 1) ? true : false;
-    }
-
     public void setVisible(boolean visible) {
         this.visible = visible;
     }

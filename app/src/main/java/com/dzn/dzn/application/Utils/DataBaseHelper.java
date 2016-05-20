@@ -12,6 +12,7 @@ import com.dzn.dzn.application.Objects.AlarmTest;
 import com.dzn.dzn.application.Objects.Social;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -78,8 +79,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + COL_REPEAT + " INTEGER NOT NULL DEFAULT 5, "
                 + COL_SOUND + " INTEGER NOT NULL DEFAULT 80, "
                 + COL_MELODY + " TEXT NOT NULL, "
-                + COL_VIBRO + "INTEGER NOT NULL DEFAULT 1, "
-                + COL_TURN_ON + "INTEGER NOT NULL DEFAULT 1)";
+                + COL_VIBRO + " INTEGER NOT NULL DEFAULT 1, "
+                + COL_TURN_ON + " INTEGER NOT NULL DEFAULT 1)";
 
         String CREATE_TBL_PUBLIC = "CREATE TABLE " + TBL_PUBLIC
                 + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
@@ -92,6 +93,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + COL_SHORT_NAME + " TEXT NOT NULL, "
                 + COL_LOGIN + " TEXT, "
                 + COL_PASSWORD + " TEXT)";
+
         db.execSQL(CREATE_TBL_ALARMS);
         db.execSQL(CREATE_TBL_PUBLIC);
         db.execSQL(CREATE_TBL_SOCIAL);
@@ -129,7 +131,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_REPEAT, alarm.getRepeat());
         contentValues.put(COL_SOUND, alarm.getSound());
         contentValues.put(COL_MELODY, alarm.getMelody());
-//        contentValues.put(COL_VIBRO, alarm.isVibro()?1:0);
+
+        contentValues.put(COL_VIBRO, alarm.isVibro() ? 1 : 0);
         contentValues.put(COL_TURN_ON, alarm.isTurnOn() ? 1 : 0);
 
         //db.insert(TBL_ALARMS, null, contentValues);
@@ -147,7 +150,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_REPEAT, alarm.getRepeat());
         contentValues.put(COL_SOUND, alarm.getSound());
         contentValues.put(COL_MELODY, alarm.getMelody());
-//        contentValues.put(COL_VIBRO, alarm.isVibro()?1:0);
+        contentValues.put(COL_VIBRO, alarm.isVibro() ? 1 : 0);
         contentValues.put(COL_TURN_ON, alarm.isTurnOn() ? 1 : 0);
 
         //db.insert(TBL_ALARMS, null, contentValues);
@@ -222,9 +225,27 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    /**
+     * Return list of alarms where filter set to turnOn property
+     * @param turnOn
+     * @return
+     */
+    public synchronized ArrayList<Alarm> getAlarmList(boolean turnOn) {
+        ArrayList<Alarm> list = this.getAlarmList();
+
+        Iterator iterator = list.iterator();
+        while (iterator.hasNext()) {
+            Alarm alarm = (Alarm) iterator.next();
+            if (!alarm.isTurnOn()) {
+                iterator.remove();
+            }
+        }
+
+        return list;
+    }
+
     public synchronized Alarm getAlarm(int id) {
         Alarm alarm = null;
-        //String strQuery = "SELECT * FROM " + TBL_ALARMS;
         SQLiteDatabase db = getReadableDatabase();
         String[] args = {String.valueOf(id)};
 

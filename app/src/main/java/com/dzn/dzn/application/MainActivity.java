@@ -29,6 +29,7 @@ import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -185,7 +186,8 @@ public class MainActivity extends AppCompatActivity {
             dataBaseHelper = DataBaseHelper.getInstance(this);
         }
 
-        ArrayList<Alarm> ar = dataBaseHelper.getAlarmList();
+        //ArrayList<Alarm> ar = dataBaseHelper.getAlarmList();
+        ArrayList<Alarm> ar = dataBaseHelper.getAlarmList(true);
         if(ar == null) return new ArrayList<Alarm>();
 
         return ar;

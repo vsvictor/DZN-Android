@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.R;
+import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.DateTimeOperator;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 
@@ -22,10 +24,16 @@ import java.util.ArrayList;
 public class RecyclerViewAdapterOnOff extends RecyclerView.Adapter<RecyclerViewAdapterOnOff.ViewHolder> {
     private static final String TAG = "RVAdapterOnOff";
 
+    private DataBaseHelper dataBaseHelper;
     private ArrayList<?> list;
 
     public RecyclerViewAdapterOnOff(ArrayList<Alarm> list) {
         this.list = list;
+    }
+
+    public RecyclerViewAdapterOnOff(ArrayList<Alarm> list, DataBaseHelper dataBaseHelper) {
+        this.list = list;
+        this.dataBaseHelper = dataBaseHelper;
     }
 
     @Override
@@ -38,10 +46,19 @@ public class RecyclerViewAdapterOnOff extends RecyclerView.Adapter<RecyclerViewA
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Alarm alarm = (Alarm) list.get(position);
+        final Alarm alarm = (Alarm) list.get(position);
         String s = DateTimeOperator.dateToTimeString(alarm.getDate());
         holder.tvAlarmTime.setText(s);
         Log.d(TAG, "Date: " + s);
+
+        holder.toggleAlarmOnOff.setChecked(alarm.isTurnOn());
+        holder.toggleAlarmOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                alarm.setTurnOn(isChecked);
+                dataBaseHelper.addAlarm(alarm);
+            }
+        });
     }
 
     @Override
