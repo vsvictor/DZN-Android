@@ -30,6 +30,7 @@
     <string name="short_saturday">Sa</string>
 
     <string-array name="new_edit_activity_spinner_repeat">
+        <item>Onсу</item>
         <item>Everyday</item>
         <item>Working days</item>
         <item>Weekend</item>

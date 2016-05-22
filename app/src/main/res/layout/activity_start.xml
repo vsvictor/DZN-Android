@@ -52,21 +52,20 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1">
 
-            <NumberPicker
-                android:id="@+id/npStartHours"
+            <com.dzn.dzn.application.Widget.WheelView
+                android:id="@+id/npHours"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <NumberPicker
-                android:id="@+id/npStartMinutes"
+                android:layout_height="match_parent"/>
+            <com.dzn.dzn.application.Widget.WheelView
+                android:id="@+id/npMinutes"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/npStartHours" />
+                android:layout_toRightOf="@id/npHours" />
 
         </RelativeLayout>
 

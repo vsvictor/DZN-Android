@@ -2,9 +2,11 @@ package com.dzn.dzn.application.Activities;
 
 
 import android.app.AlarmManager;
+import android.app.KeyguardManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -12,6 +14,7 @@ import android.hardware.Camera;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.dzn.dzn.application.MainActivity;
 import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
@@ -67,19 +71,27 @@ public class CreateSelfieActivity extends AppCompatActivity {
     private DataBaseHelper dataBaseHelper;
     private AlarmManager alarmManager;
 
-    private boolean created;
+    private boolean created = false;
+    private PowerManager.WakeLock mWakeLock;
+    private final static String CLASS_LABEL = "CreateSelfieActivity";
+
+    private static int counter = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
 
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        mWakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, CLASS_LABEL);
+        mWakeLock.acquire();
+
+        KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+        final KeyguardManager.KeyguardLock kl = km .newKeyguardLock(CLASS_LABEL);
+        kl.disableKeyguard();
+
         //Initialize Facebook
         FacebookSdk.sdkInitialize(getApplicationContext());
-
-
-
-
 
         created = false;
         setContentView(R.layout.activity_create_selfie);
@@ -112,7 +124,6 @@ public class CreateSelfieActivity extends AppCompatActivity {
                 Log.d(TAG, ex.getMessage());
             }
         }
-        created = false;
     }
 
     @Override
@@ -128,7 +139,11 @@ public class CreateSelfieActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (created) super.onBackPressed();
+        if (created) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override
@@ -148,13 +163,24 @@ public class CreateSelfieActivity extends AppCompatActivity {
 
         ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
         ibFlash = (ImageButton) findViewById(R.id.ibFlash);
+        ibFlash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)){
+                    Camera.Parameters p = camera.getParameters();
+                    p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                    camera.setParameters(p);
+                    camera.startPreview();
+                }
+            }
+        });
         ibSpread = (ImageButton) findViewById(R.id.ibSpread);
         ibStop = (ImageButton) findViewById(R.id.ibStop);
         llSpreadSelfie = (LinearLayout) findViewById(R.id.llSpreadSelfie);
 
         tvSelfieSpread = (TextView) findViewById(R.id.tvSelfieSpread);
         PFHandbookProTypeFaces.THIN.apply(tvSelfieSpread);
-    }
+        }
 
     //Initialize SurfaceView & SurfaceHolder
     private void initSurface() {
@@ -171,7 +197,7 @@ public class CreateSelfieActivity extends AppCompatActivity {
                     camera.setDisplayOrientation(90);
                     camera.startPreview();
                 } catch (Exception ex) {
-                    Log.d(TAG, ex.getMessage());
+                    //Log.d(TAG, ex.getMessage());
                 }
             }
 
@@ -211,6 +237,7 @@ public class CreateSelfieActivity extends AppCompatActivity {
      * @param view
      */
     public void onStopAlarm(View view) {
+        created = true;
         ibFlash.setVisibility(View.INVISIBLE);
         ibSpread.setVisibility(View.INVISIBLE);
         surfaceView.setVisibility(View.GONE);
@@ -244,7 +271,7 @@ public class CreateSelfieActivity extends AppCompatActivity {
                 loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        sharePhotoToFacebook(btm);
+                        //sharePhotoToFacebook(btm);
                     }
 
                     @Override
@@ -262,8 +289,6 @@ public class CreateSelfieActivity extends AppCompatActivity {
             }
         });
 
-
-
         int counter = getIntent().getExtras().getInt("counter");
         long time = getIntent().getExtras().getLong("time");
         Intent intent = new Intent(this, CreateSelfieActivity.class);
@@ -277,7 +302,8 @@ public class CreateSelfieActivity extends AppCompatActivity {
             Date today = Calendar.getInstance().getTime();
             today.setHours(d.getHours());
             today.setMinutes(d.getMinutes());
-            if (today.getTime() > System.currentTimeMillis()) {
+            today.setSeconds(0);
+            if ((today.getTime() > System.currentTimeMillis()) && alarm.isTurnOn()) {
                 Intent intentNew = new Intent(this, CreateSelfieActivity.class);
                 intentNew.putExtra("counter", counter);
                 intentNew.putExtra("time", today.getTime());
@@ -286,7 +312,6 @@ public class CreateSelfieActivity extends AppCompatActivity {
                 counter++;
             }
         }
-        created = true;
     }
 
     private ArrayList<Alarm> getListAlarm() {

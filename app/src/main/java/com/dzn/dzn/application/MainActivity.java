@@ -81,8 +81,11 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             protected void onPostExecute(Void v) {
-                runFirstActivity();
-                recycleViewAdapter = new RecyclerViewAdapterMain(getListAlarm());
+                clearAllAlarms();
+                if(list.isEmpty()){
+                    runFirstActivity();
+                }
+                recycleViewAdapter = new RecyclerViewAdapterMain(list);
                 recyclerViewMain.setAdapter(recycleViewAdapter);
                 int counter = 1;
                 for(Alarm alarm : list){
@@ -90,7 +93,8 @@ public class MainActivity extends AppCompatActivity {
                     Date today = Calendar.getInstance().getTime();
                     today.setHours(d.getHours());
                     today.setMinutes(d.getMinutes());
-                    if(today.getTime()>System.currentTimeMillis()) {
+                    today.setSeconds(0);
+                    if((today.getTime()>System.currentTimeMillis())&& alarm.isTurnOn()) {
                         Intent intent = new Intent(MainActivity.this, CreateSelfieActivity.class);
                         intent.putExtra("counter", counter);
                         intent.putExtra("time", today.getTime());
@@ -101,6 +105,26 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }.execute();
+    }
+
+    private void clearAllAlarms() {
+        ArrayList<Alarm> allList = dataBaseHelper.getAlarmList();
+        int counter = 1;
+        for(Alarm alarm : allList){
+            Date d = alarm.getDate();
+            Date today = Calendar.getInstance().getTime();
+            today.setHours(d.getHours());
+            today.setMinutes(d.getMinutes());
+            today.setSeconds(0);
+//            if((today.getTime()>System.currentTimeMillis())&& alarm.isTurnOn()) {
+                Intent intent = new Intent(MainActivity.this, CreateSelfieActivity.class);
+                intent.putExtra("counter", counter);
+                intent.putExtra("time", today.getTime());
+                PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, counter, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                alarmManager.cancel(pendingIntent);
+                counter++;
+///            }
+        }
     }
 
     /**

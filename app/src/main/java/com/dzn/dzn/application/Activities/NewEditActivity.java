@@ -12,14 +12,19 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.dzn.dzn.application.Adapters.RecyclerViewAdapterDrum;
 import com.dzn.dzn.application.Adapters.SpinnerRepeatAdapter;
 import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.Objects.AlarmTest;
+import com.dzn.dzn.application.Objects.Settings;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
+import com.dzn.dzn.application.Widget.WheelRecycle;
+import com.dzn.dzn.application.Widget.WheelView;
+import com.dzn.dzn.application.Widget.adapters.NumericWheelAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,8 +63,8 @@ public class NewEditActivity extends AppCompatActivity {
     private TextView tvNewEditSocialNetwork;
     private Spinner spinnerNewEditSocialNetwork;
 
-    private NumberPicker npHours;
-    private NumberPicker npMinutes;
+    private WheelView npHours;
+    private WheelView npMinutes;
 
     private int iHours;
     private int iMinutes;
@@ -67,6 +72,17 @@ public class NewEditActivity extends AppCompatActivity {
     private Alarm edAlarm;
     private int id = -1;
     private DataBaseHelper dataBaseHelper;
+    private NumericWheelAdapter hAdapter;
+    private NumericWheelAdapter mAdapter;
+    private ToggleButton day1;
+    private ToggleButton day2;
+    private ToggleButton day3;
+    private ToggleButton day4;
+    private ToggleButton day5;
+    private ToggleButton day6;
+    private ToggleButton day7;
+
+    private Settings settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +108,8 @@ public class NewEditActivity extends AppCompatActivity {
             iHours = d.getHours();
             iMinutes = d.getMinutes();
         }
-
+        settings.load();
+        settings.
         initView();
     }
 
@@ -133,14 +150,21 @@ public class NewEditActivity extends AppCompatActivity {
      * Initialize section drum
      */
     private void initSectionDrum() {
-        npHours = (NumberPicker) findViewById(R.id.npHours);
-        npHours.setMinValue(0);
-        npHours.setMaxValue(23);
-        npMinutes = (NumberPicker) findViewById(R.id.npMinutes);
-        npMinutes.setMaxValue(0);
-        npMinutes.setMaxValue(59);
-        npHours.setValue(iHours);
-        npMinutes.setValue(iMinutes);
+        hAdapter = new NumericWheelAdapter(this, 0,23, "%02d");
+        hAdapter.setItemResource(R.layout.wheel_item_time);
+        hAdapter.setItemTextResource(R.id.tvNumber);
+        npHours = (WheelView) findViewById(R.id.npHours);
+        npHours.setViewAdapter(hAdapter);
+        npHours.setCyclic(true);
+        npHours.setVisibleItems(5);
+
+        mAdapter = new NumericWheelAdapter(this, 0,59, "%02d");
+        mAdapter.setItemResource(R.layout.wheel_item_time);
+        mAdapter.setItemTextResource(R.id.tvNumber);
+        npMinutes = (WheelView) findViewById(R.id.npMinutes);
+        npMinutes.setViewAdapter(mAdapter);
+        npMinutes.setCyclic(true);
+        npMinutes.setVisibleItems(5);
     }
 
 
@@ -158,8 +182,33 @@ public class NewEditActivity extends AppCompatActivity {
                 Arrays.asList(getResources().getStringArray(R.array.new_edit_activity_spinner_repeat))
         );
         spinnerRepeatAdapter.setDropDownViewResource(R.layout.new_edit_spinner_drop_repeat);
-
         spinnerNewEditRepeat.setAdapter(spinnerRepeatAdapter);
+
+        day1 = (ToggleButton) findViewById(R.id.toggleNewEditSunday);
+        day2 = (ToggleButton) findViewById(R.id.toggleNewEditSunday);
+        day3 = (ToggleButton) findViewById(R.id.toggleNewEditSunday);
+        day4 = (ToggleButton) findViewById(R.id.toggleNewEditSunday);
+        day5 = (ToggleButton) findViewById(R.id.toggleNewEditSunday);
+        day6 = (ToggleButton) findViewById(R.id.toggleNewEditSunday);
+        day7 = (ToggleButton) findViewById(R.id.toggleNewEditSunday);
+
+
+        if(id > 0) {
+            day1.setChecked(edAlarm.isDayOn(0));
+            day2.setChecked(edAlarm.isDayOn(1));
+            day3.setChecked(edAlarm.isDayOn(2));
+            day4.setChecked(edAlarm.isDayOn(3));
+            day5.setChecked(edAlarm.isDayOn(4));
+            day6.setChecked(edAlarm.isDayOn(5));
+            day7.setChecked(edAlarm.isDayOn(6));
+        }
+        if(edAlarm.isOne())spinnerNewEditRepeat.setSelection(0);
+        else if(edAlarm.isAllDays()) spinnerNewEditRepeat.setSelection(1);
+        else if(edAlarm.isWokedDays()) spinnerNewEditRepeat.setSelection(2);
+        else if(edAlarm.isWeekEnd()) spinnerNewEditRepeat.setSelection(3);
+        else spinnerNewEditRepeat.setSelection(4);
+
+
 
         linearNewEditWeek = (LinearLayout) findViewById(R.id.linearNewEditWeek);
         spinnerNewEditRepeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -237,19 +286,35 @@ public class NewEditActivity extends AppCompatActivity {
         if(id == -1) {
             Alarm al = new Alarm();
             Date d = new Date();
-            d.setHours(npHours.getValue());
-            d.setMinutes(npMinutes.getValue());
+            d.setHours(npHours.getCurrentItem());
+            d.setMinutes(npMinutes.getCurrentItem());
             //d.UTC(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, npHours.getValue(), npMinutes.getValue(),0);
             al.setTime(d);
             al.setMelody("aaa");
             al.setRepeat(5);
             al.setVibro(true);
             al.setSound(80);
+            al.setTurnOn(true);
+            al.setDay(0,day1.isChecked());
+            al.setDay(1,day2.isChecked());
+            al.setDay(2,day3.isChecked());
+            al.setDay(3,day4.isChecked());
+            al.setDay(4,day5.isChecked());
+            al.setDay(5,day6.isChecked());
+            al.setDay(6,day7.isChecked());
+
             dataBaseHelper.addAlarm(al);
         }
         else{
-            edAlarm.getDate().setHours(npHours.getValue());
-            edAlarm.getDate().setMinutes(npMinutes.getValue());
+            edAlarm.getDate().setHours(npHours.getCurrentItem());
+            edAlarm.getDate().setMinutes(npMinutes.getCurrentItem());
+            edAlarm.setDay(0,day1.isChecked());
+            edAlarm.setDay(1,day2.isChecked());
+            edAlarm.setDay(2,day3.isChecked());
+            edAlarm.setDay(3,day4.isChecked());
+            edAlarm.setDay(4,day5.isChecked());
+            edAlarm.setDay(5,day6.isChecked());
+            edAlarm.setDay(6,day7.isChecked());
             dataBaseHelper.updateAlarm(edAlarm);
         }
         finish();

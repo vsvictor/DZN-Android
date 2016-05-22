@@ -48,6 +48,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String COL_LOGIN = "login";
     private static final String COL_PASSWORD = "password";
 
+    private static final String TBL_DAYS = "days";
+    private static final String COL_ALARM_ID = "alarm_id";
+    private static final String COL_1 = "day1";
+    private static final String COL_2 = "day2";
+    private static final String COL_3 = "day3";
+    private static final String COL_4 = "day4";
+    private static final String COL_5 = "day5";
+    private static final String COL_6 = "day6";
+    private static final String COL_7 = "day7";
+
     //String Social Network name
     private static final String FB = "FB";
     private static final String VK = "VK";
@@ -94,9 +104,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + COL_LOGIN + " TEXT, "
                 + COL_PASSWORD + " TEXT)";
 
+        String CREATE_TBL_DAYS = "CREATE TABLE " + TBL_DAYS
+                + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+                + COL_ALARM_ID + " INTEGER NOT NULL, "
+                + COL_1 + " INTEGER NOT NULL, "
+                + COL_2 + " INTEGER NOT NULL, "
+                + COL_3 + " INTEGER NOT NULL, "
+                + COL_4 + " INTEGER NOT NULL, "
+                + COL_5 + " INTEGER NOT NULL, "
+                + COL_6 + " INTEGER NOT NULL, "
+                + COL_7 + " INTEGER NOT NULL);";
+
         db.execSQL(CREATE_TBL_ALARMS);
         db.execSQL(CREATE_TBL_PUBLIC);
         db.execSQL(CREATE_TBL_SOCIAL);
+        db.execSQL(CREATE_TBL_DAYS);
 
         //Add social content
         db.execSQL("INSERT INTO " + TBL_SOCIAL + "(" + COL_NAME + ", " + COL_SHORT_NAME + ") VALUES ('" + FB_NAME + "', '" + FB + "')");
@@ -138,6 +160,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         //db.insert(TBL_ALARMS, null, contentValues);
         db.insertWithOnConflict(TBL_ALARMS, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
 
+        ContentValues days = new ContentValues();
+        days.put(COL_ALARM_ID, alarm.getID());
+        days.put(COL_1, alarm.isDayOn(0)?1:0);
+        days.put(COL_2, alarm.isDayOn(1)?1:0);
+        days.put(COL_3, alarm.isDayOn(2)?1:0);
+        days.put(COL_4, alarm.isDayOn(3)?1:0);
+        days.put(COL_5, alarm.isDayOn(4)?1:0);
+        days.put(COL_6, alarm.isDayOn(5)?1:0);
+        days.put(COL_7, alarm.isDayOn(6)?1:0);
+        db.insertWithOnConflict(TBL_DAYS, null, days, SQLiteDatabase.CONFLICT_REPLACE);
+
         db.close();
     }
 
@@ -156,6 +189,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         //db.insert(TBL_ALARMS, null, contentValues);
         db.update(TBL_ALARMS, contentValues, COL_ID + "=?", args);
 
+        ContentValues days = new ContentValues();
+        days.put(COL_ALARM_ID, alarm.getID());
+        days.put(COL_1, alarm.isDayOn(0)?1:0);
+        days.put(COL_2, alarm.isDayOn(1)?1:0);
+        days.put(COL_3, alarm.isDayOn(2)?1:0);
+        days.put(COL_4, alarm.isDayOn(3)?1:0);
+        days.put(COL_5, alarm.isDayOn(4)?1:0);
+        days.put(COL_6, alarm.isDayOn(5)?1:0);
+        days.put(COL_7, alarm.isDayOn(6)?1:0);
+        db.update(TBL_DAYS, days, COL_ALARM_ID + "=?", args);
+
         db.close();
     }
 
@@ -169,6 +213,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         try {
             String[] args = {String.valueOf(alarm.getID())};
             db.delete(TBL_ALARMS, COL_ID + "=?", args);
+            db.delete(TBL_DAYS, COL_ALARM_ID + "=?", args);
         } finally {
             db.close();
         }
@@ -217,6 +262,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 } else {
                     alarm.setTurnOn(false);
                 }
+                String[] args = {String.valueOf(alarm.getID())};
+                Cursor dd = db.query(TBL_DAYS,null,COL_ALARM_ID+"=?",args,null,null,null);
+                if(dd.moveToFirst()){
+                    alarm.setDay(0,dd.getInt(dd.getColumnIndex(COL_1))==1);
+                    alarm.setDay(1,dd.getInt(dd.getColumnIndex(COL_2))==1);
+                    alarm.setDay(2,dd.getInt(dd.getColumnIndex(COL_3))==1);
+                    alarm.setDay(3,dd.getInt(dd.getColumnIndex(COL_4))==1);
+                    alarm.setDay(4,dd.getInt(dd.getColumnIndex(COL_5))==1);
+                    alarm.setDay(5,dd.getInt(dd.getColumnIndex(COL_6))==1);
+                    alarm.setDay(6,dd.getInt(dd.getColumnIndex(COL_7))==1);
+                }
+
                 list.add(alarm);
             } while (cursor.moveToNext());
         }
@@ -262,6 +319,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 alarm.setTurnOn(true);
             } else {
                 alarm.setTurnOn(false);
+            }
+            Cursor dd = db.query(TBL_DAYS,null,COL_ALARM_ID+"=?",args,null,null,null);
+            if(dd.moveToFirst()){
+                alarm.setDay(0,dd.getInt(dd.getColumnIndex(COL_1))==1);
+                alarm.setDay(1,dd.getInt(dd.getColumnIndex(COL_2))==1);
+                alarm.setDay(2,dd.getInt(dd.getColumnIndex(COL_3))==1);
+                alarm.setDay(3,dd.getInt(dd.getColumnIndex(COL_4))==1);
+                alarm.setDay(4,dd.getInt(dd.getColumnIndex(COL_5))==1);
+                alarm.setDay(5,dd.getInt(dd.getColumnIndex(COL_6))==1);
+                alarm.setDay(6,dd.getInt(dd.getColumnIndex(COL_7))==1);
             }
         }
 

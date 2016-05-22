@@ -1,12 +1,21 @@
 package com.dzn.dzn.application.Activities;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.dzn.dzn.application.MainActivity;
 import com.dzn.dzn.application.Objects.Alarm;
@@ -14,16 +23,23 @@ import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.DateTimeOperator;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
+import com.dzn.dzn.application.Widget.OnWheelChangedListener;
+import com.dzn.dzn.application.Widget.OnWheelScrollListener;
+import com.dzn.dzn.application.Widget.WheelView;
+import com.dzn.dzn.application.Widget.adapters.NumericWheelAdapter;
 
+import java.lang.reflect.Field;
+import java.sql.Time;
 import java.util.Calendar;
 
 public class StartActivity extends AppCompatActivity {
     private static final String TAG = "StartActivity";
 
     private TextView tvStartSet;
-    private NumberPicker npStartHours;
-    private NumberPicker npStartMinutes;
-
+    private WheelView whHours;
+    private WheelView whMinutes;
+    private NumericWheelAdapter hAdapter;
+    private NumericWheelAdapter mAdapter;
     private DataBaseHelper dataBaseHelper;
 
     private int iHour;
@@ -45,27 +61,21 @@ public class StartActivity extends AppCompatActivity {
     private void initView() {
         tvStartSet = (TextView) findViewById(R.id.tvStartSet);
         PFHandbookProTypeFaces.EXTRA_THIN.apply(tvStartSet);
-
-
-        npStartHours = (NumberPicker) findViewById(R.id.npStartHours);
-        npStartHours.setMinValue(0);
-        npStartHours.setMaxValue(23);
-
-        npStartMinutes = (NumberPicker) findViewById(R.id.npStartMinutes);
-        npStartMinutes.setMinValue(0);
-        npStartMinutes.setMaxValue(59);
-
-        Calendar calendar = Calendar.getInstance();
-        //iHour = calendar.get(Calendar.HOUR_OF_DAY);
-        //iMinute = calendar.get(Calendar.MINUTE);
-        //Log.d(TAG, "Time: " + iHour + ":" + iMinute);
-
-        //Log.d(TAG, "Time: " + DateTimeOperator.dateToTimeString(calendar.getTime()));
-
-        npStartHours.setValue(calendar.get(Calendar.HOUR_OF_DAY));
-        npStartMinutes.setValue(calendar.get(Calendar.MINUTE));
+        whHours = (WheelView) findViewById(R.id.npHours);
+        hAdapter = new NumericWheelAdapter(this, 0,23, "%02d");
+        hAdapter.setItemResource(R.layout.wheel_item_time);
+        hAdapter.setItemTextResource(R.id.tvNumber);
+        whHours.setViewAdapter(hAdapter);
+        whHours.setCyclic(true);
+        whHours.setVisibleItems(5);
+        whMinutes = (WheelView) findViewById(R.id.npMinutes);
+        mAdapter = new NumericWheelAdapter(this, 0,59, "%02d");
+        mAdapter.setItemResource(R.layout.wheel_item_time);
+        mAdapter.setItemTextResource(R.id.tvNumber);
+        whMinutes.setViewAdapter(mAdapter);
+        whMinutes.setCyclic(true);
+        whMinutes.setVisibleItems(5);
     }
-
     /**
      * Save Alarm and start Main Activity
      * @param view
@@ -73,8 +83,8 @@ public class StartActivity extends AppCompatActivity {
     public void onStart(View view) {
         Alarm alarm = new Alarm();
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, npStartHours.getValue());
-        calendar.set(Calendar.MINUTE, npStartMinutes.getValue());
+        calendar.set(Calendar.HOUR_OF_DAY, whHours.getCurrentItem());
+        calendar.set(Calendar.MINUTE, whMinutes.getCurrentItem());
         alarm.setTime(calendar.getTime());
         alarm.setDefault();
 

@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dzn.dzn.application">
 
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-feature android:name="android.hardware.camera.front" android:required="true" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/dzn_dzn_icon"
@@ -55,20 +63,19 @@
 
         <!-- Start activity -->
         <activity
+            android:theme="@style/SampleTheme"
             android:name=".Activities.StartActivity"
             android:screenOrientation="portrait" />
 
         <!-- Create Selfie Activity -->
         <activity android:name=".Activities.CreateSelfieActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppAlarmsTheme" />
+            android:theme="@style/AppAlarmsTheme" /><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
     
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <uses-feature android:name="android.hardware.camera2" android:required="true" />
 
 </manifest>

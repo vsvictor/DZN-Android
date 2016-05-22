@@ -18,6 +18,7 @@ public class Alarm implements Serializable {
     private boolean vibro;
     private boolean visible;
     private boolean turnOn;
+    private boolean[] days = new boolean[7];
 
     public Alarm () {
         this.visible = true;
@@ -26,6 +27,7 @@ public class Alarm implements Serializable {
     public Alarm(Date date) {
         this();
         this.date = date;
+        for(int i = 0; i<7; i++) days[i] = false;
     }
 
     public int getID() {
@@ -106,6 +108,18 @@ public class Alarm implements Serializable {
         this.turnOn = turnOn;
     }
 
+    public void setDay(int number, boolean value){
+        this.days[number] = value;
+    }
+    public boolean isDayOn(int number){return this.days[number];}
+    public boolean isAllDays(){return (days[0]&&days[1]&&days[2]&&days[3]&&days[4]&&days[5]&&days[6]);}
+    public boolean isWokedDays(){
+        return (days[0]&&days[1]&&days[2]&&days[3]&&days[4]);
+    }
+    public boolean isWeekEnd(){
+        return (days[5]&&days[6]);
+    }
+    public boolean isOne(){return (!days[0]&&!days[1]&&!days[2]&&!days[3]&&!days[4]&&!days[5]&&!days[6]);}
     /**
      * Set default settings
      */
@@ -115,5 +129,6 @@ public class Alarm implements Serializable {
         this.setVibro(true);
         this.setSound(80);
         this.setTurnOn(true);
+        for(int i = 0;i<7;i++) days[i] = false;
     }
 }

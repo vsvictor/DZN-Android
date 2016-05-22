@@ -30,6 +30,7 @@
     <string name="short_saturday">Сб</string>
 
     <string-array name="new_edit_activity_spinner_repeat">
+        <item>Один раз</item>
         <item>Каждый день</item>
         <item>Рабочие дни</item>
         <item>Выходные дни</item>
