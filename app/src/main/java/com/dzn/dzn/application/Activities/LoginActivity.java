@@ -1,22 +1,17 @@
 package com.dzn.dzn.application.Activities;
 
 
-import android.app.AlarmManager;
-import android.app.KeyguardManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.hardware.Camera;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -40,16 +35,20 @@ import com.facebook.login.LoginResult;
 import com.facebook.share.ShareApi;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
+import com.vk.sdk.VKSdk;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-public class CreateSelfieActivity extends AppCompatActivity {
-    private static final String TAG = "CreateSelfieActivity";
+/**
+ * Tested class for publish photo
+ */
+public class LoginActivity extends AppCompatActivity {
+    private static final String TAG = "LoginActivity";
 
     //integrate Facebook
     private CallbackManager callbackManager;
@@ -69,37 +68,23 @@ public class CreateSelfieActivity extends AppCompatActivity {
     private SurfaceView surfaceView;
     private SurfaceHolder surfaceHolder;
     private DataBaseHelper dataBaseHelper;
-    private AlarmManager alarmManager;
 
     private boolean created = false;
-    private PowerManager.WakeLock mWakeLock;
-    private final static String CLASS_LABEL = "CreateSelfieActivity";
-
-    private static int counter = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
 
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        mWakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, CLASS_LABEL);
-        mWakeLock.acquire();
-
-        KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-        final KeyguardManager.KeyguardLock kl = km .newKeyguardLock(CLASS_LABEL);
-        kl.disableKeyguard();
+        //Initialize VK
+        //VKSdk.initialize(getApplicationContext());
 
         //Initialize Facebook
         FacebookSdk.sdkInitialize(getApplicationContext());
+        getHashKeyFacebook();
 
-        created = false;
-        setContentView(R.layout.activity_create_selfie);
-        alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        setContentView(R.layout.activity_login);
         dataBaseHelper = DataBaseHelper.getInstance(this);
-        Uri alarmTone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        Ringtone ringtoneAlarm = RingtoneManager.getRingtone(getApplicationContext(), alarmTone);
-        ringtoneAlarm.play();
 
         //Initialize view elements
         initView();
@@ -267,7 +252,7 @@ public class CreateSelfieActivity extends AppCompatActivity {
 
                 callbackManager = CallbackManager.Factory.create();
                 loginManager = LoginManager.getInstance();
-                loginManager.logInWithPublishPermissions(CreateSelfieActivity.this, permissions);
+                loginManager.logInWithPublishPermissions(LoginActivity.this, permissions);
                 loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
@@ -276,12 +261,12 @@ public class CreateSelfieActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancel() {
-                        System.out.println("onCancel");
+                        Log.d(TAG, "onCancel");
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
-                        System.out.println("onError");
+                        Log.d(TAG, "Facebook exception: " + exception.getMessage());
                     }
                 });
 
@@ -289,29 +274,6 @@ public class CreateSelfieActivity extends AppCompatActivity {
             }
         });
 
-        int counter = getIntent().getExtras().getInt("counter");
-        long time = getIntent().getExtras().getLong("time");
-        Intent intent = new Intent(this, CreateSelfieActivity.class);
-        intent.putExtra("counter", counter);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, counter, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        alarmManager.cancel(pendingIntent);
-
-        counter = 1;
-        for (Alarm alarm : getListAlarm()) {
-            Date d = alarm.getDate();
-            Date today = Calendar.getInstance().getTime();
-            today.setHours(d.getHours());
-            today.setMinutes(d.getMinutes());
-            today.setSeconds(0);
-            if ((today.getTime() > System.currentTimeMillis()) && alarm.isTurnOn()) {
-                Intent intentNew = new Intent(this, CreateSelfieActivity.class);
-                intentNew.putExtra("counter", counter);
-                intentNew.putExtra("time", today.getTime());
-                PendingIntent pendingIntentNew = PendingIntent.getActivity(this, counter, intentNew, PendingIntent.FLAG_ONE_SHOT);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, today.getTime(), pendingIntentNew);
-                counter++;
-            }
-        }
     }
 
     private ArrayList<Alarm> getListAlarm() {
@@ -339,6 +301,27 @@ public class CreateSelfieActivity extends AppCompatActivity {
 
         ShareApi.share(content, null);
         finish();
+    }
+
+    /**
+     * Facebook Key Hash
+     */
+    private void getHashKeyFacebook() {
+        // Add code to print out the key hash
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.dzn.dzn.application",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
     }
 
 }

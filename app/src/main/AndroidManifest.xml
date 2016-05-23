@@ -8,26 +8,33 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-feature android:name="android.hardware.camera.front" android:required="true" />
+
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/dzn_dzn_icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
 
         <!-- Integrity Facebook -->
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
-        <provider android:authorities="com.facebook.app.FacebookContentProvider476773322496190"
+        <provider
             android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider651800944972928"
             android:exported="true" />
 
-        <activity android:name="com.facebook.FacebookActivity"
+        <activity
+            android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <!-- Main activity -->
         <activity
@@ -58,24 +65,33 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppAlarmsTheme" />
 
-        <activity android:name=".Activities.EditListAlarmsActivity"
+        <activity
+            android:name=".Activities.EditListAlarmsActivity"
             android:screenOrientation="portrait" />
 
         <!-- Start activity -->
         <activity
-            android:theme="@style/SampleTheme"
             android:name=".Activities.StartActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/SampleTheme" />
 
         <!-- Create Selfie Activity -->
-        <activity android:name=".Activities.CreateSelfieActivity"
+        <activity
+            android:name=".Activities.CreateSelfieActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppAlarmsTheme" /><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+            android:theme="@style/AppAlarmsTheme" />
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <!-- Tested Activity of social network -->
+        <activity android:name=".Activities.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SampleTheme" />
     </application>
-    
 
 </manifest>

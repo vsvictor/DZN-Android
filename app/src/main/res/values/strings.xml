@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Dzn-Dzn</string>
-    <string name="facebook_app_id">476773322496190</string>
+
+    <!-- Facebook -->
+    <string name="facebook_app_id">651800944972928</string>
+
+    <!-- VK -->
+    <string name="vk_app_id">5474561s</string>
 
     <!-- Common strings -->
     <string name="ready">READY</string>
@@ -68,5 +73,7 @@
     <string name="create_selfie_activity_create">Take a selfie to turn off the alarm clock!</string>
     <string name="good_morning">GOOD MORNING!</string>
     <string name="create_selfie_activity_spread">publish selfie...</string>
+
+    <string name="morning">My morning</string>
 
 </resources>

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.dzn.dzn.application.Activities.CreateSelfieActivity;
 import com.dzn.dzn.application.Activities.EditListAlarmsActivity;
+import com.dzn.dzn.application.Activities.LoginActivity;
 import com.dzn.dzn.application.Activities.NewEditActivity;
 import com.dzn.dzn.application.Activities.SettingsActivity;
 import com.dzn.dzn.application.Activities.StartActivity;
@@ -218,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onCreateSelfie(View view) {
-        Intent intent = new Intent(MainActivity.this, CreateSelfieActivity.class);
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
     }
 

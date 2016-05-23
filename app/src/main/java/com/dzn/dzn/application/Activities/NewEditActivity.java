@@ -108,8 +108,10 @@ public class NewEditActivity extends AppCompatActivity {
             iHours = d.getHours();
             iMinutes = d.getMinutes();
         }
+
+        settings = Settings.getInstance(this);
         settings.load();
-        settings.
+
         initView();
     }
 

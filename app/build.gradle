@@ -24,6 +24,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
+
+        debug {
+            signingConfig signingConfigs.release
+        }
     }
     productFlavors {
     }
@@ -39,5 +43,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:recyclerview-v7:23.3.0'
     compile 'com.facebook.android:facebook-android-sdk:4.+'
+    compile 'com.vk:androidsdk:+'
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }
