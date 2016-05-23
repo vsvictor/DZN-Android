@@ -134,6 +134,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TBL_ALARMS);
         db.execSQL("DROP TABLE IF EXISTS " + TBL_PUBLIC);
         db.execSQL("DROP TABLE IF EXISTS " + TBL_SOCIAL);
+        db.execSQL("DROP TABLE IF EXISTS " + TBL_DAYS);
         onCreate(db);
     }
 

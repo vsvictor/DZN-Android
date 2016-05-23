@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.dzn.dzn.application.MainActivity;
 import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
@@ -35,7 +34,21 @@ import com.facebook.login.LoginResult;
 import com.facebook.share.ShareApi;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
+import com.vk.sdk.VKAccessToken;
+import com.vk.sdk.VKCallback;
+import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
+import com.vk.sdk.api.VKApi;
+import com.vk.sdk.api.VKError;
+import com.vk.sdk.api.VKRequest;
+import com.vk.sdk.api.VKResponse;
+import com.vk.sdk.api.model.VKApiPhoto;
+import com.vk.sdk.api.model.VKPhotoArray;
+import com.vk.sdk.api.photo.VKImageParameters;
+import com.vk.sdk.api.photo.VKUploadImage;
+import com.vk.sdk.dialogs.VKShareDialog;
+import com.vk.sdk.dialogs.VKShareDialogBuilder;
+import com.vk.sdk.util.VKUtil;
 
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -49,6 +62,13 @@ import java.util.List;
  */
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
+
+    //Integrate VK
+    private static final String[] sVkScope = new String[] {
+            VKScope.WALL,
+            VKScope.PHOTOS
+    };
+
 
     //integrate Facebook
     private CallbackManager callbackManager;
@@ -76,15 +96,22 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
 
-        //Initialize VK
-        //VKSdk.initialize(getApplicationContext());
-
         //Initialize Facebook
         FacebookSdk.sdkInitialize(getApplicationContext());
         getHashKeyFacebook();
 
         setContentView(R.layout.activity_login);
         dataBaseHelper = DataBaseHelper.getInstance(this);
+
+        //Initialize VK
+        getVKCertificate();
+        //VKSdk.login(LoginActivity.this, sVkScope);
+
+        if (!VKSdk.wakeUpSession(this)) {
+            Log.d(TAG, "VK authorize");
+            VKSdk.login(LoginActivity.this, sVkScope);
+        }
+
 
         //Initialize view elements
         initView();
@@ -123,18 +150,27 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        if (created) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        if (callbackManager != null) {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
+
+        if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
+            @Override
+            public void onResult(VKAccessToken res) {
+                // Пользователь успешно авторизовался
+                Log.d(TAG, "VK login success");
+            }
+            @Override
+            public void onError(VKError error) {
+                // Произошла ошибка авторизации (например, пользователь запретил авторизацию)
+            }
+        })) {
+            //super.onActivityResult(requestCode, resultCode, data);
+        }
+
     }
 
     /**
@@ -270,6 +306,8 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
+
+                sharePhotoToVK(btm);
                 camera.stopPreview();
             }
         });
@@ -300,7 +338,7 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
 
         ShareApi.share(content, null);
-        finish();
+        //finish();
     }
 
     /**
@@ -322,6 +360,60 @@ public class LoginActivity extends AppCompatActivity {
         } catch (NoSuchAlgorithmException e) {
 
         }
+    }
+
+    /**
+     *
+     */
+    private void getVKCertificate() {
+        String[] fingerprints = VKUtil.getCertificateFingerprint(this, this.getPackageName());
+        Log.d(TAG, "VK certificate: " + fingerprints[0]);
+    }
+
+    private void sharePhotoToVK(final Bitmap bitmap) {
+        VKRequest request = VKApi.uploadWallPhotoRequest(new VKUploadImage(bitmap, VKImageParameters.jpgImage(0.9f)), 0, 6400000);
+
+        request.executeWithListener(new VKRequest.VKRequestListener() {
+            @Override
+            public void onComplete(VKResponse response) {
+                bitmap.recycle();
+                VKApiPhoto photoModel = ((VKPhotoArray) response.parsedModel).get(0);
+                //Make post with photo
+            }
+            @Override
+            public void onError(VKError error) {
+                Log.d(TAG, "Error: " + error.errorMessage);
+            }
+        });
+
+        /**
+        VKPhotoArray photos = new VKPhotoArray();
+        photos.add(new VKApiPhoto("My photo"));
+        new VKShareDialogBuilder()
+                .setText("My new photo")
+                .setUploadedPhotos(photos)
+                .setAttachmentImages(new VKUploadImage[]{
+                        new VKUploadImage(bitmap, VKImageParameters.pngImage())
+                })
+                .setShareDialogListener(new VKShareDialog.VKShareDialogListener() {
+                    @Override
+                    public void onVkShareComplete(int postId) {
+                        //контент отправлен
+                        Log.d(TAG, "onVkShareComplete");
+                    }
+
+                    @Override
+                    public void onVkShareCancel() {
+                        //отмена
+                        Log.d(TAG, "onVkShareCancel");
+                    }
+
+                    @Override
+                    public void onVkShareError(VKError error) {
+                        Log.d(TAG, "onVkShareError");
+                    }
+                }).show(getFragmentManager(), "VK_SHARE_DIALOG");
+         */
     }
 
 }

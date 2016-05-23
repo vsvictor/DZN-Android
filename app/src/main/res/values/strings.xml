@@ -5,7 +5,7 @@
     <string name="facebook_app_id">651800944972928</string>
 
     <!-- VK -->
-    <string name="vk_app_id">5474561s</string>
+    <integer name="com_vk_sdk_AppId">5474561</integer>
 
     <!-- Common strings -->
     <string name="ready">READY</string>
