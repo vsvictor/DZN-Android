@@ -44,7 +44,7 @@ public class Settings {
     public static final String LOCALE_RU = "ru";
     public static final String LOCALE_EN = "en";
 
-    private Settings(Context context){
+    public Settings(Context context){
         this.context = context;
         settings = this.context.getSharedPreferences(context.getResources().getString(R.string.app_name), context.MODE_PRIVATE);
         list = new ArrayList<Social>();

@@ -49,8 +49,9 @@ public class RecyclerViewAdapterAlarms extends RecyclerView.Adapter<RecyclerView
         holder.tvAlarmTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Alarm al = list.get(position);
                 Intent intent = new Intent(context, NewEditActivity.class);
-                intent.putExtra("idAlarm", position + 1);
+                intent.putExtra("idAlarm", al.getID());
                 context.startActivity(intent);
             }
         });
@@ -58,8 +59,9 @@ public class RecyclerViewAdapterAlarms extends RecyclerView.Adapter<RecyclerView
         holder.btnAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Alarm al = list.get(position);
                 Intent intent = new Intent(context, NewEditActivity.class);
-                intent.putExtra("idAlarm", position + 1);
+                intent.putExtra("idAlarm", al.getID());
                 context.startActivity(intent);
             }
         });
@@ -67,7 +69,7 @@ public class RecyclerViewAdapterAlarms extends RecyclerView.Adapter<RecyclerView
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Position: " + position);
+                //Log.d(TAG, "Position: " + position);
                 DataBaseHelper db = DataBaseHelper.getInstance(context);
                 if (db != null) {
                     db.removeAlarm(list.get(position));

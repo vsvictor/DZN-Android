@@ -1,20 +1,24 @@
 package com.dzn.dzn.application;
 
 import android.app.AlarmManager;
+import android.app.KeyguardManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.dzn.dzn.application.Activities.BaseActivity;
 import com.dzn.dzn.application.Activities.CreateSelfieActivity;
 import com.dzn.dzn.application.Activities.EditListAlarmsActivity;
 import com.dzn.dzn.application.Activities.LoginActivity;
@@ -33,8 +37,12 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
+    private final static String CLASS_LABEL = "MainActivity";
+    private static final int START_ACTIVITY = 1;
+
+    private PowerManager.WakeLock mWakeLock;
 
     private TextView tvMainPrompt;
     private Button btnNew;
@@ -45,16 +53,19 @@ public class MainActivity extends AppCompatActivity {
 
     private DataBaseHelper dataBaseHelper;
 
-    private Settings settings;
-    private Locale locale;
     private AlarmManager alarmManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Initialize settings and locale
-        initSettings();
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        mWakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.FULL_WAKE_LOCK, CLASS_LABEL);
+        mWakeLock.acquire();
+
+        KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+        final KeyguardManager.KeyguardLock kl = km .newKeyguardLock(CLASS_LABEL);
+        kl.disableKeyguard();
 
         setContentView(R.layout.activity_main);
 
@@ -70,8 +81,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        Log.d(TAG, "locale: " + settings.getLocale());
-        Log.d(TAG, settings.toString());
+        settings.load();
+        if (settings.getLocale() == 0) {
+            locale = new Locale(Settings.LOCALE_EN);
+        } else {
+            locale = new Locale(Settings.LOCALE_RU);
+        }
+        Locale.setDefault(locale);
+
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        //recreate();
 
         new AsyncTask<Void, Void, Void>(){
             private ArrayList<Alarm> list = new ArrayList<Alarm>();
@@ -97,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
                     today.setSeconds(0);
                     if((today.getTime()>System.currentTimeMillis())&& alarm.isTurnOn()) {
                         Intent intent = new Intent(MainActivity.this, CreateSelfieActivity.class);
+                        intent.putExtra("id", alarm.getID());
                         intent.putExtra("counter", counter);
                         intent.putExtra("time", today.getTime());
                         PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, counter, intent, PendingIntent.FLAG_ONE_SHOT);
@@ -131,23 +152,6 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Initialize settings and locale
      */
-    private void initSettings() {
-        //Initialize settings
-        settings = Settings.getInstance(this);
-        settings.load();
-        Log.d(TAG, settings.toString());
-
-        //Initialize Locale
-        if (settings.getLocale() == 0) {
-            locale = new Locale(Settings.LOCALE_EN);
-        } else {
-            locale = new Locale(Settings.LOCALE_RU);
-        }
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getResources().updateConfiguration(config, null);
-    }
 
     /**
      * Initialize view elements
@@ -178,7 +182,9 @@ public class MainActivity extends AppCompatActivity {
      */
     public void onSettings(View view) {
         Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+        intent.putExtra("sender", 0);
         startActivity(intent);
+        finish();
     }
 
     /**
@@ -229,8 +235,33 @@ public class MainActivity extends AppCompatActivity {
     private void runFirstActivity() {
         if (getListAlarm().size() == 0) {
             Intent intent = new Intent(MainActivity.this, StartActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, START_ACTIVITY);
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == START_ACTIVITY && resultCode == RESULT_CANCELED){
+            finish();
         }
     }
 
+/*
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_HOME){
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            return true;
+        }
+        else if(keyCode == KeyEvent.KEYCODE_BACK){
+            finish();
+            return true;
+        }
+        return false;
+    }
+*/
 }

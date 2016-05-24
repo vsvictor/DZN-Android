@@ -179,6 +179,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String[] args = {String.valueOf(alarm.getID())};
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        long l = -1;
 
         contentValues.put(COL_TIME, alarm.getDate().getTime());
         contentValues.put(COL_REPEAT, alarm.getRepeat());
@@ -199,7 +200,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         days.put(COL_5, alarm.isDayOn(4)?1:0);
         days.put(COL_6, alarm.isDayOn(5)?1:0);
         days.put(COL_7, alarm.isDayOn(6)?1:0);
-        db.update(TBL_DAYS, days, COL_ALARM_ID + "=?", args);
+        int count = db.update(TBL_DAYS, days, COL_ALARM_ID + "=?", args);
+        if(count == 0) {
+            l = db.insert(TBL_DAYS,null,days);
+        }
 
         db.close();
     }

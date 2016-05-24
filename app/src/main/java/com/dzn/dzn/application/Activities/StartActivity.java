@@ -2,6 +2,7 @@ package com.dzn.dzn.application.Activities;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -19,6 +20,7 @@ import android.widget.TimePicker;
 
 import com.dzn.dzn.application.MainActivity;
 import com.dzn.dzn.application.Objects.Alarm;
+import com.dzn.dzn.application.Objects.Settings;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.DateTimeOperator;
@@ -31,8 +33,10 @@ import com.dzn.dzn.application.Widget.adapters.NumericWheelAdapter;
 import java.lang.reflect.Field;
 import java.sql.Time;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
-public class StartActivity extends AppCompatActivity {
+public class StartActivity extends BaseActivity {
     private static final String TAG = "StartActivity";
 
     private TextView tvStartSet;
@@ -41,7 +45,6 @@ public class StartActivity extends AppCompatActivity {
     private NumericWheelAdapter hAdapter;
     private NumericWheelAdapter mAdapter;
     private DataBaseHelper dataBaseHelper;
-
     private int iHour;
     private int iMinute;
 
@@ -49,16 +52,22 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-
         dataBaseHelper = DataBaseHelper.getInstance(getParent());
 
         initView();
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+    }
+
+
     /**
      * Initialize view elements
      */
     private void initView() {
+        Date d = new Date();
         tvStartSet = (TextView) findViewById(R.id.tvStartSet);
         PFHandbookProTypeFaces.EXTRA_THIN.apply(tvStartSet);
         whHours = (WheelView) findViewById(R.id.npHours);
@@ -68,6 +77,7 @@ public class StartActivity extends AppCompatActivity {
         whHours.setViewAdapter(hAdapter);
         whHours.setCyclic(true);
         whHours.setVisibleItems(5);
+        whHours.setCurrentItem(d.getHours());
         whMinutes = (WheelView) findViewById(R.id.npMinutes);
         mAdapter = new NumericWheelAdapter(this, 0,59, "%02d");
         mAdapter.setItemResource(R.layout.wheel_item_time);
@@ -75,6 +85,7 @@ public class StartActivity extends AppCompatActivity {
         whMinutes.setViewAdapter(mAdapter);
         whMinutes.setCyclic(true);
         whMinutes.setVisibleItems(5);
+        whMinutes.setCurrentItem(d.getMinutes());
     }
     /**
      * Save Alarm and start Main Activity
@@ -92,6 +103,7 @@ public class StartActivity extends AppCompatActivity {
 
         //Intent intent = new Intent(StartActivity.this, MainActivity.class);
         //startActivity(intent);
+        setResult(RESULT_OK);
         finish();
     }
 
@@ -110,6 +122,8 @@ public class StartActivity extends AppCompatActivity {
      */
     public void onSettings(View view) {
         Intent intent = new Intent(StartActivity.this, SettingsActivity.class);
+        intent.putExtra("sender", 1);
         startActivity(intent);
+        finish();
     }
 }

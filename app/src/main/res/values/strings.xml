@@ -10,6 +10,8 @@
     <!-- Common strings -->
     <string name="ready">READY</string>
     <string name="edit">CHANGE</string>
+    <string name="error">Error</string>
+    <string name="error_photo_message">An error occurred while photographing</string>
 
     <!-- Main activity -->
     <string name="app_colon">:</string>

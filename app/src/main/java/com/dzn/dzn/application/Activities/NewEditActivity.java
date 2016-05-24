@@ -1,5 +1,6 @@
 package com.dzn.dzn.application.Activities;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.dzn.dzn.application.Objects.Settings;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
+import com.dzn.dzn.application.Widget.OnWheelChangedListener;
 import com.dzn.dzn.application.Widget.WheelRecycle;
 import com.dzn.dzn.application.Widget.WheelView;
 import com.dzn.dzn.application.Widget.adapters.NumericWheelAdapter;
@@ -32,7 +34,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class NewEditActivity extends AppCompatActivity {
+public class NewEditActivity extends BaseActivity {
     private static final String TAG = "NewEditActivity";
 
     private TextView tvNewEditBack;
@@ -74,21 +76,14 @@ public class NewEditActivity extends AppCompatActivity {
     private DataBaseHelper dataBaseHelper;
     private NumericWheelAdapter hAdapter;
     private NumericWheelAdapter mAdapter;
-    private ToggleButton day1;
-    private ToggleButton day2;
-    private ToggleButton day3;
-    private ToggleButton day4;
-    private ToggleButton day5;
-    private ToggleButton day6;
-    private ToggleButton day7;
-
-    private Settings settings;
+    private ToggleButton[] days;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_edit);
         dataBaseHelper = DataBaseHelper.getInstance(getParent());
+        days = new ToggleButton[7];
         Bundle b = getIntent().getExtras();
         if(b != null){
             id = b.getInt("idAlarm", -1);
@@ -108,10 +103,8 @@ public class NewEditActivity extends AppCompatActivity {
             iHours = d.getHours();
             iMinutes = d.getMinutes();
         }
-
         settings = Settings.getInstance(this);
         settings.load();
-
         initView();
     }
 
@@ -159,6 +152,13 @@ public class NewEditActivity extends AppCompatActivity {
         npHours.setViewAdapter(hAdapter);
         npHours.setCyclic(true);
         npHours.setVisibleItems(5);
+        if(id > 0) {
+            npHours.setCurrentItem(edAlarm.getDate().getHours());
+        }
+        else{
+            Date d = new Date();
+            npHours.setCurrentItem(d.getHours());
+        }
 
         mAdapter = new NumericWheelAdapter(this, 0,59, "%02d");
         mAdapter.setItemResource(R.layout.wheel_item_time);
@@ -167,6 +167,13 @@ public class NewEditActivity extends AppCompatActivity {
         npMinutes.setViewAdapter(mAdapter);
         npMinutes.setCyclic(true);
         npMinutes.setVisibleItems(5);
+        if(id > 0) {
+            npMinutes.setCurrentItem(edAlarm.getDate().getMinutes());
+        }
+        else{
+            Date d = new Date();
+            npMinutes.setCurrentItem(d.getMinutes());
+        }
     }
 
 
@@ -186,29 +193,28 @@ public class NewEditActivity extends AppCompatActivity {
         spinnerRepeatAdapter.setDropDownViewResource(R.layout.new_edit_spinner_drop_repeat);
         spinnerNewEditRepeat.setAdapter(spinnerRepeatAdapter);
 
-        day1 = (ToggleButton) findViewById(R.id.toggleNewEditSunday);
-        day2 = (ToggleButton) findViewById(R.id.toggleNewEditSunday);
-        day3 = (ToggleButton) findViewById(R.id.toggleNewEditSunday);
-        day4 = (ToggleButton) findViewById(R.id.toggleNewEditSunday);
-        day5 = (ToggleButton) findViewById(R.id.toggleNewEditSunday);
-        day6 = (ToggleButton) findViewById(R.id.toggleNewEditSunday);
-        day7 = (ToggleButton) findViewById(R.id.toggleNewEditSunday);
+        days[0] = (ToggleButton) findViewById(R.id.toggleNewEditSunday);
+        days[1] = (ToggleButton) findViewById(R.id.toggleNewEditMonday);
+        days[2] = (ToggleButton) findViewById(R.id.toggleNewEditTuesday);
+        days[3] = (ToggleButton) findViewById(R.id.toggleNewEditWednesday);
+        days[4] = (ToggleButton) findViewById(R.id.toggleNewEditThursday);
+        days[5] = (ToggleButton) findViewById(R.id.toggleNewEditFriday);
+        days[6] = (ToggleButton) findViewById(R.id.toggleNewEditSaturday);
 
 
         if(id > 0) {
-            day1.setChecked(edAlarm.isDayOn(0));
-            day2.setChecked(edAlarm.isDayOn(1));
-            day3.setChecked(edAlarm.isDayOn(2));
-            day4.setChecked(edAlarm.isDayOn(3));
-            day5.setChecked(edAlarm.isDayOn(4));
-            day6.setChecked(edAlarm.isDayOn(5));
-            day7.setChecked(edAlarm.isDayOn(6));
+            for(int i = 0; i<7;i++){
+                days[i].setChecked(edAlarm.isDayOn(i));
+            }
         }
-        if(edAlarm.isOne())spinnerNewEditRepeat.setSelection(0);
-        else if(edAlarm.isAllDays()) spinnerNewEditRepeat.setSelection(1);
-        else if(edAlarm.isWokedDays()) spinnerNewEditRepeat.setSelection(2);
-        else if(edAlarm.isWeekEnd()) spinnerNewEditRepeat.setSelection(3);
-        else spinnerNewEditRepeat.setSelection(4);
+        if(id > 0) {
+            if (edAlarm.isOne()) spinnerNewEditRepeat.setSelection(0);
+            else if (edAlarm.isAllDays()) spinnerNewEditRepeat.setSelection(1);
+            else if (edAlarm.isWokedDays()) spinnerNewEditRepeat.setSelection(2);
+            else if (edAlarm.isWeekEnd()) spinnerNewEditRepeat.setSelection(3);
+            else spinnerNewEditRepeat.setSelection(4);
+        }
+        else spinnerNewEditRepeat.setSelection(0);
 
 
 
@@ -216,7 +222,50 @@ public class NewEditActivity extends AppCompatActivity {
         spinnerNewEditRepeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 4) {
+                if(position == 0){
+                    if(id>0) {
+                        for (int i = 0; i < 7; i++) {
+                            edAlarm.setDay(i, false);
+                            days[i].setChecked(false);
+                        }
+                    }
+                    else{
+                        for (int i = 0; i < 7; i++) {
+                            days[i].setChecked(false);
+                        }
+                    }
+                    linearNewEditWeek.setVisibility(View.GONE);
+                }
+                else if(position == 1){
+                    for(int i = 0;i<7;i++){
+                        edAlarm.setDay(i,true);
+                        days[i].setChecked(true);
+                    }
+                    linearNewEditWeek.setVisibility(View.GONE);
+                }
+                else if(position == 2){
+                    for(int i = 0;i<7;i++){
+                        edAlarm.setDay(i,true);
+                        days[i].setChecked(true);
+                    }
+                    edAlarm.setDay(0, false);
+                    edAlarm.setDay(6, false);
+                    days[0].setChecked(false);
+                    days[6].setChecked(false);
+                    linearNewEditWeek.setVisibility(View.GONE);
+                }
+                else if(position == 3){
+                    for(int i = 0;i<7;i++){
+                        edAlarm.setDay(i,false);
+                        days[i].setChecked(false);
+                    }
+                    edAlarm.setDay(0, true);
+                    edAlarm.setDay(6, true);
+                    days[0].setChecked(true);
+                    days[6].setChecked(true);
+                    linearNewEditWeek.setVisibility(View.GONE);
+                }
+                else if (position == 4) {
                     linearNewEditWeek.setVisibility(View.VISIBLE);
                 } else {
                     linearNewEditWeek.setVisibility(View.GONE);
@@ -225,7 +274,6 @@ public class NewEditActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
     }
@@ -297,26 +345,18 @@ public class NewEditActivity extends AppCompatActivity {
             al.setVibro(true);
             al.setSound(80);
             al.setTurnOn(true);
-            al.setDay(0,day1.isChecked());
-            al.setDay(1,day2.isChecked());
-            al.setDay(2,day3.isChecked());
-            al.setDay(3,day4.isChecked());
-            al.setDay(4,day5.isChecked());
-            al.setDay(5,day6.isChecked());
-            al.setDay(6,day7.isChecked());
+            for(int i=0; i<7;i++){
+                al.setDay(i, days[i].isChecked());
+            }
 
             dataBaseHelper.addAlarm(al);
         }
         else{
             edAlarm.getDate().setHours(npHours.getCurrentItem());
             edAlarm.getDate().setMinutes(npMinutes.getCurrentItem());
-            edAlarm.setDay(0,day1.isChecked());
-            edAlarm.setDay(1,day2.isChecked());
-            edAlarm.setDay(2,day3.isChecked());
-            edAlarm.setDay(3,day4.isChecked());
-            edAlarm.setDay(4,day5.isChecked());
-            edAlarm.setDay(5,day6.isChecked());
-            edAlarm.setDay(6,day7.isChecked());
+            for(int i=0; i<7;i++){
+                edAlarm.setDay(i, days[i].isChecked());
+            }
             dataBaseHelper.updateAlarm(edAlarm);
         }
         finish();

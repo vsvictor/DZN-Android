@@ -21,7 +21,7 @@ import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 
 import java.util.ArrayList;
 
-public class AlarmsActivity extends AppCompatActivity {
+public class AlarmsActivity extends BaseActivity {
     private static final String TAG = "AlarmsActivity";
 
     private TextView tvAlarmsName;

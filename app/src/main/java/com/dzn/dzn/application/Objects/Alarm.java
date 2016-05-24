@@ -114,10 +114,10 @@ public class Alarm implements Serializable {
     public boolean isDayOn(int number){return this.days[number];}
     public boolean isAllDays(){return (days[0]&&days[1]&&days[2]&&days[3]&&days[4]&&days[5]&&days[6]);}
     public boolean isWokedDays(){
-        return (days[0]&&days[1]&&days[2]&&days[3]&&days[4]);
+        return (days[1]&&days[2]&&days[3]&&days[4]&&days[5]&&!days[6]&&!days[0]);
     }
     public boolean isWeekEnd(){
-        return (days[5]&&days[6]);
+        return (days[0]&&days[6]&&!days[1]&&!days[2]&&!days[3]&&!days[4]&&!days[5]);
     }
     public boolean isOne(){return (!days[0]&&!days[1]&&!days[2]&&!days[3]&&!days[4]&&!days[5]&&!days[6]);}
     /**

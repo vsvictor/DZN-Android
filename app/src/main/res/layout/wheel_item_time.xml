@@ -6,8 +6,9 @@
     <TextView
         android:id="@+id/tvNumber"
         android:textSize="38sp"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/colorPrimary"
         android:layout_width="64dp"
+        android:gravity="center"
         android:layout_height="wrap_content" />
 
 </LinearLayout>

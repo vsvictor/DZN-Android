@@ -21,7 +21,7 @@ import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 
 import java.util.ArrayList;
 
-public class EditListAlarmsActivity extends AppCompatActivity {
+public class EditListAlarmsActivity extends BaseActivity {
     private static final String TAG = "EditListAlarmsActivity";
     private TextView tvAlarmsName;
     private TextView tvAlarmsEdit;

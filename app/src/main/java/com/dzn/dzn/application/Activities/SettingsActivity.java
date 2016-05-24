@@ -19,7 +19,7 @@ import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 
 import java.util.Locale;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends BaseActivity {
     private static final String TAG = "SettingsActivity";
 
     private TextView tvSettingsTune;
@@ -42,18 +42,17 @@ public class SettingsActivity extends AppCompatActivity {
 
     private SeekBar sbSettingsSound;
 
-    private Settings settings;
-
     private ImageButton ibSoundMin;
     private ImageButton ibSoundMax;
+
+    private int sender = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
-        settings = Settings.getInstance(getParent());
-
+        Bundle b = getIntent().getExtras();
+        if(b != null) sender = b.getInt("sender", 0);
         //Initialize view element
         initView();
     }
@@ -62,18 +61,18 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
-
-        //Load settings
-        settings.load();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause");
+    }
 
-        //Save settings
-        settings.save();
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     /**
@@ -103,8 +102,6 @@ public class SettingsActivity extends AppCompatActivity {
      * Initialize section of Locale
      */
     private void initSectionLocale() {
-        Log.d(TAG, "locale: " + settings.getLocale());
-
         tvSettingsRU = (TextView) findViewById(R.id.tvSettingsRU);
         PFHandbookProTypeFaces.THIN.apply(tvSettingsRU);
         tvSettingsEN = (TextView) findViewById(R.id.tvSettingsEN);
@@ -279,6 +276,11 @@ public class SettingsActivity extends AppCompatActivity {
      */
     public void saveSettings(View view) {
         settings.save();
+        //applySettings();
+        Intent intent = new Intent(this, MainActivity.class);
+        //if(sender == 0) intent.setClass(this, MainActivity.class);
+        //else intent.setClass(this, StartActivity.class);
+        startActivity(intent);
         finish();
     }
 
