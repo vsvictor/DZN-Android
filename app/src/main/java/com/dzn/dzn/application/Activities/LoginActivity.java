@@ -1,6 +1,7 @@
 package com.dzn.dzn.application.Activities;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -9,6 +10,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.hardware.Camera;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -20,8 +24,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
@@ -34,28 +38,37 @@ import com.facebook.login.LoginResult;
 import com.facebook.share.ShareApi;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKApi;
+import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
+import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
 import com.vk.sdk.api.model.VKApiPhoto;
+import com.vk.sdk.api.model.VKAttachments;
 import com.vk.sdk.api.model.VKPhotoArray;
+import com.vk.sdk.api.model.VKWallPostResult;
 import com.vk.sdk.api.photo.VKImageParameters;
 import com.vk.sdk.api.photo.VKUploadImage;
-import com.vk.sdk.dialogs.VKShareDialog;
-import com.vk.sdk.dialogs.VKShareDialogBuilder;
 import com.vk.sdk.util.VKUtil;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Tested class for publish photo
@@ -63,12 +76,15 @@ import java.util.List;
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
 
+    //Integrate Twitter
+    private static final String CONSUMER_KEY = "iicXFAOT5T0XgczLapahUcQOa";
+    private static final String CONSUMER_SECRET = "BeObQbPyQyfWPEYpXvzUZvIn1ORZrirLRZXFnXZDIf0pAoXUKw";
+
     //Integrate VK
-    private static final String[] sVkScope = new String[] {
+    private static final String[] sVkScope = new String[]{
             VKScope.WALL,
             VKScope.PHOTOS
     };
-
 
     //integrate Facebook
     private CallbackManager callbackManager;
@@ -105,13 +121,15 @@ public class LoginActivity extends AppCompatActivity {
 
         //Initialize VK
         getVKCertificate();
-        //VKSdk.login(LoginActivity.this, sVkScope);
 
         if (!VKSdk.wakeUpSession(this)) {
             Log.d(TAG, "VK authorize");
             VKSdk.login(LoginActivity.this, sVkScope);
         }
 
+        //Initialize Twitter
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(CONSUMER_KEY, CONSUMER_SECRET);
+        Fabric.with(this, new TwitterCore(authConfig), new TweetComposer());
 
         //Initialize view elements
         initView();
@@ -163,6 +181,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Пользователь успешно авторизовался
                 Log.d(TAG, "VK login success");
             }
+
             @Override
             public void onError(VKError error) {
                 // Произошла ошибка авторизации (например, пользователь запретил авторизацию)
@@ -187,7 +206,7 @@ public class LoginActivity extends AppCompatActivity {
         ibFlash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)){
+                if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
                     Camera.Parameters p = camera.getParameters();
                     p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                     camera.setParameters(p);
@@ -201,7 +220,7 @@ public class LoginActivity extends AppCompatActivity {
 
         tvSelfieSpread = (TextView) findViewById(R.id.tvSelfieSpread);
         PFHandbookProTypeFaces.THIN.apply(tvSelfieSpread);
-        }
+    }
 
     //Initialize SurfaceView & SurfaceHolder
     private void initSurface() {
@@ -283,49 +302,67 @@ public class LoginActivity extends AppCompatActivity {
                 matrix.postRotate(-90);
                 btm = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
-                //set photo
-                ivPhoto.setImageBitmap(btm);
-
-                callbackManager = CallbackManager.Factory.create();
-                loginManager = LoginManager.getInstance();
-                loginManager.logInWithPublishPermissions(LoginActivity.this, permissions);
-                loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                new AsyncTask<Void, Void, Void>() {
                     @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        sharePhotoToFacebook(btm);
+                    protected void onPreExecute() {
+                        //set photo
+                        ivPhoto.setImageBitmap(btm);
                     }
 
                     @Override
-                    public void onCancel() {
-                        Log.d(TAG, "onCancel");
+                    protected Void doInBackground(Void... params) {
+                        //post photo to FB
+                        postPhotoToFacebook();
+
+                        //post photo to VK
+                        postPhotoToVK(btm);
+
+                        //post photo to Twitter
+                        postPhotoToTwitter(btm);
+
+                        //post photo to Instagram
+                        postPhotoToInstagram(btm);
+
+                        return null;
                     }
 
                     @Override
-                    public void onError(FacebookException exception) {
-                        Log.d(TAG, "Facebook exception: " + exception.getMessage());
+                    protected void onPostExecute(Void aVoid) {
+                        //camera.stopPreview();
+                        finish();
                     }
-                });
-
-
-                sharePhotoToVK(btm);
-                camera.stopPreview();
+                }.execute();
             }
         });
-
     }
 
-    private ArrayList<Alarm> getListAlarm() {
-        if (dataBaseHelper == null) {
-            Log.i(TAG, "DNHelper is null");
-            dataBaseHelper = DataBaseHelper.getInstance(this);
-        }
+    private void postPhotoToFacebook() {
+        callbackManager = CallbackManager.Factory.create();
+        loginManager = LoginManager.getInstance();
+        loginManager.logInWithPublishPermissions(LoginActivity.this, permissions);
+        loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                sharePhotoToFacebook(btm);
+            }
 
-        ArrayList<Alarm> ar = dataBaseHelper.getAlarmList();
-        if (ar == null) return new ArrayList<Alarm>();
+            @Override
+            public void onCancel() {
+                Log.d(TAG, "onCancel");
+            }
 
-        return ar;
+            @Override
+            public void onError(FacebookException exception) {
+                Log.d(TAG, "Facebook exception: " + exception.getMessage());
+            }
+        });
     }
 
+    /**
+     * Share photo to Facebook
+     *
+     * @param bitmap
+     */
     private void sharePhotoToFacebook(Bitmap bitmap) {
         Log.d(TAG, "sharePhotoToFacebook");
         SharePhoto photo = new SharePhoto.Builder()
@@ -338,7 +375,6 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
 
         ShareApi.share(content, null);
-        //finish();
     }
 
     /**
@@ -370,50 +406,151 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "VK certificate: " + fingerprints[0]);
     }
 
-    private void sharePhotoToVK(final Bitmap bitmap) {
-        VKRequest request = VKApi.uploadWallPhotoRequest(new VKUploadImage(bitmap, VKImageParameters.jpgImage(0.9f)), 0, 6400000);
+    /**
+     * Upload and make post photo on wall VK
+     *
+     * @param bitmap
+     */
+    private void postPhotoToVK(final Bitmap bitmap) {
+        VKRequest request = VKApi.uploadWallPhotoRequest(new VKUploadImage(bitmap, VKImageParameters.pngImage()), 0, 0);
 
         request.executeWithListener(new VKRequest.VKRequestListener() {
             @Override
             public void onComplete(VKResponse response) {
-                bitmap.recycle();
-                VKApiPhoto photoModel = ((VKPhotoArray) response.parsedModel).get(0);
+                VKApiPhoto photo = ((VKPhotoArray) response.parsedModel).get(0);
                 //Make post with photo
+                makePhotoOnWallVk(photo);
+
+                bitmap.recycle();
             }
+
             @Override
             public void onError(VKError error) {
                 Log.d(TAG, "Error: " + error.errorMessage);
             }
         });
+    }
 
-        /**
-        VKPhotoArray photos = new VKPhotoArray();
-        photos.add(new VKApiPhoto("My photo"));
-        new VKShareDialogBuilder()
-                .setText("My new photo")
-                .setUploadedPhotos(photos)
-                .setAttachmentImages(new VKUploadImage[]{
-                        new VKUploadImage(bitmap, VKImageParameters.pngImage())
-                })
-                .setShareDialogListener(new VKShareDialog.VKShareDialogListener() {
-                    @Override
-                    public void onVkShareComplete(int postId) {
-                        //контент отправлен
-                        Log.d(TAG, "onVkShareComplete");
-                    }
+    /**
+     * Make post photo on wall VK
+     *
+     * @param photo
+     */
+    private void makePhotoOnWallVk(final VKApiPhoto photo) {
+        VKRequest post = VKApi.wall().post(VKParameters.from(VKApiConst.ATTACHMENTS, new VKAttachments(photo), VKApiConst.MESSAGE, "Dzn-Dzn photo"));
+        post.setModelClass(VKWallPostResult.class);
+        post.executeWithListener(new VKRequest.VKRequestListener() {
+            @Override
+            public void onComplete(VKResponse response) {
+                Log.d(TAG, "makePhotoOnWallVk complete");
+            }
 
-                    @Override
-                    public void onVkShareCancel() {
-                        //отмена
-                        Log.d(TAG, "onVkShareCancel");
-                    }
+            @Override
+            public void onError(VKError error) {
+                Log.d(TAG, "makePhotoOnWallVk error: " + error.errorMessage);
+            }
+        });
+    }
 
-                    @Override
-                    public void onVkShareError(VKError error) {
-                        Log.d(TAG, "onVkShareError");
-                    }
-                }).show(getFragmentManager(), "VK_SHARE_DIALOG");
-         */
+
+    /**
+     * Did not finish
+     *
+     * @param bitmap
+     * @param message
+     */
+    private void postPhotoToVk(final Bitmap bitmap, final String message) {
+        VKRequest request = VKApi.uploadWallPhotoRequest(new VKUploadImage(bitmap, VKImageParameters.pngImage()), 0, 0);
+        request.executeWithListener(new VKRequest.VKRequestListener() {
+            @Override
+            public void onComplete(VKResponse response) {
+                //super.onComplete(response);
+                VKApiPhoto photo = ((VKPhotoArray) response.parsedModel).get(0);
+                //makePost();
+            }
+
+            @Override
+            public void onError(VKError error) {
+                //super.onError(error);
+                Log.d(TAG, "Error: " + error.errorMessage);
+            }
+        });
+    }
+
+    /**
+     * Get Photo
+     *
+     * @param photo
+     * @return
+     */
+    private Bitmap getPhoto(File photo) {
+        Bitmap bitmap = null;
+        try {
+            bitmap = BitmapFactory.decodeStream(new FileInputStream(photo));
+        } catch (IOException ex) {
+            Log.d(TAG, "getPhoto: " + ex.getMessage());
+        }
+        return bitmap;
+    }
+
+    /**
+     * Post tweet to Twitter
+     *
+     * @param bitmap
+     */
+    private void postPhotoToTwitter(final Bitmap bitmap) {
+        TweetComposer.Builder builder = new TweetComposer.Builder(this)
+                .text(getResources().getString(R.string.publish_message))
+                .image(getImageUri(bitmap));
+        builder.show();
+    }
+
+    /**
+     * Get Uri from bitmap
+     *
+     * @param inImage
+     * @return
+     */
+    private Uri getImageUri(Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    /**
+     * Post photo to Instagram
+     *
+     * @param bitmap
+     */
+    private void postPhotoToInstagram(final Bitmap bitmap) {
+        String instagramPackage = "com.instagram.android";
+        if (isPackageInstalled(instagramPackage)) {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("image/*");
+            intent.setPackage(instagramPackage);
+            intent.putExtra(Intent.EXTRA_STREAM, getImageUri(bitmap));
+            intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.publish_message));
+            startActivity(intent);
+        } else {
+            Log.d(TAG, "postPhotoToInstagram: You should install Instagram app first");
+        }
+    }
+
+    /**
+     * Check installed application
+     *
+     * @param packageName
+     * @return
+     */
+    private boolean isPackageInstalled(String packageName) {
+        PackageManager pm = getPackageManager();
+        try {
+            pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 
 }

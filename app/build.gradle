@@ -35,6 +35,9 @@ android {
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://maven.fabric.io/public'
+    }
 }
 
 dependencies {
@@ -44,5 +47,8 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.3.0'
     compile 'com.facebook.android:facebook-android-sdk:4.+'
     compile 'com.vk:androidsdk:+'
+    compile('com.twitter.sdk.android:tweet-composer:+@aar') {
+        transitive = true;
+    }
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }
