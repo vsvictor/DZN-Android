@@ -6,7 +6,9 @@ import android.app.KeyguardManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -14,9 +16,12 @@ import android.hardware.Camera;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.PowerManager;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -28,6 +33,7 @@ import android.widget.TextView;
 
 import com.dzn.dzn.application.MainActivity;
 import com.dzn.dzn.application.Objects.Alarm;
+import com.dzn.dzn.application.Objects.Settings;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
@@ -40,8 +46,27 @@ import com.facebook.login.LoginResult;
 import com.facebook.share.ShareApi;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
+import com.twitter.sdk.android.tweetcomposer.TweetComposer;
+import com.vk.sdk.api.VKApi;
+import com.vk.sdk.api.VKApiConst;
+import com.vk.sdk.api.VKError;
+import com.vk.sdk.api.VKParameters;
+import com.vk.sdk.api.VKRequest;
+import com.vk.sdk.api.VKResponse;
+import com.vk.sdk.api.model.VKApiPhoto;
+import com.vk.sdk.api.model.VKAttachments;
+import com.vk.sdk.api.model.VKPhotoArray;
+import com.vk.sdk.api.model.VKWallPostResult;
+import com.vk.sdk.api.photo.VKImageParameters;
+import com.vk.sdk.api.photo.VKUploadImage;
+import com.vk.sdk.util.VKUtil;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -77,6 +102,8 @@ public class CreateSelfieActivity extends AppCompatActivity {
 
     private static int counter = 1;
 
+    private Settings settings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +127,9 @@ public class CreateSelfieActivity extends AppCompatActivity {
         Uri alarmTone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         Ringtone ringtoneAlarm = RingtoneManager.getRingtone(getApplicationContext(), alarmTone);
         ringtoneAlarm.play();
+
+        //Initialize settings
+        settings = Settings.getInstance(getParent());
 
         //Initialize view elements
         initView();
@@ -262,30 +292,38 @@ public class CreateSelfieActivity extends AppCompatActivity {
                 matrix.postRotate(-90);
                 btm = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
-                //set photo
-                ivPhoto.setImageBitmap(btm);
+                //run AsyncTask for publish photo to social network
+                if (settings.isSocial()) {
+                    new AsyncTask<Void, Void, Void>() {
+                        @Override
+                        protected void onPreExecute() {
+                            //set photo
+                            ivPhoto.setImageBitmap(btm);
+                        }
 
-                callbackManager = CallbackManager.Factory.create();
-                loginManager = LoginManager.getInstance();
-                loginManager.logInWithPublishPermissions(CreateSelfieActivity.this, permissions);
-                loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        sharePhotoToFacebook(btm);
-                    }
+                        @Override
+                        protected Void doInBackground(Void... params) {
+                            //post photo to FB
+                            postPhotoToFacebook();
 
-                    @Override
-                    public void onCancel() {
-                        System.out.println("onCancel");
-                    }
+                            //post photo to VK
+                            postPhotoToVK(btm);
 
-                    @Override
-                    public void onError(FacebookException exception) {
-                        System.out.println("onError");
-                    }
-                });
+                            //post photo to Twitter
+                            postPhotoToTwitter(btm);
 
-                camera.stopPreview();
+                            //post photo to Instagram
+                            postPhotoToInstagram(btm);
+
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Void aVoid) {
+                            finish();
+                        }
+                    }.execute();
+                }
             }
         });
 
@@ -326,6 +364,36 @@ public class CreateSelfieActivity extends AppCompatActivity {
         return ar;
     }
 
+    /**
+     * Post photo to Facebook
+     */
+    private void postPhotoToFacebook() {
+        callbackManager = CallbackManager.Factory.create();
+        loginManager = LoginManager.getInstance();
+        loginManager.logInWithPublishPermissions(CreateSelfieActivity.this, permissions);
+        loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                sharePhotoToFacebook(btm);
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d(TAG, "onCancel");
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                Log.d(TAG, "Facebook exception: " + exception.getMessage());
+            }
+        });
+    }
+
+    /**
+     * Share photo to Facebook
+     *
+     * @param bitmap
+     */
     private void sharePhotoToFacebook(Bitmap bitmap) {
         Log.d(TAG, "sharePhotoToFacebook");
         SharePhoto photo = new SharePhoto.Builder()
@@ -338,7 +406,181 @@ public class CreateSelfieActivity extends AppCompatActivity {
                 .build();
 
         ShareApi.share(content, null);
-        finish();
+    }
+
+    /**
+     * Facebook Key Hash
+     */
+    private void getHashKeyFacebook() {
+        // Add code to print out the key hash
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.dzn.dzn.application",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
+    }
+
+    /**
+     * Get VK Certificate
+     */
+    private void getVKCertificate() {
+        String[] fingerprints = VKUtil.getCertificateFingerprint(this, this.getPackageName());
+        Log.d(TAG, "VK certificate: " + fingerprints[0]);
+    }
+
+    /**
+     * Upload and make post photo on wall VK
+     *
+     * @param bitmap
+     */
+    private void postPhotoToVK(final Bitmap bitmap) {
+        VKRequest request = VKApi.uploadWallPhotoRequest(new VKUploadImage(bitmap, VKImageParameters.pngImage()), 0, 0);
+
+        request.executeWithListener(new VKRequest.VKRequestListener() {
+            @Override
+            public void onComplete(VKResponse response) {
+                VKApiPhoto photo = ((VKPhotoArray) response.parsedModel).get(0);
+                //Make post with photo
+                makePhotoOnWallVk(photo);
+
+                bitmap.recycle();
+            }
+
+            @Override
+            public void onError(VKError error) {
+                Log.d(TAG, "Error: " + error.errorMessage);
+            }
+        });
+    }
+
+    /**
+     * Make post photo on wall VK
+     *
+     * @param photo
+     */
+    private void makePhotoOnWallVk(final VKApiPhoto photo) {
+        VKRequest post = VKApi.wall().post(VKParameters.from(VKApiConst.ATTACHMENTS, new VKAttachments(photo), VKApiConst.MESSAGE, "Dzn-Dzn photo"));
+        post.setModelClass(VKWallPostResult.class);
+        post.executeWithListener(new VKRequest.VKRequestListener() {
+            @Override
+            public void onComplete(VKResponse response) {
+                Log.d(TAG, "makePhotoOnWallVk complete");
+            }
+
+            @Override
+            public void onError(VKError error) {
+                Log.d(TAG, "makePhotoOnWallVk error: " + error.errorMessage);
+            }
+        });
+    }
+
+    /**
+     * Did not finish
+     *
+     * @param bitmap
+     * @param message
+     */
+    private void postPhotoToVk(final Bitmap bitmap, final String message) {
+        VKRequest request = VKApi.uploadWallPhotoRequest(new VKUploadImage(bitmap, VKImageParameters.pngImage()), 0, 0);
+        request.executeWithListener(new VKRequest.VKRequestListener() {
+            @Override
+            public void onComplete(VKResponse response) {
+                //super.onComplete(response);
+                VKApiPhoto photo = ((VKPhotoArray) response.parsedModel).get(0);
+                //makePost();
+            }
+
+            @Override
+            public void onError(VKError error) {
+                //super.onError(error);
+                Log.d(TAG, "Error: " + error.errorMessage);
+            }
+        });
+    }
+
+    /**
+     * Get Photo
+     *
+     * @param photo
+     * @return
+     */
+    private Bitmap getPhoto(File photo) {
+        Bitmap bitmap = null;
+        try {
+            bitmap = BitmapFactory.decodeStream(new FileInputStream(photo));
+        } catch (IOException ex) {
+            Log.d(TAG, "getPhoto: " + ex.getMessage());
+        }
+        return bitmap;
+    }
+
+    /**
+     * Post tweet to Twitter
+     *
+     * @param bitmap
+     */
+    private void postPhotoToTwitter(final Bitmap bitmap) {
+        TweetComposer.Builder builder = new TweetComposer.Builder(this)
+                .text(getResources().getString(R.string.publish_message))
+                .image(getImageUri(bitmap));
+        builder.show();
+    }
+
+    /**
+     * Get Uri from bitmap
+     *
+     * @param inImage
+     * @return
+     */
+    private Uri getImageUri(Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    /**
+     * Post photo to Instagram
+     *
+     * @param bitmap
+     */
+    private void postPhotoToInstagram(final Bitmap bitmap) {
+        String instagramPackage = "com.instagram.android";
+        if (isPackageInstalled(instagramPackage)) {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("image/*");
+            intent.setPackage(instagramPackage);
+            intent.putExtra(Intent.EXTRA_STREAM, getImageUri(bitmap));
+            intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.publish_message));
+            startActivity(intent);
+        } else {
+            Log.d(TAG, "postPhotoToInstagram: You should install Instagram app first");
+        }
+    }
+
+    /**
+     * Check installed application
+     *
+     * @param packageName
+     * @return
+     */
+    private boolean isPackageInstalled(String packageName) {
+        PackageManager pm = getPackageManager();
+        try {
+            pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 
 }

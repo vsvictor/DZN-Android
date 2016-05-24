@@ -216,7 +216,7 @@ public class NewEditActivity extends AppCompatActivity {
         spinnerNewEditRepeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 3) {
+                if (position == 4) {
                     linearNewEditWeek.setVisibility(View.VISIBLE);
                 } else {
                     linearNewEditWeek.setVisibility(View.GONE);
