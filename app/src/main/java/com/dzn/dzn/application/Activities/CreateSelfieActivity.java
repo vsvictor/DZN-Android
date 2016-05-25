@@ -245,7 +245,8 @@ public class CreateSelfieActivity extends BaseActivity {
             camera.stopPreview();
             camera.release();
             camera = null;
-        } else {
+        }
+        if (camera == null) {
             Log.d(TAG, "Camera null");
             camera = Camera.open(idCamera);
             try {
