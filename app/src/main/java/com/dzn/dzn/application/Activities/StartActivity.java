@@ -58,8 +58,13 @@ public class StartActivity extends BaseActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
+
+        if (dataBaseHelper.getAlarmList(true).size() > 0) {
+            Intent intent = new Intent(StartActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 
 
@@ -71,7 +76,7 @@ public class StartActivity extends BaseActivity {
         tvStartSet = (TextView) findViewById(R.id.tvStartSet);
         PFHandbookProTypeFaces.EXTRA_THIN.apply(tvStartSet);
         whHours = (WheelView) findViewById(R.id.npHours);
-        hAdapter = new NumericWheelAdapter(this, 0,23, "%02d");
+        hAdapter = new NumericWheelAdapter(this, 0, 23, "%02d");
         hAdapter.setItemResource(R.layout.wheel_item_time);
         hAdapter.setItemTextResource(R.id.tvNumber);
         whHours.setViewAdapter(hAdapter);
@@ -79,7 +84,7 @@ public class StartActivity extends BaseActivity {
         whHours.setVisibleItems(5);
         whHours.setCurrentItem(d.getHours());
         whMinutes = (WheelView) findViewById(R.id.npMinutes);
-        mAdapter = new NumericWheelAdapter(this, 0,59, "%02d");
+        mAdapter = new NumericWheelAdapter(this, 0, 59, "%02d");
         mAdapter.setItemResource(R.layout.wheel_item_time);
         mAdapter.setItemTextResource(R.id.tvNumber);
         whMinutes.setViewAdapter(mAdapter);
@@ -87,8 +92,10 @@ public class StartActivity extends BaseActivity {
         whMinutes.setVisibleItems(5);
         whMinutes.setCurrentItem(d.getMinutes());
     }
+
     /**
      * Save Alarm and start Main Activity
+     *
      * @param view
      */
     public void onStart(View view) {
@@ -109,6 +116,7 @@ public class StartActivity extends BaseActivity {
 
     /**
      * Run Alarms activity
+     *
      * @param view
      */
     public void onList(View view) {
@@ -118,6 +126,7 @@ public class StartActivity extends BaseActivity {
 
     /**
      * Run Settings activity
+     *
      * @param view
      */
     public void onSettings(View view) {
