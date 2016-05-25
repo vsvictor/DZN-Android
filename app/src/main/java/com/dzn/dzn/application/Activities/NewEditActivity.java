@@ -1,38 +1,26 @@
 package com.dzn.dzn.application.Activities;
 
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.dzn.dzn.application.Adapters.RecyclerViewAdapterDrum;
 import com.dzn.dzn.application.Adapters.SpinnerRepeatAdapter;
 import com.dzn.dzn.application.Objects.Alarm;
-import com.dzn.dzn.application.Objects.AlarmTest;
 import com.dzn.dzn.application.Objects.Settings;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
-import com.dzn.dzn.application.Widget.OnWheelChangedListener;
-import com.dzn.dzn.application.Widget.WheelRecycle;
 import com.dzn.dzn.application.Widget.WheelView;
 import com.dzn.dzn.application.Widget.adapters.NumericWheelAdapter;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 public class NewEditActivity extends BaseActivity {
     private static final String TAG = "NewEditActivity";
@@ -42,11 +30,6 @@ public class NewEditActivity extends BaseActivity {
     private TextView tvNewEditReady;
 
     private TextView tvNewEditSetting;
-
-    //Section Drum
-    private RecyclerView recyclerViewDrum;
-    private LinearLayoutManager recyclerLayoutManager;
-    private RecyclerViewAdapterDrum recyclerViewAdapterDrum;
 
     //Section Repeat
     private TextView tvNewEditRepeat;
@@ -85,27 +68,43 @@ public class NewEditActivity extends BaseActivity {
         dataBaseHelper = DataBaseHelper.getInstance(getParent());
         days = new ToggleButton[7];
         Bundle b = getIntent().getExtras();
-        if(b != null){
+
+        if (b != null) {
             id = b.getInt("idAlarm", -1);
             edAlarm = dataBaseHelper.getAlarm(id);
             if(edAlarm != null) {
                 iHours = edAlarm.getDate().getHours();
                 iMinutes = edAlarm.getDate().getMinutes();
-            }
-            else{
+            } else {
                 Date d = new Date();
                 iHours = d.getHours();
                 iMinutes = d.getMinutes();
             }
+        } else {
+            createAlarm();
+            iHours = edAlarm.getDate().getHours();
+            iMinutes = edAlarm.getDate().getMinutes();
         }
-        else{
-            Date d = new Date();
-            iHours = d.getHours();
-            iMinutes = d.getMinutes();
-        }
+
+        //Initialize settings
         settings = Settings.getInstance(this);
         settings.load();
+
+        //Initialize view elements
         initView();
+    }
+
+    /**
+     * Create new Alarm
+      */
+    private void createAlarm() {
+        Alarm al = new Alarm();
+        Date d = new Date();
+        Log.d(TAG, "Current time: " + d.toString());
+        al.setTime(d);
+        al.setDefault();
+        edAlarm = al;
+        Log.d(TAG, "edAlarm: " + edAlarm.toString());
     }
 
     /**
@@ -145,32 +144,30 @@ public class NewEditActivity extends BaseActivity {
      * Initialize section drum
      */
     private void initSectionDrum() {
-        hAdapter = new NumericWheelAdapter(this, 0,23, "%02d");
+        hAdapter = new NumericWheelAdapter(this, 0, 23, "%02d");
         hAdapter.setItemResource(R.layout.wheel_item_time);
         hAdapter.setItemTextResource(R.id.tvNumber);
         npHours = (WheelView) findViewById(R.id.npHours);
         npHours.setViewAdapter(hAdapter);
         npHours.setCyclic(true);
         npHours.setVisibleItems(5);
-        if(id > 0) {
+        if (id > 0) {
             npHours.setCurrentItem(edAlarm.getDate().getHours());
-        }
-        else{
+        } else {
             Date d = new Date();
             npHours.setCurrentItem(d.getHours());
         }
 
-        mAdapter = new NumericWheelAdapter(this, 0,59, "%02d");
+        mAdapter = new NumericWheelAdapter(this, 0, 59, "%02d");
         mAdapter.setItemResource(R.layout.wheel_item_time);
         mAdapter.setItemTextResource(R.id.tvNumber);
         npMinutes = (WheelView) findViewById(R.id.npMinutes);
         npMinutes.setViewAdapter(mAdapter);
         npMinutes.setCyclic(true);
         npMinutes.setVisibleItems(5);
-        if(id > 0) {
+        if (id > 0) {
             npMinutes.setCurrentItem(edAlarm.getDate().getMinutes());
-        }
-        else{
+        } else {
             Date d = new Date();
             npMinutes.setCurrentItem(d.getMinutes());
         }
@@ -202,50 +199,45 @@ public class NewEditActivity extends BaseActivity {
         days[6] = (ToggleButton) findViewById(R.id.toggleNewEditSaturday);
 
 
-        if(id > 0) {
-            for(int i = 0; i<7;i++){
+        if (id > 0) {
+            for (int i = 0; i < 7; i++) {
                 days[i].setChecked(edAlarm.isDayOn(i));
             }
         }
-        if(id > 0) {
+        if (id > 0) {
             if (edAlarm.isOne()) spinnerNewEditRepeat.setSelection(0);
             else if (edAlarm.isAllDays()) spinnerNewEditRepeat.setSelection(1);
             else if (edAlarm.isWokedDays()) spinnerNewEditRepeat.setSelection(2);
             else if (edAlarm.isWeekEnd()) spinnerNewEditRepeat.setSelection(3);
             else spinnerNewEditRepeat.setSelection(4);
-        }
-        else spinnerNewEditRepeat.setSelection(0);
-
+        } else spinnerNewEditRepeat.setSelection(0);
 
 
         linearNewEditWeek = (LinearLayout) findViewById(R.id.linearNewEditWeek);
         spinnerNewEditRepeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 0){
-                    if(id>0) {
+                if (position == 0) {
+                    if (id > 0) {
                         for (int i = 0; i < 7; i++) {
                             edAlarm.setDay(i, false);
                             days[i].setChecked(false);
                         }
-                    }
-                    else{
+                    } else {
                         for (int i = 0; i < 7; i++) {
                             days[i].setChecked(false);
                         }
                     }
                     linearNewEditWeek.setVisibility(View.GONE);
-                }
-                else if(position == 1){
-                    for(int i = 0;i<7;i++){
-                        edAlarm.setDay(i,true);
+                } else if (position == 1) {
+                    for (int i = 0; i < 7; i++) {
+                        edAlarm.setDay(i, true);
                         days[i].setChecked(true);
                     }
                     linearNewEditWeek.setVisibility(View.GONE);
-                }
-                else if(position == 2){
-                    for(int i = 0;i<7;i++){
-                        edAlarm.setDay(i,true);
+                } else if (position == 2) {
+                    for (int i = 0; i < 7; i++) {
+                        edAlarm.setDay(i, true);
                         days[i].setChecked(true);
                     }
                     edAlarm.setDay(0, false);
@@ -253,10 +245,9 @@ public class NewEditActivity extends BaseActivity {
                     days[0].setChecked(false);
                     days[6].setChecked(false);
                     linearNewEditWeek.setVisibility(View.GONE);
-                }
-                else if(position == 3){
-                    for(int i = 0;i<7;i++){
-                        edAlarm.setDay(i,false);
+                } else if (position == 3) {
+                    for (int i = 0; i < 7; i++) {
+                        edAlarm.setDay(i, false);
                         days[i].setChecked(false);
                     }
                     edAlarm.setDay(0, true);
@@ -264,8 +255,7 @@ public class NewEditActivity extends BaseActivity {
                     days[0].setChecked(true);
                     days[6].setChecked(true);
                     linearNewEditWeek.setVisibility(View.GONE);
-                }
-                else if (position == 4) {
+                } else if (position == 4) {
                     linearNewEditWeek.setVisibility(View.VISIBLE);
                 } else {
                     linearNewEditWeek.setVisibility(View.GONE);
@@ -333,7 +323,7 @@ public class NewEditActivity extends BaseActivity {
      * Save data to database
      */
     public void saveData(View view) {
-        if(id == -1) {
+        if (id == -1) {
             Alarm al = new Alarm();
             Date d = new Date();
             d.setHours(npHours.getCurrentItem());
@@ -345,16 +335,15 @@ public class NewEditActivity extends BaseActivity {
             al.setVibro(true);
             al.setSound(80);
             al.setTurnOn(true);
-            for(int i=0; i<7;i++){
+            for (int i = 0; i < 7; i++) {
                 al.setDay(i, days[i].isChecked());
             }
 
             dataBaseHelper.addAlarm(al);
-        }
-        else{
+        } else {
             edAlarm.getDate().setHours(npHours.getCurrentItem());
             edAlarm.getDate().setMinutes(npMinutes.getCurrentItem());
-            for(int i=0; i<7;i++){
+            for (int i = 0; i < 7; i++) {
                 edAlarm.setDay(i, days[i].isChecked());
             }
             dataBaseHelper.updateAlarm(edAlarm);
@@ -369,6 +358,7 @@ public class NewEditActivity extends BaseActivity {
 
     /**
      * Cancel - close activity
+     *
      * @param view
      */
     public void onCancel(View view) {
