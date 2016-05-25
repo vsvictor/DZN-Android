@@ -169,10 +169,10 @@ public class CreateSelfieActivity extends BaseActivity {
         //Initialize VK
         getVKCertificate();
 
-        if (!VKSdk.wakeUpSession(this)) {
-            Log.d(TAG, "VK authorize");
-            VKSdk.login(CreateSelfieActivity.this, sVkScope);
-        }
+        //if (!VKSdk.wakeUpSession(this)) {
+        //    Log.d(TAG, "VK authorize");
+        //    VKSdk.login(CreateSelfieActivity.this, sVkScope);
+        //}
 
         //Initialize Twitter
         TwitterAuthConfig authConfig = new TwitterAuthConfig(CONSUMER_KEY, CONSUMER_SECRET);
@@ -385,6 +385,11 @@ public class CreateSelfieActivity extends BaseActivity {
         tvCreateSelfie.setTextSize(getResources().getDimension(R.dimen.app_padding_16dp));
 
         llSpreadSelfie.setVisibility(View.VISIBLE);
+
+        if (!VKSdk.wakeUpSession(this)) {
+            Log.d(TAG, "VK authorize");
+            VKSdk.login(CreateSelfieActivity.this, sVkScope);
+        }
 
         camera.takePicture(null, null, new Camera.PictureCallback() {
             @Override
