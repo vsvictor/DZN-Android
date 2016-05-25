@@ -400,10 +400,12 @@ public class CreateSelfieActivity extends BaseActivity {
 
                             @Override
                             protected void onPostExecute(Void aVoid) {
-                                //camera.stopPreview();
                                 finish();
                             }
                         }.execute();
+                    } else {
+                        ivPhoto.setImageBitmap(btm);
+                        finish();
                     }
 /**
  callbackManager = CallbackManager.Factory.create();
