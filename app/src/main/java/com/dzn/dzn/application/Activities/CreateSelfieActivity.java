@@ -47,8 +47,13 @@ import com.facebook.login.LoginResult;
 import com.facebook.share.ShareApi;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
+import com.vk.sdk.VKAccessToken;
+import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKScope;
+import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
@@ -75,6 +80,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import io.fabric.sdk.android.Fabric;
+
 public class CreateSelfieActivity extends BaseActivity {
     private static final String TAG = "CreateSelfieActivity";
 
@@ -83,6 +90,10 @@ public class CreateSelfieActivity extends BaseActivity {
             VKScope.WALL,
             VKScope.PHOTOS
     };
+
+    //Integrate Twitter
+    private static final String CONSUMER_KEY = "iicXFAOT5T0XgczLapahUcQOa";
+    private static final String CONSUMER_SECRET = "BeObQbPyQyfWPEYpXvzUZvIn1ORZrirLRZXFnXZDIf0pAoXUKw";
 
     //integrate Facebook
     private CallbackManager callbackManager;
@@ -155,6 +166,18 @@ public class CreateSelfieActivity extends BaseActivity {
         //Initialize settings
         settings = Settings.getInstance(this);
 
+        //Initialize VK
+        getVKCertificate();
+
+        if (!VKSdk.wakeUpSession(this)) {
+            Log.d(TAG, "VK authorize");
+            VKSdk.login(CreateSelfieActivity.this, sVkScope);
+        }
+
+        //Initialize Twitter
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(CONSUMER_KEY, CONSUMER_SECRET);
+        Fabric.with(this, new TwitterCore(authConfig), new TweetComposer());
+
         //Initialize view elements
         initView();
 
@@ -199,7 +222,22 @@ public class CreateSelfieActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        if (callbackManager != null) {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
+
+        if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
+            @Override
+            public void onResult(VKAccessToken res) {
+                Log.d(TAG, "VK login success");
+            }
+
+            @Override
+            public void onError(VKError error) {
+                Log.d(TAG, "VK login error: " + error.errorMessage);
+            }
+        }));
     }
 
     private void initCamera() {
@@ -207,8 +245,7 @@ public class CreateSelfieActivity extends BaseActivity {
             camera.stopPreview();
             camera.release();
             camera = null;
-        }
-        if (camera == null) {
+        } else {
             Log.d(TAG, "Camera null");
             camera = Camera.open(idCamera);
             try {
@@ -372,7 +409,6 @@ public class CreateSelfieActivity extends BaseActivity {
                         btm = Bitmap.createScaledBitmap(bob, bitmap.getWidth() / 2, bitmap.getHeight(), false);
                     }
 
-                    //ivPhoto.setImageBitmap(btm);
                     if (settings.isSocial()) {
                         new AsyncTask<Void, Void, Void>() {
                             @Override
