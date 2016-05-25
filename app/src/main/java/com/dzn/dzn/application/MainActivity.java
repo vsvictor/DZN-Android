@@ -82,6 +82,8 @@ public class MainActivity extends BaseActivity {
     protected void onResume(){
         super.onResume();
         settings.load();
+
+        /**
         if (settings.getLocale() == 0) {
             locale = new Locale(Settings.LOCALE_EN);
         } else {
@@ -92,6 +94,7 @@ public class MainActivity extends BaseActivity {
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         //recreate();
+         */
 
         new AsyncTask<Void, Void, Void>(){
             private ArrayList<Alarm> list = new ArrayList<Alarm>();
