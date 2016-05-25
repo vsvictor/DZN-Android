@@ -128,6 +128,7 @@ public class CreateSelfieActivity extends BaseActivity {
     private int id;
     private int idCamera;
     private boolean FULL_SCREEN = true;
+    private boolean flashMode = true;
 
     private Settings settings;
 
@@ -272,9 +273,12 @@ public class CreateSelfieActivity extends BaseActivity {
 
         ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
         ibFlash = (ImageButton) findViewById(R.id.ibFlash);
-        if (idCamera == Camera.CameraInfo.CAMERA_FACING_FRONT)
-            ibFlash.setBackgroundResource(R.mipmap.flash_gray);
-        else ibFlash.setBackgroundResource(R.mipmap.flash);
+        if (idCamera == Camera.CameraInfo.CAMERA_FACING_FRONT) ibFlash.setVisibility(View.INVISIBLE);
+            //ibFlash.setBackgroundResource(R.mipmap.flash_gray);
+        else {
+            ibFlash.setVisibility(View.VISIBLE);
+            ibFlash.setBackgroundResource(R.mipmap.flash);
+        }
 
         ibSpread = (ImageButton) findViewById(R.id.ibSpread);
         ibStop = (ImageButton) findViewById(R.id.ibStop);
@@ -331,9 +335,18 @@ public class CreateSelfieActivity extends BaseActivity {
             if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
                 if (camera != null) {
                     camera.stopPreview();
-                    Camera.Parameters p = camera.getParameters();
-                    p.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
-                    camera.setParameters(p);
+                    if (flashMode) {
+                        Camera.Parameters p = camera.getParameters();
+                        p.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+                        camera.setParameters(p);
+                        ibFlash.setBackgroundResource(R.mipmap.flash);
+                    } else {
+                        Camera.Parameters p = camera.getParameters();
+                        p.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                        camera.setParameters(p);
+                        ibFlash.setBackgroundResource(R.mipmap.flash_gray);
+                    }
+                    flashMode = !flashMode;
                     camera.startPreview();
                 } else {
                     Log.i(TAG, "Camera is NULL!!!!!!!!!");
@@ -355,9 +368,12 @@ public class CreateSelfieActivity extends BaseActivity {
                 camera = null;
             }
             idCamera = (idCamera == Camera.CameraInfo.CAMERA_FACING_FRONT) ? Camera.CameraInfo.CAMERA_FACING_BACK : Camera.CameraInfo.CAMERA_FACING_FRONT;
-            if (idCamera == Camera.CameraInfo.CAMERA_FACING_FRONT)
-                ibFlash.setBackgroundResource(R.mipmap.flash_gray);
-            else ibFlash.setBackgroundResource(R.mipmap.flash);
+            if (idCamera == Camera.CameraInfo.CAMERA_FACING_FRONT) ibFlash.setVisibility(View.INVISIBLE);
+                //ibFlash.setBackgroundResource(R.mipmap.flash_gray);
+            else  {
+                ibFlash.setVisibility(View.VISIBLE);
+                ibFlash.setBackgroundResource(R.mipmap.flash);
+            }
             if (camera == null) {
                 initCamera();
             }
