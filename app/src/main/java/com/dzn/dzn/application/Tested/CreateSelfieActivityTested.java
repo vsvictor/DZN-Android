@@ -1,4 +1,4 @@
-package com.dzn.dzn.application.Activities;
+package com.dzn.dzn.application.Tested;
 
 
 import android.app.AlarmManager;
@@ -13,9 +13,7 @@ import android.content.pm.Signature;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.RectF;
 import android.hardware.Camera;
-import android.hardware.Camera.CameraInfo;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -26,16 +24,14 @@ import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Display;
-import android.view.Surface;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.dzn.dzn.application.Activities.BaseActivity;
 import com.dzn.dzn.application.MainActivity;
 import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.Objects.Settings;
@@ -87,7 +83,7 @@ import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
 
-public class CreateSelfieActivity extends BaseActivity {
+public class CreateSelfieActivityTested extends BaseActivity {
     private static final String TAG = "CreateSelfieActivity";
 
     //Integrate VK
@@ -115,7 +111,7 @@ public class CreateSelfieActivity extends BaseActivity {
     private TextView tvSelfieSpread;
 
     private Camera camera;
-    private SurfaceView sv;
+    private SquaredFrame surfaceView;
     private SurfaceHolder surfaceHolder;
     private DataBaseHelper dataBaseHelper;
     private AlarmManager alarmManager;
@@ -127,7 +123,6 @@ public class CreateSelfieActivity extends BaseActivity {
     private static int counter = 1;
     private int id;
     private int idCamera;
-    private boolean FULL_SCREEN = true;
 
     private Settings settings;
 
@@ -174,6 +169,11 @@ public class CreateSelfieActivity extends BaseActivity {
 
         //Initialize VK
         getVKCertificate();
+
+        //if (!VKSdk.wakeUpSession(this)) {
+        //    Log.d(TAG, "VK authorize");
+        //    VKSdk.login(CreateSelfieActivity.this, sVkScope);
+        //}
 
         //Initialize Twitter
         TwitterAuthConfig authConfig = new TwitterAuthConfig(CONSUMER_KEY, CONSUMER_SECRET);
@@ -238,7 +238,7 @@ public class CreateSelfieActivity extends BaseActivity {
             public void onError(VKError error) {
                 Log.d(TAG, "VK login error: " + error.errorMessage);
             }
-        })) ;
+        }));
     }
 
     private void initCamera() {
@@ -249,14 +249,24 @@ public class CreateSelfieActivity extends BaseActivity {
         }
         if (camera == null) {
             Log.d(TAG, "Camera null");
+            camera = Camera.open(idCamera);
             try {
-                camera = Camera.open(idCamera);
+
+                camera.setDisplayOrientation(90);
+                Camera.Parameters parameters = camera.getParameters();
+                List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
+                Camera.Size optimalSize = getOptimalPreviewSize(sizes, getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels);
+                setSurfaceSize(optimalSize);
+                //surfaceHolder.setFixedSize(optimalSize.width, optimalSize.height);
+
+                parameters.setPreviewSize(optimalSize.width, optimalSize.height);
+                camera.setParameters(parameters);
                 camera.setPreviewDisplay(surfaceHolder);
-                setCameraDisplayOrientation(idCamera);
-                setPreviewSize(FULL_SCREEN);
                 camera.startPreview();
-            } catch (IOException e) {
-                e.printStackTrace();
+
+
+            } catch (IOException ex) {
+                Log.d(TAG, ex.getMessage());
             }
         }
     }
@@ -286,39 +296,33 @@ public class CreateSelfieActivity extends BaseActivity {
 
     //Initialize SurfaceView & SurfaceHolder
     private void initSurface() {
-        sv = (SurfaceView) findViewById(R.id.surfaceView);
-        surfaceHolder = sv.getHolder();
-        surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        surfaceView = (SquaredFrame) findViewById(R.id.surfaceView);
+
+        surfaceHolder = surfaceView.getHolder();
+
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-                setCameraDisplayOrientation(idCamera);
+                Log.d(TAG, "surfaceCreated");
                 try {
                     camera.setPreviewDisplay(surfaceHolder);
+                    camera.setDisplayOrientation(90);
                     camera.startPreview();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (Exception ex) {
+                    //Log.d(TAG, ex.getMessage());
                 }
             }
 
             @Override
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-                camera.stopPreview();
-                setCameraDisplayOrientation(idCamera);
-                try {
-                    camera.setPreviewDisplay(holder);
-                    camera.startPreview();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                Log.d(TAG, "surfaceChanged");
             }
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
-
+                Log.d(TAG, "surfaceDestroyed");
             }
         });
-
     }
 
     /**
@@ -373,8 +377,7 @@ public class CreateSelfieActivity extends BaseActivity {
         created = true;
         ibFlash.setVisibility(View.INVISIBLE);
         ibSpread.setVisibility(View.INVISIBLE);
-
-        sv.setVisibility(View.GONE);
+        surfaceView.setVisibility(View.GONE);
         ibStop.setVisibility(View.INVISIBLE);
 
         ivPhoto.setVisibility(View.VISIBLE);
@@ -387,7 +390,7 @@ public class CreateSelfieActivity extends BaseActivity {
 
         if (!VKSdk.wakeUpSession(this)) {
             Log.d(TAG, "VK authorize");
-            VKSdk.login(CreateSelfieActivity.this, sVkScope);
+            VKSdk.login(CreateSelfieActivityTested.this, sVkScope);
         }
 
         camera.takePicture(null, null, new Camera.PictureCallback() {
@@ -447,8 +450,38 @@ public class CreateSelfieActivity extends BaseActivity {
                         ivPhoto.setImageBitmap(btm);
                         finish();
                     }
+/**
+ callbackManager = CallbackManager.Factory.create();
+ loginManager = LoginManager.getInstance();
+ loginManager.logInWithPublishPermissions(CreateSelfieActivity.this, permissions);
+ loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+@Override public void onSuccess(LoginResult loginResult) {
+//sharePhotoToFacebook(btm);
+Intent intent = new Intent(CreateSelfieActivity.this, MainActivity.class);
+intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+startActivity(intent);
+finish();
+}
+
+@Override public void onCancel() {
+System.out.println("onCancel");
+Intent intent = new Intent(CreateSelfieActivity.this, MainActivity.class);
+intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+startActivity(intent);
+finish();
+}
+
+@Override public void onError(FacebookException exception) {
+System.out.println("onError");
+Intent intent = new Intent(CreateSelfieActivity.this, MainActivity.class);
+intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+startActivity(intent);
+finish();
+}
+});
+ */
                 } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(CreateSelfieActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CreateSelfieActivityTested.this);
                     builder.setTitle(R.string.error);
                     builder.setMessage(R.string.error_photo_message);
                     builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -463,7 +496,7 @@ public class CreateSelfieActivity extends BaseActivity {
         if (id > 0) {
             int counter = getIntent().getExtras().getInt("counter");
             long time = getIntent().getExtras().getLong("time");
-            Intent intent = new Intent(this, CreateSelfieActivity.class);
+            Intent intent = new Intent(this, CreateSelfieActivityTested.class);
             intent.putExtra("counter", counter);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, counter, intent, PendingIntent.FLAG_CANCEL_CURRENT);
             alarmManager.cancel(pendingIntent);
@@ -476,7 +509,7 @@ public class CreateSelfieActivity extends BaseActivity {
             today.setMinutes(d.getMinutes());
             today.setSeconds(0);
             if ((today.getTime() > System.currentTimeMillis()) && alarm.isTurnOn()) {
-                Intent intentNew = new Intent(this, CreateSelfieActivity.class);
+                Intent intentNew = new Intent(this, CreateSelfieActivityTested.class);
                 intentNew.putExtra("id", alarm.getID());
                 intentNew.putExtra("counter", counter);
                 intentNew.putExtra("time", today.getTime());
@@ -499,13 +532,69 @@ public class CreateSelfieActivity extends BaseActivity {
         return ar;
     }
 
-    /**
-     * Post photo to Facebook
-     */
+    private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
+        final double ASPECT_TOLERANCE = 0.05;
+        double targetRatio = (double) w / h;
+
+        if (sizes == null) return null;
+
+        Camera.Size optimalSize = null;
+
+        double minDiff = Double.MAX_VALUE;
+
+        int targetHeight = h;
+
+        // Find size
+        for (Camera.Size size : sizes) {
+            double ratio = (double) size.width / size.height;
+            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) continue;
+            if (Math.abs(size.height - targetHeight) < minDiff) {
+                optimalSize = size;
+                minDiff = Math.abs(size.height - targetHeight);
+            }
+        }
+
+        if (optimalSize == null) {
+            minDiff = Double.MAX_VALUE;
+            for (Camera.Size size : sizes) {
+                if (Math.abs(size.height - targetHeight) < minDiff) {
+                    optimalSize = size;
+                    minDiff = Math.abs(size.height - targetHeight);
+                }
+            }
+        }
+        return optimalSize;
+    }
+
+    private void setSurfaceSize(Camera.Size size) {
+
+        // // Get the dimensions of the video
+        int videoWidth = size.height;
+        int videoHeight = size.width;
+        float videoProportion = (float) videoWidth / (float) videoHeight;
+
+        // Get the width of the screen
+        int screenWidth = getWindowManager().getDefaultDisplay().getWidth();
+        int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
+        float screenProportion = (float) screenWidth / (float) screenHeight;
+
+        // Get the SurfaceView layout parameters
+        android.view.ViewGroup.LayoutParams lp = surfaceView.getLayoutParams();
+        if (videoProportion > screenProportion) {
+            lp.width = screenWidth;
+            lp.height = (int) ((float) screenWidth / videoProportion);
+        } else {
+            lp.width = (int) (videoProportion * (float) screenHeight);
+            lp.height = screenHeight;
+        }
+        // Commit the layout parameters
+        surfaceView.setLayoutParams(lp);
+    }
+
     private void postPhotoToFacebook() {
         callbackManager = CallbackManager.Factory.create();
         loginManager = LoginManager.getInstance();
-        loginManager.logInWithPublishPermissions(CreateSelfieActivity.this, permissions);
+        loginManager.logInWithPublishPermissions(CreateSelfieActivityTested.this, permissions);
         loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -692,97 +781,6 @@ public class CreateSelfieActivity extends BaseActivity {
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
-    }
-
-    /**
-     * Set preview size
-     *
-     * @param fullScreen
-     */
-    void setPreviewSize(boolean fullScreen) {
-        // получаем размеры экрана
-        Display display = getWindowManager().getDefaultDisplay();
-        boolean widthIsMax = display.getWidth() > display.getHeight();
-
-        // определяем размеры превью камеры
-        Camera.Size size = camera.getParameters().getPreviewSize();
-
-        RectF rectDisplay = new RectF();
-        RectF rectPreview = new RectF();
-
-        // RectF экрана, соотвествует размерам экрана
-        rectDisplay.set(0, 0, display.getWidth(), display.getHeight());
-
-        // RectF первью
-        if (widthIsMax) {
-            // превью в горизонтальной ориентации
-            rectPreview.set(0, 0, size.width, size.height);
-        } else {
-            // превью в вертикальной ориентации
-            rectPreview.set(0, 0, size.height, size.width);
-        }
-
-        Matrix matrix = new Matrix();
-        // подготовка матрицы преобразования
-        if (!fullScreen) {
-            // если превью будет "втиснут" в экран (второй вариант из урока)
-            matrix.setRectToRect(rectPreview, rectDisplay,
-                    Matrix.ScaleToFit.START);
-        } else {
-            // если экран будет "втиснут" в превью (третий вариант из урока)
-            matrix.setRectToRect(rectDisplay, rectPreview,
-                    Matrix.ScaleToFit.START);
-            matrix.invert(matrix);
-        }
-        // преобразование
-        matrix.mapRect(rectPreview);
-
-        // установка размеров surface из получившегося преобразования
-        sv.getLayoutParams().height = (int) (rectPreview.bottom);
-        sv.getLayoutParams().width = (int) (rectPreview.right);
-    }
-
-    /**
-     * Set camera display orientation
-     *
-     * @param cameraId
-     */
-    void setCameraDisplayOrientation(int cameraId) {
-        // определяем насколько повернут экран от нормального положения
-        int rotation = getWindowManager().getDefaultDisplay().getRotation();
-        int degrees = 0;
-        switch (rotation) {
-            case Surface.ROTATION_0:
-                degrees = 0;
-                break;
-            case Surface.ROTATION_90:
-                degrees = 90;
-                break;
-            case Surface.ROTATION_180:
-                degrees = 180;
-                break;
-            case Surface.ROTATION_270:
-                degrees = 270;
-                break;
-        }
-
-        int result = 0;
-
-        // получаем инфо по камере cameraId
-        CameraInfo info = new CameraInfo();
-        Camera.getCameraInfo(cameraId, info);
-
-        // задняя камера
-        if (info.facing == CameraInfo.CAMERA_FACING_BACK) {
-            result = ((360 - degrees) + info.orientation);
-        } else
-            // передняя камера
-            if (info.facing == CameraInfo.CAMERA_FACING_FRONT) {
-                result = ((360 - degrees) - info.orientation);
-                result += 360;
-            }
-        result = result % 360;
-        camera.setDisplayOrientation(result);
     }
 
 }

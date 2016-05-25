@@ -21,8 +21,8 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:background="@mipmap/flash"
-            android:scaleType="fitXY"
-            android:onClick="onFlash" />
+            android:onClick="onFlash"
+            android:scaleType="fitXY" />
 
         <ImageButton
             android:id="@+id/ibName"
@@ -48,6 +48,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/linearLayout"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true">
+
+            <SurfaceView
+                android:id="@+id/surfaceView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
+
+        <!--
         <com.dzn.dzn.application.Widget.SquaredFrame
             android:id="@+id/surfaceView"
             android:layout_marginLeft="50dp"
@@ -57,6 +74,7 @@
             android:layout_centerInParent="true"
             android:layout_above="@+id/linearLayout"
             android:layout_alignParentTop="true" />
+            -->
 
         <ImageView
             android:id="@+id/ivPhoto"
@@ -76,13 +94,13 @@
 
             <ImageButton
                 android:id="@+id/ibStop"
-                android:scaleType="fitXY"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:background="@mipmap/stop"
                 android:foregroundGravity="fill"
-                android:onClick="onStopAlarm" />
+                android:onClick="onStopAlarm"
+                android:scaleType="fitXY" />
 
         </FrameLayout>
 
@@ -99,8 +117,8 @@
                 android:id="@+id/llSpreadSelfie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center_horizontal"
+                android:orientation="horizontal"
                 android:paddingBottom="@dimen/app_padding_32dp"
                 android:visibility="gone">
 
@@ -112,11 +130,11 @@
                 <TextView
                     android:id="@+id/tvSelfieSpread"
                     style="@style/MainActivityTextPrompt"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorYellow"
-                    android:text="@string/create_selfie_activity_spread" />
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:text="@string/create_selfie_activity_spread"
+                    android:textColor="@color/colorYellow" />
             </LinearLayout>
 
             <TextView
