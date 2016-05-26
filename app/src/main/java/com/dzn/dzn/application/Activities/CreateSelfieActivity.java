@@ -91,20 +91,26 @@ public class CreateSelfieActivity extends BaseActivity {
     private static final String TAG = "CreateSelfieActivity";
 
     //Integrate VK
+    private static final String VK_APP_NAME = "com.vkontakte.android";
     private static final String[] sVkScope = new String[]{
             VKScope.WALL,
             VKScope.PHOTOS
     };
 
     //Integrate Twitter
+    private static final String TW_APP_NAME = "com.twitter.android";
     private static final String CONSUMER_KEY = "iicXFAOT5T0XgczLapahUcQOa";
     private static final String CONSUMER_SECRET = "BeObQbPyQyfWPEYpXvzUZvIn1ORZrirLRZXFnXZDIf0pAoXUKw";
 
     //integrate Facebook
+    private static final String FB_APP_NAME = "com.facebook.katana";
     private CallbackManager callbackManager;
     private LoginManager loginManager;
     private List<String> permissions = Arrays.asList("publish_actions");
     private Bitmap btm;
+
+    //integrate Instagram
+    private static final String IS_APP_NAME = "com.instagram.android";
 
     private TextView tvCreateSelfie;
     private ImageView ivPhoto;
@@ -273,7 +279,8 @@ public class CreateSelfieActivity extends BaseActivity {
 
         ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
         ibFlash = (ImageButton) findViewById(R.id.ibFlash);
-        if (idCamera == Camera.CameraInfo.CAMERA_FACING_FRONT) ibFlash.setVisibility(View.INVISIBLE);
+        if (idCamera == Camera.CameraInfo.CAMERA_FACING_FRONT)
+            ibFlash.setVisibility(View.INVISIBLE);
             //ibFlash.setBackgroundResource(R.mipmap.flash_gray);
         else {
             ibFlash.setVisibility(View.VISIBLE);
@@ -368,15 +375,34 @@ public class CreateSelfieActivity extends BaseActivity {
                 camera = null;
             }
             idCamera = (idCamera == Camera.CameraInfo.CAMERA_FACING_FRONT) ? Camera.CameraInfo.CAMERA_FACING_BACK : Camera.CameraInfo.CAMERA_FACING_FRONT;
-            if (idCamera == Camera.CameraInfo.CAMERA_FACING_FRONT) ibFlash.setVisibility(View.INVISIBLE);
+            if (idCamera == Camera.CameraInfo.CAMERA_FACING_FRONT)
+                ibFlash.setVisibility(View.INVISIBLE);
                 //ibFlash.setBackgroundResource(R.mipmap.flash_gray);
-            else  {
+            else {
                 ibFlash.setVisibility(View.VISIBLE);
                 ibFlash.setBackgroundResource(R.mipmap.flash);
             }
             if (camera == null) {
                 initCamera();
             }
+        }
+    }
+
+    /**
+     * Check installed application
+     *
+     * @param str
+     * @return
+     */
+    private boolean isAppInstalled(String str) {
+        PackageManager packageManager = getPackageManager();
+        try {
+            PackageInfo packageInfo = packageManager.getPackageInfo(str, PackageManager.GET_ACTIVITIES);
+            Log.d(TAG, str + " installed: true");
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.d(TAG, str + " installed: false");
+            return false;
         }
     }
 
@@ -440,16 +466,24 @@ public class CreateSelfieActivity extends BaseActivity {
                             @Override
                             protected Void doInBackground(Void... params) {
                                 //post photo to FB
-                                postPhotoToFacebook();
+                                if (isAppInstalled(FB_APP_NAME)) {
+                                    postPhotoToFacebook();
+                                }
 
                                 //post photo to VK
-                                postPhotoToVK(btm);
+                                if (isAppInstalled(VK_APP_NAME)) {
+                                    postPhotoToVK(btm);
+                                }
 
                                 //post photo to Twitter
-                                postPhotoToTwitter(btm);
+                                if (isAppInstalled(TW_APP_NAME)) {
+                                    postPhotoToTwitter(btm);
+                                }
 
                                 //post photo to Instagram
-                                postPhotoToInstagram(btm);
+                                if (isAppInstalled(IS_APP_NAME)) {
+                                    postPhotoToInstagram(btm);
+                                }
 
                                 return null;
                             }
