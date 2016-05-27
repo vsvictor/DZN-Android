@@ -40,6 +40,7 @@ import com.dzn.dzn.application.MainActivity;
 import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.Objects.Settings;
 import com.dzn.dzn.application.R;
+import com.dzn.dzn.application.Services.FbIntentService;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 import com.dzn.dzn.application.Widget.SquaredFrame;
@@ -135,6 +136,7 @@ public class CreateSelfieActivity extends BaseActivity {
     private int idCamera;
     private boolean FULL_SCREEN = true;
     private boolean flashMode = true;
+    private Uri uri;
 
     private Settings settings;
 
@@ -258,6 +260,7 @@ public class CreateSelfieActivity extends BaseActivity {
             Log.d(TAG, "Camera null");
             try {
                 camera = Camera.open(idCamera);
+                initSurface();
                 camera.setPreviewDisplay(surfaceHolder);
                 setCameraDisplayOrientation(idCamera);
                 setPreviewSize(FULL_SCREEN);
@@ -303,20 +306,22 @@ public class CreateSelfieActivity extends BaseActivity {
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-                setCameraDisplayOrientation(idCamera);
                 try {
+                    setCameraDisplayOrientation(idCamera);
                     camera.setPreviewDisplay(surfaceHolder);
                     camera.startPreview();
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (Exception ex) {
+                    Log.d(TAG, "" + ex.getMessage());
                 }
             }
 
             @Override
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-                camera.stopPreview();
-                setCameraDisplayOrientation(idCamera);
                 try {
+                    camera.stopPreview();
+                    setCameraDisplayOrientation(idCamera);
                     camera.setPreviewDisplay(holder);
                     camera.startPreview();
                 } catch (Exception e) {
@@ -427,9 +432,11 @@ public class CreateSelfieActivity extends BaseActivity {
 
         llSpreadSelfie.setVisibility(View.VISIBLE);
 
-        if (!VKSdk.wakeUpSession(this)) {
-            Log.d(TAG, "VK authorize");
-            VKSdk.login(CreateSelfieActivity.this, sVkScope);
+        if (isAppInstalled(VK_APP_NAME)) {
+            if (!VKSdk.wakeUpSession(this)) {
+                Log.d(TAG, "VK authorize");
+                VKSdk.login(CreateSelfieActivity.this, sVkScope);
+            }
         }
 
         camera.takePicture(null, null, new Camera.PictureCallback() {
@@ -455,7 +462,10 @@ public class CreateSelfieActivity extends BaseActivity {
                         btm = Bitmap.createScaledBitmap(bob, bitmap.getWidth() / 2, bitmap.getHeight(), false);
                     }
 
+                    uri = getImageUri(btm);
+
                     if (settings.isSocial()) {
+
                         new AsyncTask<Void, Void, Void>() {
                             @Override
                             protected void onPreExecute() {
@@ -466,6 +476,7 @@ public class CreateSelfieActivity extends BaseActivity {
                             @Override
                             protected Void doInBackground(Void... params) {
                                 //post photo to FB
+
                                 if (isAppInstalled(FB_APP_NAME)) {
                                     postPhotoToFacebook();
                                 }
@@ -482,7 +493,7 @@ public class CreateSelfieActivity extends BaseActivity {
 
                                 //post photo to Instagram
                                 if (isAppInstalled(IS_APP_NAME)) {
-                                    postPhotoToInstagram(btm);
+                                    postPhotoToInstagram(uri);
                                 }
 
                                 return null;
@@ -712,36 +723,15 @@ public class CreateSelfieActivity extends BaseActivity {
     /**
      * Post photo to Instagram
      *
-     * @param bitmap
+     * @param uri
      */
-    private void postPhotoToInstagram(final Bitmap bitmap) {
-        String instagramPackage = "com.instagram.android";
-        if (isPackageInstalled(instagramPackage)) {
+    private void postPhotoToInstagram(Uri uri) {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("image/*");
-            intent.setPackage(instagramPackage);
-            intent.putExtra(Intent.EXTRA_STREAM, getImageUri(bitmap));
+            intent.setPackage(IS_APP_NAME);
+            intent.putExtra(Intent.EXTRA_STREAM, uri);
             intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.publish_message));
             startActivity(intent);
-        } else {
-            Log.d(TAG, "postPhotoToInstagram: You should install Instagram app first");
-        }
-    }
-
-    /**
-     * Check installed application
-     *
-     * @param packageName
-     * @return
-     */
-    private boolean isPackageInstalled(String packageName) {
-        PackageManager pm = getPackageManager();
-        try {
-            pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
-            return true;
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
     }
 
     /**

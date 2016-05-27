@@ -64,7 +64,7 @@ public class Settings {
         interval = settings.getInt(INTERVAL, 30);
         repeat = settings.getInt(REPEAT, 5);
         vibro = settings.getBoolean(VIBRO, true);
-        isSocial = settings.getBoolean(SOCIAL, true);
+        isSocial = settings.getBoolean(SOCIAL, false);
         addTime = settings.getBoolean(ADD_TIME, false);
         addGeo = settings.getBoolean(ADD_GEO, false);
         melody = settings.getString(MELODY, "");

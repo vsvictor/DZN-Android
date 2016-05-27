@@ -109,6 +109,9 @@
             android:name=".Activities.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SampleTheme" />
+
+        <service android:name="com.dzn.dzn.application.Services.FbIntentService" />
+
     </application>
 
 </manifest>
