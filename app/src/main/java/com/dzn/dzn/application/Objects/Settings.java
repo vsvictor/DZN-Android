@@ -27,6 +27,11 @@ public class Settings {
     private boolean addGeo;
     private String melody;
 
+    private boolean isFacebook;
+    private boolean isVkontakte;
+    private boolean isTwitter;
+    private boolean isInstagram;
+
     private ArrayList<Social> list;
 
     private DataBaseHelper dbHelper;
@@ -40,6 +45,11 @@ public class Settings {
     private static final String ADD_TIME = "addTime";
     private static final String ADD_GEO = "addGeo";
     private static final String MELODY = "melody";
+
+    private static final String FACEBOOK = "facebook";
+    private static final String VKONTAKTE = "vkontakte";
+    private static final String TWITTER = "twitter";
+    private static final String INSTAGRAM = "instagram";
 
     public static final String LOCALE_RU = "ru";
     public static final String LOCALE_EN = "en";
@@ -68,6 +78,10 @@ public class Settings {
         addTime = settings.getBoolean(ADD_TIME, false);
         addGeo = settings.getBoolean(ADD_GEO, false);
         melody = settings.getString(MELODY, "");
+        isFacebook = settings.getBoolean(FACEBOOK, false);
+        isVkontakte = settings.getBoolean(VKONTAKTE, false);
+        isTwitter = settings.getBoolean(TWITTER, false);
+        isInstagram = settings.getBoolean(INSTAGRAM, false);
         list = dbHelper.getSocial();
     }
 
@@ -82,6 +96,10 @@ public class Settings {
         ed.putBoolean(ADD_TIME, addTime);
         ed.putBoolean(ADD_GEO, addGeo);
         ed.putString(MELODY, melody);
+        ed.putBoolean(FACEBOOK, isFacebook);
+        ed.putBoolean(VKONTAKTE, isVkontakte);
+        ed.putBoolean(TWITTER, isTwitter);
+        ed.putBoolean(INSTAGRAM, isInstagram);
         ed.commit();
         dbHelper.setSocial(list);
     }
@@ -109,6 +127,18 @@ public class Settings {
         this.melody = melody;
     }
 
+    public void setFacebook(boolean isFacebook) { this.isFacebook = isFacebook; }
+    public boolean isFacebook() { return this.isFacebook; }
+
+    public void setVkontakte(boolean isVkontakte) { this.isVkontakte = isVkontakte; }
+    public boolean isVkontakte() { return this.isVkontakte; }
+
+    public void setTwitter(boolean isTwitter) { this.isTwitter = isTwitter; }
+    public boolean isTwitter() { return this.isTwitter; }
+
+    public void setInstagram(boolean isInstagram) { this.isInstagram = isInstagram; }
+    public boolean isInstagram() { return this.isInstagram; }
+
     @Override
     public String toString() {
         return "Settings{" +
@@ -122,6 +152,10 @@ public class Settings {
                 ", addGeo=" + addGeo +
                 ", melody='" + melody + '\'' +
                 ", list=" + list +
+                ", Facebook=" + isFacebook +
+                ", Vkontakte=" + isVkontakte +
+                ", Twitter=" + isTwitter +
+                ", Instagram=" + isInstagram +
                 '}';
     }
 

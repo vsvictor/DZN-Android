@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -51,6 +52,12 @@ public class SettingsActivity extends BaseActivity {
 
     private ToggleButton toggleSettingsVibro;
     private ToggleButton toggleSettingsUploadPhoto;
+
+    private LinearLayout llSocialNetwork;
+    private ToggleButton toggleSettingsFacebook;
+    private ToggleButton toggleSettingsVkontakte;
+    private ToggleButton toggleSettingsTwitter;
+    private ToggleButton toggleSettingsInstagram;
 
     private SeekBar sbSettingsSound;
 
@@ -96,6 +103,7 @@ public class SettingsActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause");
+        settings.save();
     }
 
     @Override
@@ -308,21 +316,29 @@ public class SettingsActivity extends BaseActivity {
         tvSettingsUploadPhoto = (TextView) findViewById(R.id.tvSettingsUploadPhoto);
         PFHandbookProTypeFaces.THIN.apply(tvSettingsUploadPhoto);
 
-        toggleSettingsUploadPhoto = (ToggleButton) findViewById(R.id.toggleSettingsUploadPhoto);
-        toggleSettingsUploadPhoto.setChecked(settings.isSocial());
-        toggleSettingsUploadPhoto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        llSocialNetwork = (LinearLayout) findViewById(R.id.linearSN);
+        toggleSettingsFacebook = (ToggleButton) findViewById(R.id.toggleSettingsFasebook);
+        toggleSettingsFacebook.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                settings.setSocial(isChecked);
-                settings.save();
-
+                settings.setFacebook(isChecked);
                 if (isChecked) {
                     if (isAppInstalled(FB_APP_NAME)) {
                         callbackManager = CallbackManager.Factory.create();
                         loginManager = LoginManager.getInstance();
                         loginManager.logInWithPublishPermissions(SettingsActivity.this, permissions);
                     }
+                }
+            }
+        });
+        toggleSettingsFacebook.setChecked(settings.isFacebook());
 
+        toggleSettingsVkontakte = (ToggleButton) findViewById(R.id.toggleSettingsVkontakte);
+        toggleSettingsVkontakte.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                settings.setVkontakte(isChecked);
+                if (isChecked) {
                     if (isAppInstalled(VK_APP_NAME)) {
                         if (!VKSdk.wakeUpSession(SettingsActivity.this)) {
                             Log.d(TAG, "VK authorize");
@@ -332,6 +348,54 @@ public class SettingsActivity extends BaseActivity {
                 }
             }
         });
+        toggleSettingsVkontakte.setChecked(settings.isVkontakte());
+
+        toggleSettingsTwitter = (ToggleButton) findViewById(R.id.toggleSettingsTwitter);
+        toggleSettingsTwitter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                settings.setTwitter(isChecked);
+            }
+        });
+        toggleSettingsTwitter.setChecked(settings.isTwitter());
+
+        toggleSettingsInstagram = (ToggleButton) findViewById(R.id.toggleSettingsInstagram);
+        toggleSettingsInstagram.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                settings.setInstagram(isChecked);
+            }
+        });
+        toggleSettingsInstagram.setChecked(settings.isInstagram());
+
+        toggleSettingsUploadPhoto = (ToggleButton) findViewById(R.id.toggleSettingsUploadPhoto);
+        toggleSettingsUploadPhoto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                settings.setSocial(isChecked);
+
+                if (isChecked) {
+                    llSocialNetwork.setVisibility(View.VISIBLE);
+                    setCheckedSocialNetwork();
+                } else {
+                    llSocialNetwork.setVisibility(View.GONE);
+                    settings.setFacebook(false);
+                    settings.setVkontakte(false);
+                    settings.setTwitter(false);
+                    settings.setInstagram(false);
+                    setCheckedSocialNetwork();
+                }
+                settings.save();
+            }
+        });
+        toggleSettingsUploadPhoto.setChecked(settings.isSocial());
+    }
+
+    private void setCheckedSocialNetwork() {
+        toggleSettingsFacebook.setChecked(settings.isFacebook());
+        toggleSettingsVkontakte.setChecked(settings.isVkontakte());
+        toggleSettingsTwitter.setChecked(settings.isTwitter());
+        toggleSettingsInstagram.setChecked(settings.isInstagram());
     }
 
     /**

@@ -34,6 +34,11 @@
     <string name="short_friday">Пт</string>
     <string name="short_saturday">Сб</string>
 
+    <string name="short_facebook">FB</string>
+    <string name="short_vkontakte">VK</string>
+    <string name="short_twitter">TW</string>
+    <string name="short_instagram">IS</string>
+
     <string-array name="new_edit_activity_spinner_repeat">
         <item>Один раз</item>
         <item>Каждый день</item>

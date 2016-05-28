@@ -349,6 +349,56 @@
 
             </RelativeLayout>
 
+            <LinearLayout
+                android:id="@+id/linearSN"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/activity_vertical_margin"
+                android:visibility="gone">
+
+                <ToggleButton
+                    android:id="@+id/toggleSettingsFasebook"
+                    style="@style/NewEditToggleDay"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_weight="1"
+                    android:textOff="@string/short_facebook"
+                    android:textOn="@string/short_facebook" />
+
+                <ToggleButton
+                    android:id="@+id/toggleSettingsVkontakte"
+                    style="@style/NewEditToggleDay"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_weight="1"
+                    android:textOff="@string/short_vkontakte"
+                    android:textOn="@string/short_vkontakte" />
+
+                <ToggleButton
+                    android:id="@+id/toggleSettingsTwitter"
+                    style="@style/NewEditToggleDay"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_weight="1"
+                    android:textOff="@string/short_twitter"
+                    android:textOn="@string/short_twitter" />
+
+                <ToggleButton
+                    android:id="@+id/toggleSettingsInstagram"
+                    style="@style/NewEditToggleDay"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_weight="1"
+                    android:textOff="@string/short_instagram"
+                    android:textOn="@string/short_instagram" />
+
+            </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/app_divider_line"
