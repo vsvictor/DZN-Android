@@ -16,6 +16,8 @@ import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -139,6 +141,7 @@ public class CreateSelfieActivity extends BaseActivity {
     private Uri uri;
 
     private Settings settings;
+    private MediaPlayer mMediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,6 +163,7 @@ public class CreateSelfieActivity extends BaseActivity {
         created = false;
         setContentView(R.layout.activity_create_selfie);
         idCamera = Camera.CameraInfo.CAMERA_FACING_FRONT;
+
         Bundle b = getIntent().getExtras();
         if (b != null) {
             id = getIntent().getExtras().getInt("id", -1);
@@ -174,9 +178,6 @@ public class CreateSelfieActivity extends BaseActivity {
             }
         } else id = -1;
 
-        Uri alarmTone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        Ringtone ringtoneAlarm = RingtoneManager.getRingtone(getApplicationContext(), alarmTone);
-        ringtoneAlarm.play();
 
         //Initialize settings
         settings = Settings.getInstance(this);
@@ -308,12 +309,29 @@ public class CreateSelfieActivity extends BaseActivity {
             public void surfaceCreated(SurfaceHolder holder) {
                 try {
                     setCameraDisplayOrientation(idCamera);
-                    camera.setPreviewDisplay(surfaceHolder);
+                    camera.setPreviewDisplay(holder);
                     camera.startPreview();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (Exception ex) {
                     Log.d(TAG, "" + ex.getMessage());
+                }
+
+                Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+                final AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+                if(mMediaPlayer == null) mMediaPlayer = new MediaPlayer();
+                if(!mMediaPlayer.isPlaying()) {
+                    try {
+                        mMediaPlayer.setDataSource(CreateSelfieActivity.this, alert);
+                        if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
+                            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+                            mMediaPlayer.setLooping(true);
+                            mMediaPlayer.prepare();
+                            mMediaPlayer.start();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -418,6 +436,7 @@ public class CreateSelfieActivity extends BaseActivity {
      */
     public void onStopAlarm(View view) {
         created = true;
+        mMediaPlayer.stop();
         ibFlash.setVisibility(View.INVISIBLE);
         ibSpread.setVisibility(View.INVISIBLE);
 
@@ -501,6 +520,7 @@ public class CreateSelfieActivity extends BaseActivity {
 
                             @Override
                             protected void onPostExecute(Void aVoid) {
+                                startActivity(new Intent(CreateSelfieActivity.this, MainActivity.class));
                                 finish();
                             }
                         }.execute();
@@ -521,6 +541,7 @@ public class CreateSelfieActivity extends BaseActivity {
                 camera.stopPreview();
             }
         });
+/*
         if (id > 0) {
             int counter = getIntent().getExtras().getInt("counter");
             long time = getIntent().getExtras().getLong("time");
@@ -546,8 +567,9 @@ public class CreateSelfieActivity extends BaseActivity {
                 counter++;
             }
         }
+*/
     }
-
+/*
     private ArrayList<Alarm> getListAlarm() {
         if (dataBaseHelper == null) {
             Log.i(TAG, "DNHelper is null");
@@ -559,7 +581,7 @@ public class CreateSelfieActivity extends BaseActivity {
 
         return ar;
     }
-
+*/
     /**
      * Post photo to Facebook
      */
