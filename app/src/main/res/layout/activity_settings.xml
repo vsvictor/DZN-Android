@@ -350,7 +350,7 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/linearSN"
+                android:id="@+id/linearSettingsSN"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -358,7 +358,7 @@
                 android:visibility="gone">
 
                 <ToggleButton
-                    android:id="@+id/toggleSettingsFasebook"
+                    android:id="@+id/toggleSettingsFacebook"
                     style="@style/NewEditToggleDay"
                     android:layout_width="30dp"
                     android:layout_height="30dp"

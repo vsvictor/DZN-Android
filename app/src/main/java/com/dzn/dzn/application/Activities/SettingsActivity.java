@@ -316,8 +316,8 @@ public class SettingsActivity extends BaseActivity {
         tvSettingsUploadPhoto = (TextView) findViewById(R.id.tvSettingsUploadPhoto);
         PFHandbookProTypeFaces.THIN.apply(tvSettingsUploadPhoto);
 
-        llSocialNetwork = (LinearLayout) findViewById(R.id.linearSN);
-        toggleSettingsFacebook = (ToggleButton) findViewById(R.id.toggleSettingsFasebook);
+        llSocialNetwork = (LinearLayout) findViewById(R.id.linearSettingsSN);
+        toggleSettingsFacebook = (ToggleButton) findViewById(R.id.toggleSettingsFacebook);
         toggleSettingsFacebook.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -423,6 +423,7 @@ public class SettingsActivity extends BaseActivity {
      */
     public void saveSettings(View view) {
         settings.save();
+        Log.d(TAG, "Settings: " + settings.toString());
         //applySettings();
         Intent intent = new Intent(this, MainActivity.class);
         //if(sender == 0) intent.setClass(this, MainActivity.class);

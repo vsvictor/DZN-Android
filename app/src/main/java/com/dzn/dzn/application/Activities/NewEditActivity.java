@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -47,6 +48,12 @@ public class NewEditActivity extends BaseActivity {
     //Section Social Network
     private TextView tvNewEditSocialNetwork;
     private Spinner spinnerNewEditSocialNetwork;
+    private ToggleButton toggleNewEditSocialNetwork;
+    private LinearLayout llSocialNetwork;
+    private ToggleButton toggleAlarmFacebook;
+    private ToggleButton toggleAlarmVkontakte;
+    private ToggleButton toggleAlarmTwitter;
+    private ToggleButton toggleAlarmInstagram;
 
     private WheelView npHours;
     private WheelView npMinutes;
@@ -72,7 +79,7 @@ public class NewEditActivity extends BaseActivity {
         if (b != null) {
             id = b.getInt("idAlarm", -1);
             edAlarm = dataBaseHelper.getAlarm(id);
-            if(edAlarm != null) {
+            if (edAlarm != null) {
                 iHours = edAlarm.getDate().getHours();
                 iMinutes = edAlarm.getDate().getMinutes();
             } else {
@@ -87,7 +94,7 @@ public class NewEditActivity extends BaseActivity {
         }
 
         //Initialize settings
-        settings = Settings.getInstance(this);
+        settings = Settings.getInstance(getApplication());
         settings.load();
 
         //Initialize view elements
@@ -96,7 +103,7 @@ public class NewEditActivity extends BaseActivity {
 
     /**
      * Create new Alarm
-      */
+     */
     private void createAlarm() {
         Alarm al = new Alarm();
         Date d = new Date();
@@ -308,15 +315,122 @@ public class NewEditActivity extends BaseActivity {
     private void initSectionSocialNetwork() {
         tvNewEditSocialNetwork = (TextView) findViewById(R.id.tvNewEditSocialNetwork);
         PFHandbookProTypeFaces.THIN.apply(tvNewEditSocialNetwork);
-        spinnerNewEditSocialNetwork = (Spinner) findViewById(R.id.spinnerNewEditSocialNetwork);
 
+        llSocialNetwork = (LinearLayout) findViewById(R.id.linearAlarmSN);
+
+        spinnerNewEditSocialNetwork = (Spinner) findViewById(R.id.spinnerNewEditSocialNetwork);
         SpinnerRepeatAdapter adapter = new SpinnerRepeatAdapter(
                 getApplicationContext(),
                 R.layout.new_edit_spinner,
-                Arrays.asList(getResources().getStringArray(R.array.new_edit_activity_spinner_settings)));
+                Arrays.asList(getResources().getStringArray(R.array.new_edit_activity_spinner_social_network)));
         adapter.setDropDownViewResource(R.layout.new_edit_spinner_drop);
-
         spinnerNewEditSocialNetwork.setAdapter(adapter);
+        spinnerNewEditSocialNetwork.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    llSocialNetwork.setVisibility(View.GONE);
+                    edAlarm.setFacebook(settings.isFacebook());
+                    edAlarm.setVkontakte(settings.isVkontakte());
+                    edAlarm.setTwitter(settings.isTwitter());
+                    edAlarm.setInstagram(settings.isInstagram());
+                }
+                if (position == 1) {
+                    llSocialNetwork.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        toggleAlarmFacebook = (ToggleButton) findViewById(R.id.toggleAlarmFacebook);
+        toggleAlarmFacebook.setChecked(edAlarm.isFacebook());
+        toggleAlarmFacebook.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                edAlarm.setFacebook(isChecked);
+            }
+        });
+
+        toggleAlarmVkontakte = (ToggleButton) findViewById(R.id.toggleAlarmVkontakte);
+        toggleAlarmVkontakte.setChecked(edAlarm.isVkontakte());
+        toggleAlarmVkontakte.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                edAlarm.setVkontakte(isChecked);
+            }
+        });
+
+        toggleAlarmTwitter = (ToggleButton) findViewById(R.id.toggleAlarmTwitter);
+        toggleAlarmTwitter.setChecked(edAlarm.isTwitter());
+        toggleAlarmTwitter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                edAlarm.setTwitter(isChecked);
+            }
+        });
+
+        toggleAlarmInstagram = (ToggleButton) findViewById(R.id.toggleAlarmInstagram);
+        toggleAlarmInstagram.setChecked(edAlarm.isInstagram());
+        toggleAlarmInstagram.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                edAlarm.setInstagram(isChecked);
+            }
+        });
+
+        toggleNewEditSocialNetwork = (ToggleButton) findViewById(R.id.toggleNewEditSocialNetwork);
+        if (!edAlarm.isFacebook() && !edAlarm.isVkontakte() && !edAlarm.isTwitter() && !edAlarm.isInstagram()) {
+            spinnerNewEditSocialNetwork.setSelection(0);
+            toggleNewEditSocialNetwork.setChecked(false);
+            llSocialNetwork.setVisibility(View.GONE);
+        } else if (settings.isSocial()
+                && (edAlarm.isFacebook() == settings.isFacebook())
+                && (edAlarm.isVkontakte() == settings.isVkontakte())
+                && (edAlarm.isTwitter() == settings.isTwitter())
+                && (edAlarm.isInstagram() == settings.isInstagram())
+                ) {
+            spinnerNewEditSocialNetwork.setSelection(0);
+            toggleNewEditSocialNetwork.setChecked(true);
+        } else {
+            spinnerNewEditSocialNetwork.setSelection(1);
+            toggleNewEditSocialNetwork.setChecked(true);
+            toggleAlarmFacebook.setChecked(edAlarm.isFacebook());
+            toggleAlarmVkontakte.setChecked(edAlarm.isVkontakte());
+            toggleAlarmTwitter.setChecked(edAlarm.isTwitter());
+            toggleAlarmInstagram.setChecked(edAlarm.isInstagram());
+            llSocialNetwork.setVisibility(View.VISIBLE);
+        }
+
+        toggleNewEditSocialNetwork.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.d(TAG, "Spinner: " + spinnerNewEditSocialNetwork.getSelectedItemPosition());
+                if (isChecked && spinnerNewEditSocialNetwork.getSelectedItemPosition() == 0) {
+                    edAlarm.setFacebook(settings.isFacebook());
+                    edAlarm.setVkontakte(settings.isVkontakte());
+                    edAlarm.setTwitter(settings.isTwitter());
+                    edAlarm.setInstagram(settings.isInstagram());
+                } else if (isChecked && spinnerNewEditSocialNetwork.getSelectedItemPosition() == 1) {
+                    llSocialNetwork.setVisibility(View.VISIBLE);
+                } else {
+                    llSocialNetwork.setVisibility(View.GONE);
+                    edAlarm.setFacebook(false);
+                    edAlarm.setVkontakte(false);
+                    edAlarm.setTwitter(false);
+                    edAlarm.setInstagram(false);
+                }
+                toggleAlarmFacebook.setChecked(edAlarm.isFacebook());
+                toggleAlarmVkontakte.setChecked(edAlarm.isFacebook());
+                toggleAlarmTwitter.setChecked(edAlarm.isTwitter());
+                toggleAlarmInstagram.setChecked(edAlarm.isInstagram());
+                Log.d(TAG, "Settings: " + settings.toString());
+                Log.d(TAG, "Alarm: " + edAlarm.toString());
+            }
+        });
     }
 
     /**
@@ -348,6 +462,7 @@ public class NewEditActivity extends BaseActivity {
             }
             dataBaseHelper.updateAlarm(edAlarm);
         }
+        Log.d(TAG, "Alarm: " + edAlarm.toString());
         finish();
     }
 

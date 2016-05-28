@@ -35,6 +35,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String COL_MELODY = "melody";
     private static final String COL_VIBRO = "vibro";
     private static final String COL_TURN_ON = "turnon";
+    private static final String COL_FB = "facebook";
+    private static final String COL_VK = "vkontakte";
+    private static final String COL_TW = "twitter";
+    private static final String COL_IS = "instagram";
 
     //Table Public
     private static final String TBL_PUBLIC = "public";
@@ -90,6 +94,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + COL_SOUND + " INTEGER NOT NULL DEFAULT 80, "
                 + COL_MELODY + " TEXT NOT NULL, "
                 + COL_VIBRO + " INTEGER NOT NULL DEFAULT 1, "
+                + COL_FB + " INTEGER NOT NULL DEFAULT 0, "
+                + COL_VK + " INTEGER NOT NULL DEFAULT 0, "
+                + COL_TW + " INTEGER NOT NULL DEFAULT 0, "
+                + COL_IS + " INTEGER NOT NULL DEFAULT 0, "
                 + COL_TURN_ON + " INTEGER NOT NULL DEFAULT 1)";
 
         String CREATE_TBL_PUBLIC = "CREATE TABLE " + TBL_PUBLIC
@@ -156,6 +164,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_MELODY, alarm.getMelody());
 
         contentValues.put(COL_VIBRO, alarm.isVibro() ? 1 : 0);
+        contentValues.put(COL_FB, alarm.isFacebook() ? 1 : 0);
+        contentValues.put(COL_VK, alarm.isVkontakte() ? 1 : 0);
+        contentValues.put(COL_TW, alarm.isTwitter() ? 1 : 0);
+        contentValues.put(COL_IS, alarm.isInstagram() ? 1 : 0);
         contentValues.put(COL_TURN_ON, alarm.isTurnOn() ? 1 : 0);
 
         //db.insert(TBL_ALARMS, null, contentValues);
@@ -186,6 +198,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_SOUND, alarm.getSound());
         contentValues.put(COL_MELODY, alarm.getMelody());
         contentValues.put(COL_VIBRO, alarm.isVibro() ? 1 : 0);
+        contentValues.put(COL_FB, alarm.isFacebook() ? 1 : 0);
+        contentValues.put(COL_VK, alarm.isVkontakte() ? 1 : 0);
+        contentValues.put(COL_TW, alarm.isTwitter() ? 1 : 0);
+        contentValues.put(COL_IS, alarm.isInstagram() ? 1 : 0);
         contentValues.put(COL_TURN_ON, alarm.isTurnOn() ? 1 : 0);
 
         //db.insert(TBL_ALARMS, null, contentValues);
@@ -262,11 +278,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 alarm.setSound(cursor.getInt(cursor.getColumnIndex(COL_SOUND)));
                 alarm.setMelody(cursor.getString(cursor.getColumnIndex(COL_MELODY)));
                 alarm.setVibro(true);
-                if (cursor.getInt(cursor.getColumnIndex(COL_TURN_ON)) == 1) {
-                    alarm.setTurnOn(true);
-                } else {
-                    alarm.setTurnOn(false);
-                }
+
+                alarm.setTurnOn(cursor.getInt(cursor.getColumnIndex(COL_TURN_ON)) == 1);
+                alarm.setFacebook(cursor.getInt(cursor.getColumnIndex(COL_FB)) == 1);
+                alarm.setVkontakte(cursor.getInt(cursor.getColumnIndex(COL_VK)) == 1);
+                alarm.setTwitter(cursor.getInt(cursor.getColumnIndex(COL_TW)) == 1);
+                alarm.setInstagram(cursor.getInt(cursor.getColumnIndex(COL_IS)) == 1);
+
                 String[] args = {String.valueOf(alarm.getID())};
                 Cursor dd = db.query(TBL_DAYS,null,COL_ALARM_ID+"=?",args,null,null,null);
                 if(dd.moveToFirst()){
@@ -320,11 +338,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             alarm.setSound(cursor.getInt(cursor.getColumnIndex(COL_SOUND)));
             alarm.setMelody(cursor.getString(cursor.getColumnIndex(COL_MELODY)));
             alarm.setVibro(true);
-            if (cursor.getInt(cursor.getColumnIndex(COL_TURN_ON)) == 1) {
-                alarm.setTurnOn(true);
-            } else {
-                alarm.setTurnOn(false);
-            }
+
+            alarm.setTurnOn(cursor.getInt(cursor.getColumnIndex(COL_TURN_ON)) == 1);
+            alarm.setFacebook(cursor.getInt(cursor.getColumnIndex(COL_FB)) == 1);
+            alarm.setVkontakte(cursor.getInt(cursor.getColumnIndex(COL_VK)) == 1);
+            alarm.setTwitter(cursor.getInt(cursor.getColumnIndex(COL_TW)) == 1);
+            alarm.setInstagram(cursor.getInt(cursor.getColumnIndex(COL_IS)) == 1);
+
             Cursor dd = db.query(TBL_DAYS,null,COL_ALARM_ID+"=?",args,null,null,null);
             if(dd.moveToFirst()){
                 alarm.setDay(0,dd.getInt(dd.getColumnIndex(COL_1))==1);

@@ -2,6 +2,7 @@ package com.dzn.dzn.application.Objects;
 
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -19,6 +20,11 @@ public class Alarm implements Serializable {
     private boolean visible;
     private boolean turnOn;
     private boolean[] days = new boolean[7];
+
+    private boolean isFacebook = false;
+    private boolean isVkontakte = false;
+    private boolean isTwitter = false;
+    private boolean isInstagram = false;
 
     public Alarm () {
         this.visible = true;
@@ -72,6 +78,38 @@ public class Alarm implements Serializable {
         return turnOn;
     }
 
+    public void setFacebook(boolean facebook) {
+        isFacebook = facebook;
+    }
+
+    public boolean isFacebook() {
+        return isFacebook;
+    }
+
+    public void setVkontakte(boolean vkontakte) {
+        isVkontakte = vkontakte;
+    }
+
+    public boolean isVkontakte() {
+        return isVkontakte;
+    }
+
+    public void setTwitter(boolean twitter) {
+        isTwitter = twitter;
+    }
+
+    public boolean isTwitter() {
+        return isTwitter;
+    }
+
+    public void setInstagram(boolean instagram) {
+        isInstagram = instagram;
+    }
+
+    public boolean isInstagram() {
+        return isInstagram;
+    }
+
     public void setID(int ID) {
         this.ID = ID;
     }
@@ -120,6 +158,7 @@ public class Alarm implements Serializable {
         return (days[0]&&days[6]&&!days[1]&&!days[2]&&!days[3]&&!days[4]&&!days[5]);
     }
     public boolean isOne(){return (!days[0]&&!days[1]&&!days[2]&&!days[3]&&!days[4]&&!days[5]&&!days[6]);}
+
     /**
      * Set default settings
      */
@@ -130,5 +169,24 @@ public class Alarm implements Serializable {
         this.setSound(80);
         this.setTurnOn(true);
         for(int i = 0;i<7;i++) days[i] = false;
+    }
+
+    @Override
+    public String toString() {
+        return "Alarm{" +
+                "ID=" + ID +
+                ", date=" + date +
+                ", repeat=" + repeat +
+                ", sound=" + sound +
+                ", melody='" + melody + '\'' +
+                ", vibro=" + vibro +
+                ", visible=" + visible +
+                ", turnOn=" + turnOn +
+                ", days=" + Arrays.toString(days) +
+                ", isFacebook=" + isFacebook +
+                ", isVkontakte=" + isVkontakte +
+                ", isTwitter=" + isTwitter +
+                ", isInstagram=" + isInstagram +
+                '}';
     }
 }

@@ -135,6 +135,7 @@ public class CreateSelfieActivity extends BaseActivity {
 
     private static int counter = 1;
     private int id;
+    private Alarm alarm;
     private int idCamera;
     private boolean FULL_SCREEN = true;
     private boolean flashMode = true;
@@ -162,7 +163,7 @@ public class CreateSelfieActivity extends BaseActivity {
 
         created = false;
         setContentView(R.layout.activity_create_selfie);
-        idCamera = Camera.CameraInfo.CAMERA_FACING_FRONT;
+        idCamera = CameraInfo.CAMERA_FACING_FRONT;
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -170,10 +171,10 @@ public class CreateSelfieActivity extends BaseActivity {
             if (id > 0) {
                 alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
                 dataBaseHelper = DataBaseHelper.getInstance(this);
-                Alarm al = dataBaseHelper.getAlarm(id);
-                if (al.isOne()) {
-                    al.setTurnOn(false);
-                    dataBaseHelper.updateAlarm(al);
+                alarm = dataBaseHelper.getAlarm(id);
+                if (alarm.isOne()) {
+                    alarm.setTurnOn(false);
+                    dataBaseHelper.updateAlarm(alarm);
                 }
             }
         } else id = -1;
@@ -496,22 +497,22 @@ public class CreateSelfieActivity extends BaseActivity {
                             protected Void doInBackground(Void... params) {
                                 //post photo to FB
 
-                                if (isAppInstalled(FB_APP_NAME)) {
+                                if (isAppInstalled(FB_APP_NAME) && alarm.isFacebook()) {
                                     postPhotoToFacebook();
                                 }
 
                                 //post photo to VK
-                                if (isAppInstalled(VK_APP_NAME)) {
+                                if (isAppInstalled(VK_APP_NAME) && alarm.isVkontakte()) {
                                     postPhotoToVK(btm);
                                 }
 
                                 //post photo to Twitter
-                                if (isAppInstalled(TW_APP_NAME)) {
+                                if (isAppInstalled(TW_APP_NAME) && alarm.isTwitter()) {
                                     postPhotoToTwitter(btm);
                                 }
 
                                 //post photo to Instagram
-                                if (isAppInstalled(IS_APP_NAME)) {
+                                if (isAppInstalled(IS_APP_NAME) && alarm.isInstagram()) {
                                     postPhotoToInstagram(uri);
                                 }
 

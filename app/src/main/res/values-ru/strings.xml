@@ -51,6 +51,11 @@
         <item>общие настройки</item>
     </string-array>
 
+    <string-array name="new_edit_activity_spinner_social_network">
+        <item>общие настройки</item>
+        <item>другое...</item>
+    </string-array>
+
     <!-- Settings activity -->
     <string name="settings_activity_settings">Настройки</string>
     <string name="settings_activity_language_ru">Русский</string>
