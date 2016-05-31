@@ -373,37 +373,6 @@ public class CreateSelfieActivity extends BaseActivity {
     }
 
     /**
-     * Set settings melody
-     *
-     * @param melody
-     */
-    private void setMelody(String melody) {
-        File file = new File(melody);
-
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.MediaColumns.DATA, file.getAbsolutePath());
-        values.put(MediaStore.MediaColumns.TITLE, "Song title");
-        values.put(MediaStore.MediaColumns.SIZE, 215454);
-        values.put(MediaStore.MediaColumns.MIME_TYPE, "audio/mp3");
-        values.put(MediaStore.Audio.Media.ARTIST, "Unknown");
-        values.put(MediaStore.Audio.Media.DURATION, 230);
-        values.put(MediaStore.Audio.Media.IS_RINGTONE, true);
-        values.put(MediaStore.Audio.Media.IS_NOTIFICATION, false);
-        values.put(MediaStore.Audio.Media.IS_ALARM, false);
-        values.put(MediaStore.Audio.Media.IS_MUSIC, false);
-
-        //Insert it into the database
-        Uri uri = MediaStore.Audio.Media.getContentUriForPath(file.getAbsolutePath());
-        Uri newUri = this.getContentResolver().insert(uri, values);
-
-        RingtoneManager.setActualDefaultRingtoneUri(
-                CreateSelfieActivity.this,
-                RingtoneManager.TYPE_RINGTONE,
-                newUri
-        );
-    }
-
-    /**
      * Click on flash
      *
      * @param view
