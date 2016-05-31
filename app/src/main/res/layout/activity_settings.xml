@@ -158,6 +158,15 @@
                     android:layout_weight="1"
                     android:background="@mipmap/ic_sound_on" />
 
+                <ImageButton
+                    android:id="@+id/idSettingsOpenSound"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:background="@mipmap/ic_open_sound" />
+
             </LinearLayout>
 
             <!-- Section of Set Alarm -->

@@ -1,5 +1,6 @@
 package com.dzn.dzn.application.Activities;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -15,6 +16,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.dzn.dzn.application.Dialog.OpenFileDialog;
 import com.dzn.dzn.application.MainActivity;
 import com.dzn.dzn.application.Objects.Settings;
 import com.dzn.dzn.application.R;
@@ -63,6 +65,7 @@ public class SettingsActivity extends BaseActivity {
 
     private ImageButton ibSoundMin;
     private ImageButton ibSoundMax;
+    private ImageButton ibOpenSound;
 
     private int sender = 0;
 
@@ -269,6 +272,16 @@ public class SettingsActivity extends BaseActivity {
             }
         });
 
+        ibOpenSound = (ImageButton) findViewById(R.id.idSettingsOpenSound);
+        ibOpenSound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenFileDialog builder = new OpenFileDialog(SettingsActivity.this);
+                builder.setAccessDeniedMessage("Access denied");
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
     }
 
     /**
