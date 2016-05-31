@@ -3,7 +3,6 @@ package com.dzn.dzn.application.Activities;
 
 import android.app.AlarmManager;
 import android.app.KeyguardManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,7 +17,6 @@ import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -42,10 +40,8 @@ import com.dzn.dzn.application.MainActivity;
 import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.Objects.Settings;
 import com.dzn.dzn.application.R;
-import com.dzn.dzn.application.Services.FbIntentService;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
-import com.dzn.dzn.application.Widget.SquaredFrame;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -82,10 +78,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
@@ -267,9 +260,27 @@ public class CreateSelfieActivity extends BaseActivity {
                 setCameraDisplayOrientation(idCamera);
                 setPreviewSize(FULL_SCREEN);
                 camera.startPreview();
+
+                //Initialize camera flash mode
+                initCameraFlashMode();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    /**
+     * Initialize camera flash mode
+     */
+    private void initCameraFlashMode() {
+        if (idCamera == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            ibFlash.setVisibility(View.INVISIBLE);
+        } else {
+            //Set camera flash mode off
+            Camera.Parameters p = camera.getParameters();
+            p.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+            camera.setParameters(p);
+            ibFlash.setBackgroundResource(R.mipmap.flash_gray);
         }
     }
 
@@ -284,13 +295,9 @@ public class CreateSelfieActivity extends BaseActivity {
 
         ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
         ibFlash = (ImageButton) findViewById(R.id.ibFlash);
-        if (idCamera == Camera.CameraInfo.CAMERA_FACING_FRONT)
-            ibFlash.setVisibility(View.INVISIBLE);
-            //ibFlash.setBackgroundResource(R.mipmap.flash_gray);
-        else {
-            ibFlash.setVisibility(View.VISIBLE);
-            ibFlash.setBackgroundResource(R.mipmap.flash);
-        }
+
+        //Initialize camera flash mode
+        initCameraFlashMode();
 
         ibSpread = (ImageButton) findViewById(R.id.ibSpread);
         ibStop = (ImageButton) findViewById(R.id.ibStop);
@@ -496,6 +503,7 @@ public class CreateSelfieActivity extends BaseActivity {
                             @Override
                             protected Void doInBackground(Void... params) {
                                 //post photo to FB
+                                Log.d(TAG, "Alarm: " + alarm.toString());
 
                                 if (isAppInstalled(FB_APP_NAME) && alarm.isFacebook()) {
                                     postPhotoToFacebook();
