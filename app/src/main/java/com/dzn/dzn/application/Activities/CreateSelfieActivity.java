@@ -3,6 +3,7 @@ package com.dzn.dzn.application.Activities;
 
 import android.app.AlarmManager;
 import android.app.KeyguardManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -325,10 +327,17 @@ public class CreateSelfieActivity extends BaseActivity {
                     Log.d(TAG, "" + ex.getMessage());
                 }
 
-                Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-                final AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-                if(mMediaPlayer == null) mMediaPlayer = new MediaPlayer();
-                if(!mMediaPlayer.isPlaying()) {
+                Uri alert = null;
+                if (settings.getMelody() == null) {
+                    Log.d(TAG, "Settings melody: null, set default ringtone");
+                    alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+                } else {
+                    Log.d(TAG, "Settings melody: " + settings.getMelody());
+                    alert = Uri.parse(settings.getMelody());
+                }
+                final AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+                if (mMediaPlayer == null) mMediaPlayer = new MediaPlayer();
+                if (!mMediaPlayer.isPlaying()) {
                     try {
                         mMediaPlayer.setDataSource(CreateSelfieActivity.this, alert);
                         if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
@@ -361,6 +370,37 @@ public class CreateSelfieActivity extends BaseActivity {
             }
         });
 
+    }
+
+    /**
+     * Set settings melody
+     *
+     * @param melody
+     */
+    private void setMelody(String melody) {
+        File file = new File(melody);
+
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.MediaColumns.DATA, file.getAbsolutePath());
+        values.put(MediaStore.MediaColumns.TITLE, "Song title");
+        values.put(MediaStore.MediaColumns.SIZE, 215454);
+        values.put(MediaStore.MediaColumns.MIME_TYPE, "audio/mp3");
+        values.put(MediaStore.Audio.Media.ARTIST, "Unknown");
+        values.put(MediaStore.Audio.Media.DURATION, 230);
+        values.put(MediaStore.Audio.Media.IS_RINGTONE, true);
+        values.put(MediaStore.Audio.Media.IS_NOTIFICATION, false);
+        values.put(MediaStore.Audio.Media.IS_ALARM, false);
+        values.put(MediaStore.Audio.Media.IS_MUSIC, false);
+
+        //Insert it into the database
+        Uri uri = MediaStore.Audio.Media.getContentUriForPath(file.getAbsolutePath());
+        Uri newUri = this.getContentResolver().insert(uri, values);
+
+        RingtoneManager.setActualDefaultRingtoneUri(
+                CreateSelfieActivity.this,
+                RingtoneManager.TYPE_RINGTONE,
+                newUri
+        );
     }
 
     /**
@@ -591,6 +631,7 @@ public class CreateSelfieActivity extends BaseActivity {
         return ar;
     }
 */
+
     /**
      * Post photo to Facebook
      */
@@ -757,12 +798,12 @@ public class CreateSelfieActivity extends BaseActivity {
      * @param uri
      */
     private void postPhotoToInstagram(Uri uri) {
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("image/*");
-            intent.setPackage(IS_APP_NAME);
-            intent.putExtra(Intent.EXTRA_STREAM, uri);
-            intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.publish_message));
-            startActivity(intent);
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("image/*");
+        intent.setPackage(IS_APP_NAME);
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.publish_message));
+        startActivity(intent);
     }
 
     /**

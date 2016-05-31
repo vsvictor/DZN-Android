@@ -1,11 +1,9 @@
 package com.dzn.dzn.application.Activities;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,9 +14,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.dzn.dzn.application.Dialog.OpenDialogListener;
 import com.dzn.dzn.application.Dialog.OpenFileDialog;
 import com.dzn.dzn.application.MainActivity;
-import com.dzn.dzn.application.Objects.Settings;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 import com.facebook.CallbackManager;
@@ -278,8 +276,14 @@ public class SettingsActivity extends BaseActivity {
             public void onClick(View v) {
                 OpenFileDialog builder = new OpenFileDialog(SettingsActivity.this);
                 builder.setAccessDeniedMessage("Access denied");
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                builder.setOpenDialogListener(new OpenDialogListener() {
+                    @Override
+                    public void OnSelectedFile(String fileName) {
+                        Log.d(TAG, "Selected file: " + fileName);
+                        settings.setMelody(fileName);
+                    }
+                });
+                builder.show();
             }
         });
     }

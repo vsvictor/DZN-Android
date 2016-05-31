@@ -201,6 +201,7 @@ public class OpenFileDialog extends AlertDialog.Builder {
     }
 
     private List<File> getFiles(String directoryPath) {
+        Log.d(TAG, "Directory path: " + directoryPath);
         File directory = new File(directoryPath);
         File[] list = directory.listFiles(filenameFilter);
         if(list == null)
