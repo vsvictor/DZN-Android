@@ -124,6 +124,15 @@
                     android:layout_centerVertical="true"
                     android:text="@string/settings_activity_sound" />
 
+                <TextView
+                    android:id="@+id/tvSettingsFolder"
+                    style="@style/NameOfPoint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/settings_activity_folder" />
+
             </RelativeLayout>
 
             <LinearLayout
@@ -165,7 +174,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:layout_marginLeft="@dimen/activity_vertical_margin"
-                    android:background="@mipmap/ic_open_sound" />
+                    android:src="@mipmap/ic_open_sound" />
 
             </LinearLayout>
 
