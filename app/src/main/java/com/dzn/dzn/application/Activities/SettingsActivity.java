@@ -39,6 +39,7 @@ public class SettingsActivity extends BaseActivity {
     private TextView tvSettingsReady;
     private TextView tvSettingsSectionSound;
     private TextView tvSettingsSound;
+    private TextView tvSettingsFolder;
     private TextView tvSettingsSectionAlarm;
     private TextView tvSettingsIntervalRepeat;
     private TextView tvSettingsSectionSocialNetwork;
@@ -53,7 +54,12 @@ public class SettingsActivity extends BaseActivity {
     private ToggleButton toggleSettingsVibro;
     private ToggleButton toggleSettingsUploadPhoto;
 
+    //Section Social network
     private LinearLayout llSocialNetwork;
+    private TextView tvSettingsFacebook;
+    private TextView tvSettingsVkontakte;
+    private TextView tvSettingsTwitter;
+    private TextView tvSettingsInstagram;
     private ToggleButton toggleSettingsFacebook;
     private ToggleButton toggleSettingsVkontakte;
     private ToggleButton toggleSettingsTwitter;
@@ -66,8 +72,6 @@ public class SettingsActivity extends BaseActivity {
     private ImageButton ibOpenSound;
 
     private int sender = 0;
-
-    private static final String[] filter = {".*\\.mp3", ".*\\.ogg", ".*\\.avi", ".*\\.midi"};
 
     //integrate Facebook
     private static final String FB_APP_NAME = "com.facebook.katana";
@@ -235,6 +239,9 @@ public class SettingsActivity extends BaseActivity {
         tvSettingsSound = (TextView) findViewById(R.id.tvSettingsSound);
         PFHandbookProTypeFaces.THIN.apply(tvSettingsSound);
 
+        tvSettingsFolder = (TextView) findViewById(R.id.tvSettingsFolder);
+        PFHandbookProTypeFaces.THIN.apply(tvSettingsFolder);
+
         sbSettingsSound = (SeekBar) findViewById(R.id.sbSettingsSound);
         sbSettingsSound.setProgress(settings.getSound());
         sbSettingsSound.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -278,8 +285,7 @@ public class SettingsActivity extends BaseActivity {
             public void onClick(View v) {
                 OpenFileDialog builder = new OpenFileDialog(SettingsActivity.this);
                 builder.setAccessDeniedMessage("Access denied");
-                //builder.setFilter(new String[] {".*\\.mp3", ".*\\.ogg", ".*\\.avi", ".*\\.midi"});
-                builder.setFilter(filter);
+                builder.setFilter(OpenFileDialog.FILE_FILTER);
                 builder.setOpenDialogListener(new OpenDialogListener() {
                     @Override
                     public void OnSelectedFile(String fileName) {
@@ -336,6 +342,15 @@ public class SettingsActivity extends BaseActivity {
 
         tvSettingsUploadPhoto = (TextView) findViewById(R.id.tvSettingsUploadPhoto);
         PFHandbookProTypeFaces.THIN.apply(tvSettingsUploadPhoto);
+
+        tvSettingsFacebook = (TextView) findViewById(R.id.tvSettingsFacebook);
+        PFHandbookProTypeFaces.THIN.apply(tvSettingsFacebook);
+        tvSettingsVkontakte = (TextView) findViewById(R.id.tvSettingsVkontakte);
+        PFHandbookProTypeFaces.THIN.apply(tvSettingsVkontakte);
+        tvSettingsTwitter = (TextView) findViewById(R.id.tvSettingsTwitter);
+        PFHandbookProTypeFaces.THIN.apply(tvSettingsTwitter);
+        tvSettingsInstagram = (TextView) findViewById(R.id.tvSettingsInstagram);
+        PFHandbookProTypeFaces.THIN.apply(tvSettingsInstagram);
 
         llSocialNetwork = (LinearLayout) findViewById(R.id.linearSettingsSN);
         toggleSettingsFacebook = (ToggleButton) findViewById(R.id.toggleSettingsFacebook);
