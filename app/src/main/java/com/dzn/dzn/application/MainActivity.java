@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.dzn.dzn.application.Activities.BaseActivity;
 import com.dzn.dzn.application.Activities.CreateSelfieActivity;
 import com.dzn.dzn.application.Activities.EditListAlarmsActivity;
-import com.dzn.dzn.application.Activities.LoginActivity;
 import com.dzn.dzn.application.Activities.NewEditActivity;
 import com.dzn.dzn.application.Activities.SettingsActivity;
 import com.dzn.dzn.application.Activities.StartActivity;
@@ -82,20 +81,6 @@ public class MainActivity extends BaseActivity {
     protected void onResume(){
         super.onResume();
         settings.load();
-
-        /**
-        if (settings.getLocale() == 0) {
-            locale = new Locale(Settings.LOCALE_EN);
-        } else {
-            locale = new Locale(Settings.LOCALE_RU);
-        }
-        Locale.setDefault(locale);
-
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        //recreate();
-         */
-
         new AsyncTask<Void, Void, Void>(){
             private ArrayList<Alarm> list = new ArrayList<Alarm>();
             @Override
@@ -228,7 +213,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onCreateSelfie(View view) {
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        Intent intent = new Intent(MainActivity.this, CreateSelfieActivity.class);
         startActivity(intent);
     }
 
@@ -248,23 +233,4 @@ public class MainActivity extends BaseActivity {
             finish();
         }
     }
-
-/*
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_HOME){
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            return true;
-        }
-        else if(keyCode == KeyEvent.KEYCODE_BACK){
-            finish();
-            return true;
-        }
-        return false;
-    }
-*/
 }

@@ -32,23 +32,6 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <provider
-            android:name="com.facebook.FacebookContentProvider"
-            android:authorities="com.facebook.app.FacebookContentProvider651800944972928"
-            android:exported="true" />
-
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <!-- Integrity VK -->
-        <activity
-            android:name="com.vk.sdk.VKServiceActivity"
-            android:label="ServiceActivity"
-            android:theme="@style/VK.Transparent" />
-
         <!-- Main activity -->
         <activity
             android:name=".MainActivity"
@@ -104,14 +87,6 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="iicXFAOT5T0XgczLapahUcQOa" />
-
-        <!-- Tested Activity of social network -->
-        <activity
-            android:name=".Activities.LoginActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/SampleTheme" />
-
-        <service android:name="com.dzn.dzn.application.Services.FbIntentService" />
 
     </application>
 

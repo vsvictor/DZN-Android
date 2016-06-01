@@ -19,14 +19,6 @@ import com.dzn.dzn.application.Dialog.OpenFileDialog;
 import com.dzn.dzn.application.MainActivity;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginManager;
-import com.vk.sdk.VKAccessToken;
-import com.vk.sdk.VKCallback;
-import com.vk.sdk.VKScope;
-import com.vk.sdk.VKSdk;
-import com.vk.sdk.api.VKError;
 
 import java.util.Arrays;
 import java.util.List;
@@ -73,25 +65,9 @@ public class SettingsActivity extends BaseActivity {
 
     private int sender = 0;
 
-    //integrate Facebook
-    private static final String FB_APP_NAME = "com.facebook.katana";
-    private CallbackManager callbackManager;
-    private LoginManager loginManager;
-    private List<String> permissions = Arrays.asList("publish_actions");
-
-    //Integrate VK
-    private static final String VK_APP_NAME = "com.vkontakte.android";
-    private static final String[] sVkScope = new String[]{
-            VKScope.WALL,
-            VKScope.PHOTOS
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //Initialize Facebook
-        FacebookSdk.sdkInitialize(getApplicationContext());
 
         setContentView(R.layout.activity_settings);
         Bundle b = getIntent().getExtras();
@@ -122,22 +98,6 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (callbackManager != null) {
-            callbackManager.onActivityResult(requestCode, resultCode, data);
-        }
-
-        if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
-            @Override
-            public void onResult(VKAccessToken res) {
-                Log.d(TAG, "VK login success");
-            }
-
-            @Override
-            public void onError(VKError error) {
-                Log.d(TAG, "VK login error: " + error.errorMessage);
-            }
-        })) ;
     }
 
     /**
@@ -193,10 +153,6 @@ public class SettingsActivity extends BaseActivity {
                 config.locale = locale;
                 getResources().updateConfiguration(config, null);
 
-                //MainActivity activity = (MainActivity) settings.getContext();
-                //activity.recreate();
-                //recreate();
-
                 Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
                 startActivity(intent);
                 finish();
@@ -221,10 +177,6 @@ public class SettingsActivity extends BaseActivity {
                 Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
                 startActivity(intent);
                 finish();
-
-                //MainActivity activity = (MainActivity) settings.getContext();
-                //activity.recreate();
-                //recreate();
             }
         });
     }
@@ -358,13 +310,6 @@ public class SettingsActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 settings.setFacebook(isChecked);
-                if (isChecked) {
-                    if (isAppInstalled(FB_APP_NAME)) {
-                        callbackManager = CallbackManager.Factory.create();
-                        loginManager = LoginManager.getInstance();
-                        loginManager.logInWithPublishPermissions(SettingsActivity.this, permissions);
-                    }
-                }
             }
         });
         toggleSettingsFacebook.setChecked(settings.isFacebook());
@@ -374,14 +319,6 @@ public class SettingsActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 settings.setVkontakte(isChecked);
-                if (isChecked) {
-                    if (isAppInstalled(VK_APP_NAME)) {
-                        if (!VKSdk.wakeUpSession(SettingsActivity.this)) {
-                            Log.d(TAG, "VK authorize");
-                            VKSdk.login(SettingsActivity.this, sVkScope);
-                        }
-                    }
-                }
             }
         });
         toggleSettingsVkontakte.setChecked(settings.isVkontakte());

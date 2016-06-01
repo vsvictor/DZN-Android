@@ -1,3 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="93ce874e038dcafbbcd73d196a941f7aecbdfb92">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/instant-run-bootstrap_252bf039b71f258f7ea30812882dc2610aaad07d.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/8.1.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="4477ea44f5ec5ad064022a22691732d7638ff197">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-appindexing-8.1.0_ec2f847dd0a34aa0be47582022449ccd8f78ab9b.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="debf30ce0a7560396b6235edef77e447006454c2">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.android.support-recyclerview-v7-23.3.0_0db43d7804e4bc3e805c0cffa2c20422d03484eb.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="1b8e03daaa43fb0a4cd57e378167c2fd70454c1e">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-23.3.0_096f8632db122ef44e771db2e756ceec7d9a1beb.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/8.1.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="d0dda274b703dd9c5bb056867649d22b4171ae7d">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-basement-8.1.0_74b74ad0f4533298020bef14eb177564c4f1ef46.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="23be6993826b8fd88bbc8d14928bb3b8960d3d4e">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.android.support-animated-vector-drawable-23.3.0_4383681105db41dccef938502fdb12bf125b6cfa.jar" />
+    </item>
+    <item
+        jar="/opt/android-sdk-linux/extras/android/m2repository/com/android/support/support-annotations/23.3.0/support-annotations-23.3.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="db7791d75a07fef9844d06236c1c59ba7bf6997c">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/support-annotations-23.3.0_19b29d545cf39be7364c2450f93081be19755ad9.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="8a034dd16c0dfd75fe86c52c2cd581592acc684a">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-23.3.0_dcb57eb8721fe6834c0873e09662272112ef85f1.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="a0b5d60246cd9d4f3f2443611b3b4c25265840b5">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.android.support-support-vector-drawable-23.3.0_21b46936e511b309a33dc627e989df3373c8c4aa.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="9858c5d77e275f6f0873d579dc26b5f353e03bf4">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/instant-run_f419e0b862745e5fa3e50b9e6e993ea80ce56bfc.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.3.0/jars/libs/internal_impl-23.3.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="4da5a4d697d32497c6f85567a5112e62fdfd0676">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/internal_impl-23.3.0_906f90636864b0352df5e4a116e0a3ad92c23017.jar" />
+    </item>
+
+</items>

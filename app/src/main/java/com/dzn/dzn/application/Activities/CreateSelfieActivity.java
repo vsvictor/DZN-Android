@@ -44,35 +44,6 @@ import com.dzn.dzn.application.Objects.Settings;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.share.ShareApi;
-import com.facebook.share.model.SharePhoto;
-import com.facebook.share.model.SharePhotoContent;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.tweetcomposer.TweetComposer;
-import com.vk.sdk.VKAccessToken;
-import com.vk.sdk.VKCallback;
-import com.vk.sdk.VKScope;
-import com.vk.sdk.VKSdk;
-import com.vk.sdk.api.VKApi;
-import com.vk.sdk.api.VKApiConst;
-import com.vk.sdk.api.VKError;
-import com.vk.sdk.api.VKParameters;
-import com.vk.sdk.api.VKRequest;
-import com.vk.sdk.api.VKResponse;
-import com.vk.sdk.api.model.VKApiPhoto;
-import com.vk.sdk.api.model.VKAttachments;
-import com.vk.sdk.api.model.VKPhotoArray;
-import com.vk.sdk.api.model.VKWallPostResult;
-import com.vk.sdk.api.photo.VKImageParameters;
-import com.vk.sdk.api.photo.VKUploadImage;
-import com.vk.sdk.util.VKUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -83,32 +54,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 
-import io.fabric.sdk.android.Fabric;
-
 public class CreateSelfieActivity extends BaseActivity {
     private static final String TAG = "CreateSelfieActivity";
 
-    //Integrate VK
-    private static final String VK_APP_NAME = "com.vkontakte.android";
-    private static final String[] sVkScope = new String[]{
-            VKScope.WALL,
-            VKScope.PHOTOS
-    };
-
-    //Integrate Twitter
-    private static final String TW_APP_NAME = "com.twitter.android";
-    private static final String CONSUMER_KEY = "iicXFAOT5T0XgczLapahUcQOa";
-    private static final String CONSUMER_SECRET = "BeObQbPyQyfWPEYpXvzUZvIn1ORZrirLRZXFnXZDIf0pAoXUKw";
-
-    //integrate Facebook
-    private static final String FB_APP_NAME = "com.facebook.katana";
-    private CallbackManager callbackManager;
-    private LoginManager loginManager;
-    private List<String> permissions = Arrays.asList("publish_actions");
     private Bitmap btm;
-
-    //integrate Instagram
-    private static final String IS_APP_NAME = "com.instagram.android";
 
     private TextView tvCreateSelfie;
     private ImageView ivPhoto;
@@ -153,9 +102,6 @@ public class CreateSelfieActivity extends BaseActivity {
         final KeyguardManager.KeyguardLock kl = km.newKeyguardLock(CLASS_LABEL);
         kl.disableKeyguard();
 
-        //Initialize Facebook
-        FacebookSdk.sdkInitialize(getApplicationContext());
-
         created = false;
         setContentView(R.layout.activity_create_selfie);
         idCamera = CameraInfo.CAMERA_FACING_FRONT;
@@ -178,12 +124,6 @@ public class CreateSelfieActivity extends BaseActivity {
         //Initialize settings
         settings = Settings.getInstance(this);
 
-        //Initialize VK
-        getVKCertificate();
-
-        //Initialize Twitter
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(CONSUMER_KEY, CONSUMER_SECRET);
-        Fabric.with(this, new TwitterCore(authConfig), new TweetComposer());
 
         //Initialize view elements
         initView();
@@ -229,22 +169,6 @@ public class CreateSelfieActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (callbackManager != null) {
-            callbackManager.onActivityResult(requestCode, resultCode, data);
-        }
-
-        if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
-            @Override
-            public void onResult(VKAccessToken res) {
-                Log.d(TAG, "VK login success");
-            }
-
-            @Override
-            public void onError(VKError error) {
-                Log.d(TAG, "VK login error: " + error.errorMessage);
-            }
-        })) ;
     }
 
     private void initCamera() {
@@ -480,13 +404,6 @@ public class CreateSelfieActivity extends BaseActivity {
 
         llSpreadSelfie.setVisibility(View.VISIBLE);
 
-        if (isAppInstalled(VK_APP_NAME)) {
-            if (!VKSdk.wakeUpSession(this)) {
-                Log.d(TAG, "VK authorize");
-                VKSdk.login(CreateSelfieActivity.this, sVkScope);
-            }
-        }
-
         camera.takePicture(null, null, new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
@@ -526,25 +443,6 @@ public class CreateSelfieActivity extends BaseActivity {
                                 //post photo to FB
                                 Log.d(TAG, "Alarm: " + alarm.toString());
 
-                                if (isAppInstalled(FB_APP_NAME) && alarm.isFacebook()) {
-                                    postPhotoToFacebook();
-                                }
-
-                                //post photo to VK
-                                if (isAppInstalled(VK_APP_NAME) && alarm.isVkontakte()) {
-                                    postPhotoToVK(btm);
-                                }
-
-                                //post photo to Twitter
-                                if (isAppInstalled(TW_APP_NAME) && alarm.isTwitter()) {
-                                    postPhotoToTwitter(btm);
-                                }
-
-                                //post photo to Instagram
-                                if (isAppInstalled(IS_APP_NAME) && alarm.isInstagram()) {
-                                    postPhotoToInstagram(uri);
-                                }
-
                                 return null;
                             }
 
@@ -571,173 +469,7 @@ public class CreateSelfieActivity extends BaseActivity {
                 camera.stopPreview();
             }
         });
-/*
-        if (id > 0) {
-            int counter = getIntent().getExtras().getInt("counter");
-            long time = getIntent().getExtras().getLong("time");
-            Intent intent = new Intent(this, CreateSelfieActivity.class);
-            intent.putExtra("counter", counter);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, counter, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-            alarmManager.cancel(pendingIntent);
-        }
-        counter = 1;
-        for (Alarm alarm : getListAlarm()) {
-            Date d = alarm.getDate();
-            Date today = Calendar.getInstance().getTime();
-            today.setHours(d.getHours());
-            today.setMinutes(d.getMinutes());
-            today.setSeconds(0);
-            if ((today.getTime() > System.currentTimeMillis()) && alarm.isTurnOn()) {
-                Intent intentNew = new Intent(this, CreateSelfieActivity.class);
-                intentNew.putExtra("id", alarm.getID());
-                intentNew.putExtra("counter", counter);
-                intentNew.putExtra("time", today.getTime());
-                PendingIntent pendingIntentNew = PendingIntent.getActivity(this, counter, intentNew, PendingIntent.FLAG_ONE_SHOT);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, today.getTime(), pendingIntentNew);
-                counter++;
-            }
-        }
-*/
     }
-/*
-    private ArrayList<Alarm> getListAlarm() {
-        if (dataBaseHelper == null) {
-            Log.i(TAG, "DNHelper is null");
-            dataBaseHelper = DataBaseHelper.getInstance(this);
-        }
-
-        ArrayList<Alarm> ar = dataBaseHelper.getAlarmList();
-        if (ar == null) return new ArrayList<Alarm>();
-
-        return ar;
-    }
-*/
-
-    /**
-     * Post photo to Facebook
-     */
-    private void postPhotoToFacebook() {
-        callbackManager = CallbackManager.Factory.create();
-        loginManager = LoginManager.getInstance();
-        loginManager.logInWithPublishPermissions(CreateSelfieActivity.this, permissions);
-        loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                sharePhotoToFacebook(btm);
-            }
-
-            @Override
-            public void onCancel() {
-                Log.d(TAG, "onCancel");
-            }
-
-            @Override
-            public void onError(FacebookException exception) {
-                Log.d(TAG, "Facebook exception: " + exception.getMessage());
-            }
-        });
-    }
-
-    /**
-     * Share photo to Facebook
-     *
-     * @param bitmap
-     */
-    private void sharePhotoToFacebook(Bitmap bitmap) {
-        Log.d(TAG, "sharePhotoToFacebook");
-        SharePhoto photo = new SharePhoto.Builder()
-                .setBitmap(bitmap)
-                .setCaption(getResources().getString(R.string.morning))
-                .build();
-
-        SharePhotoContent content = new SharePhotoContent.Builder()
-                .addPhoto(photo)
-                .build();
-
-        ShareApi.share(content, null);
-    }
-
-    /**
-     * Facebook Key Hash
-     */
-    private void getHashKeyFacebook() {
-        // Add code to print out the key hash
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.dzn.dzn.application",
-                    PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-
-        } catch (NoSuchAlgorithmException e) {
-
-        }
-    }
-
-    /**
-     *
-     */
-    private void getVKCertificate() {
-        String[] fingerprints = VKUtil.getCertificateFingerprint(this, this.getPackageName());
-        Log.d(TAG, "VK certificate: " + fingerprints[0]);
-    }
-
-    /**
-     * Upload and make post photo on wall VK
-     *
-     * @param bitmap
-     */
-    private void postPhotoToVK(final Bitmap bitmap) {
-        VKRequest request = VKApi.uploadWallPhotoRequest(new VKUploadImage(bitmap, VKImageParameters.pngImage()), 0, 0);
-
-        request.executeWithListener(new VKRequest.VKRequestListener() {
-            @Override
-            public void onComplete(VKResponse response) {
-                VKApiPhoto photo = ((VKPhotoArray) response.parsedModel).get(0);
-                //Make post with photo
-                makePhotoOnWallVk(photo);
-
-                bitmap.recycle();
-            }
-
-            @Override
-            public void onError(VKError error) {
-                Log.d(TAG, "Error: " + error.errorMessage);
-            }
-        });
-    }
-
-    /**
-     * Make post photo on wall VK
-     *
-     * @param photo
-     */
-    private void makePhotoOnWallVk(final VKApiPhoto photo) {
-        VKRequest post = VKApi.wall().post(VKParameters.from(VKApiConst.ATTACHMENTS, new VKAttachments(photo), VKApiConst.MESSAGE, "Dzn-Dzn photo"));
-        post.setModelClass(VKWallPostResult.class);
-        post.executeWithListener(new VKRequest.VKRequestListener() {
-            @Override
-            public void onComplete(VKResponse response) {
-                Log.d(TAG, "makePhotoOnWallVk complete");
-            }
-
-            @Override
-            public void onError(VKError error) {
-                Log.d(TAG, "makePhotoOnWallVk error: " + error.errorMessage);
-            }
-        });
-    }
-
-    /**
-     * Get Photo
-     *
-     * @param photo
-     * @return
-     */
     private Bitmap getPhoto(File photo) {
         Bitmap bitmap = null;
         try {
@@ -747,44 +479,11 @@ public class CreateSelfieActivity extends BaseActivity {
         }
         return bitmap;
     }
-
-    /**
-     * Post tweet to Twitter
-     *
-     * @param bitmap
-     */
-    private void postPhotoToTwitter(final Bitmap bitmap) {
-        TweetComposer.Builder builder = new TweetComposer.Builder(this)
-                .text(getResources().getString(R.string.publish_message))
-                .image(getImageUri(bitmap));
-        builder.show();
-    }
-
-    /**
-     * Get Uri from bitmap
-     *
-     * @param inImage
-     * @return
-     */
     private Uri getImageUri(Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
-    }
-
-    /**
-     * Post photo to Instagram
-     *
-     * @param uri
-     */
-    private void postPhotoToInstagram(Uri uri) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("image/*");
-        intent.setPackage(IS_APP_NAME);
-        intent.putExtra(Intent.EXTRA_STREAM, uri);
-        intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.publish_message));
-        startActivity(intent);
     }
 
     /**
@@ -877,5 +576,4 @@ public class CreateSelfieActivity extends BaseActivity {
         result = result % 360;
         camera.setDisplayOrientation(result);
     }
-
 }
