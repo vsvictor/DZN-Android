@@ -37,6 +37,8 @@ import java.util.List;
 public class OpenFileDialog extends AlertDialog.Builder {
     private static final String TAG = "OpenFileDialog";
 
+    public static final String[] FILE_FILTER = {".*\\.mp3", ".*\\.ogg", ".*\\.avi", ".*\\.midi"};
+
     private String currentPath = Environment.getExternalStorageDirectory().getPath();
     private List<File> files = new ArrayList<File>();
     private TextView title;
@@ -66,7 +68,12 @@ public class OpenFileDialog extends AlertDialog.Builder {
                         }
                     }
                 })
-                .setNegativeButton(android.R.string.cancel, null);
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                            listener.OnSelectedFile(null);
+                    }
+                });
     }
 
     @Override
