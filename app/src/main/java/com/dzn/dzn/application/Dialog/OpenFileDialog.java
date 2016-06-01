@@ -76,6 +76,12 @@ public class OpenFileDialog extends AlertDialog.Builder {
         return super.show();
     }
 
+    /**
+     * Set filter
+     *
+     * @param filter
+     * @return
+     */
     public OpenFileDialog setFilter(final String filter) {
         filenameFilter = new FilenameFilter() {
 
@@ -84,6 +90,31 @@ public class OpenFileDialog extends AlertDialog.Builder {
                 File tempFile = new File(String.format("%s/%s", file.getPath(), fileName));
                 if (tempFile.isFile())
                     return tempFile.getName().matches(filter);
+                return true;
+            }
+        };
+        return this;
+    }
+
+    /**
+     * Set filter
+     *
+     * @param filter
+     * @return
+     */
+    public OpenFileDialog setFilter(final String[] filter) {
+        filenameFilter = new FilenameFilter() {
+            @Override
+            public boolean accept(File file, String fileName) {
+                File tempFile = new File(String.format("%s/%s", file.getPath(), fileName));
+                if (tempFile.isFile()) {
+                    for (String str : filter) {
+                        if (tempFile.getName().matches(str)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
                 return true;
             }
         };
@@ -204,7 +235,7 @@ public class OpenFileDialog extends AlertDialog.Builder {
         Log.d(TAG, "Directory path: " + directoryPath);
         File directory = new File(directoryPath);
         File[] list = directory.listFiles(filenameFilter);
-        if(list == null)
+        if (list == null)
             list = new File[]{};
         List<File> fileList = Arrays.asList(list);
         Collections.sort(fileList, new Comparator<File>() {

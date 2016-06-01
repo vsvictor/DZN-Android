@@ -67,6 +67,8 @@ public class SettingsActivity extends BaseActivity {
 
     private int sender = 0;
 
+    private static final String[] filter = {".*\\.mp3", ".*\\.ogg", ".*\\.avi", ".*\\.midi"};
+
     //integrate Facebook
     private static final String FB_APP_NAME = "com.facebook.katana";
     private CallbackManager callbackManager;
@@ -276,6 +278,8 @@ public class SettingsActivity extends BaseActivity {
             public void onClick(View v) {
                 OpenFileDialog builder = new OpenFileDialog(SettingsActivity.this);
                 builder.setAccessDeniedMessage("Access denied");
+                //builder.setFilter(new String[] {".*\\.mp3", ".*\\.ogg", ".*\\.avi", ".*\\.midi"});
+                builder.setFilter(filter);
                 builder.setOpenDialogListener(new OpenDialogListener() {
                     @Override
                     public void OnSelectedFile(String fileName) {
