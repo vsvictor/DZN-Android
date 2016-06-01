@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.dzn.dzn.application.Adapters.SpinnerRepeatAdapter;
+import com.dzn.dzn.application.Dialog.OpenDialogListener;
+import com.dzn.dzn.application.Dialog.OpenFileDialog;
 import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.Objects.Settings;
 import com.dzn.dzn.application.R;
@@ -40,6 +42,7 @@ public class NewEditActivity extends BaseActivity {
     //Section Music
     private TextView tvNewEditMusic;
     private Spinner spinnerNewEditMusic;
+    private ToggleButton toggleNewEditMusic;
 
     //Section Interval
     private TextView tvNewEditInterval;
@@ -286,10 +289,62 @@ public class NewEditActivity extends BaseActivity {
         SpinnerRepeatAdapter adapter = new SpinnerRepeatAdapter(
                 getApplicationContext(),
                 R.layout.new_edit_spinner,
-                Arrays.asList(getResources().getStringArray(R.array.new_edit_activity_spinner_settings)));
+                Arrays.asList(getResources().getStringArray(R.array.new_edit_activity_spinner_music)));
         adapter.setDropDownViewResource(R.layout.new_edit_spinner_drop);
 
         spinnerNewEditMusic.setAdapter(adapter);
+        if (edAlarm.getMelody().equals("")) {
+            spinnerNewEditMusic.setSelection(0, false);
+        } else {
+            spinnerNewEditMusic.setSelection(1, false);
+        }
+        spinnerNewEditMusic.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        edAlarm.setMelody("");
+                        break;
+                    case 1:
+                        OpenFileDialog builder = new OpenFileDialog(NewEditActivity.this);
+                        builder.setAccessDeniedMessage("Access denied");
+                        builder.setFilter(OpenFileDialog.FILE_FILTER);
+                        builder.setOpenDialogListener(new OpenDialogListener() {
+                            @Override
+                            public void OnSelectedFile(String fileName) {
+                                Log.d(TAG, "Selected file: " + fileName);
+                                if (fileName != null) {
+                                    edAlarm.setMelody(fileName);
+                                } else {
+                                    Log.d(TAG, "Selected file: null");
+                                    edAlarm.setMelody("");
+                                    spinnerNewEditMusic.setSelection(0);
+                                }
+                            }
+                        });
+                        builder.show();
+                        break;
+                    default:
+                        edAlarm.setMelody("");
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        toggleNewEditMusic = (ToggleButton) findViewById(R.id.toggleNewEditMusic);
+        PFHandbookProTypeFaces.THIN.apply(toggleNewEditMusic);
+        toggleNewEditMusic.setChecked(edAlarm.isVibro());
+        toggleNewEditMusic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                edAlarm.setVibro(isChecked);
+            }
+        });
     }
 
     /**

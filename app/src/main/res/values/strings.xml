@@ -26,6 +26,7 @@
     <string name="new_edit_activity_music">Music:</string>
     <string name="new_edit_activity_interval">Intervals:</string>
     <string name="new_edit_activity_social_network">Social network:</string>
+    <string name="new_edit_activity_vibro">vibro</string>
 
     <!-- Short Days of week -->
     <string name="short_sunday">Su</string>
@@ -41,6 +42,11 @@
     <string name="short_twitter">TW</string>
     <string name="short_instagram">IS</string>
 
+    <string name="name_facebook">Facebook</string>
+    <string name="name_vkontakte">Vkontakte</string>
+    <string name="name_twitter">Twitter</string>
+    <string name="name_instagram">Instagram</string>
+
     <string-array name="new_edit_activity_spinner_repeat">
         <item>Onсу</item>
         <item>Everyday</item>
@@ -51,6 +57,11 @@
 
     <string-array name="new_edit_activity_spinner_settings">
         <item>general settings</item>
+    </string-array>
+
+    <string-array name="new_edit_activity_spinner_music">
+        <item>general settings</item>
+        <item>other...</item>
     </string-array>
 
     <string-array name="new_edit_activity_spinner_social_network">
@@ -72,6 +83,7 @@
     <string name="settings_activity_section_social_network">Settings social networks</string>
     <string name="settings_activity_upload_photo">Turn on photos pf the publication</string>
     <string name="settings_activity_minutes">min</string>
+    <string name="settings_activity_folder">Select sound</string>
 
     <!-- Alarms activity -->
     <string name="alarms_activity_name">Alarms</string>

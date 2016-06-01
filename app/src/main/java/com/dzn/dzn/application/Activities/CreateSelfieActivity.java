@@ -327,29 +327,8 @@ public class CreateSelfieActivity extends BaseActivity {
                     Log.d(TAG, "" + ex.getMessage());
                 }
 
-                Uri alert = null;
-                if (settings.getMelody() == null) {
-                    Log.d(TAG, "Settings melody: null, set default ringtone");
-                    alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-                } else {
-                    Log.d(TAG, "Settings melody: " + settings.getMelody());
-                    alert = Uri.parse(settings.getMelody());
-                }
-                final AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-                if (mMediaPlayer == null) mMediaPlayer = new MediaPlayer();
-                if (!mMediaPlayer.isPlaying()) {
-                    try {
-                        mMediaPlayer.setDataSource(CreateSelfieActivity.this, alert);
-                        if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
-                            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
-                            mMediaPlayer.setLooping(true);
-                            mMediaPlayer.prepare();
-                            mMediaPlayer.start();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+                // Play melody or default ringtone
+                playMelody();
             }
 
             @Override
@@ -370,6 +349,39 @@ public class CreateSelfieActivity extends BaseActivity {
             }
         });
 
+    }
+
+    /**
+     * Play melody or default ringtone
+     */
+    private void playMelody() {
+        Uri alert = null;
+        if (!alarm.getMelody().equals("")) {
+            Log.d(TAG, "Alarm melody: " + alarm.getMelody());
+            alert = Uri.parse(alarm.getMelody());
+        } else if (!settings.getMelody().equals("")) {
+            Log.d(TAG, "Settings melody: " + settings.getMelody());
+            alert = Uri.parse(settings.getMelody());
+        } else {
+            Log.d(TAG, "Settings melody: null, set default ringtone");
+            alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        }
+
+        final AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        if (mMediaPlayer == null) mMediaPlayer = new MediaPlayer();
+        if (!mMediaPlayer.isPlaying()) {
+            try {
+                mMediaPlayer.setDataSource(CreateSelfieActivity.this, alert);
+                if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
+                    mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+                    mMediaPlayer.setLooping(true);
+                    mMediaPlayer.prepare();
+                    mMediaPlayer.start();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**

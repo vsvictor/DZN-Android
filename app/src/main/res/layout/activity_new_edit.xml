@@ -242,8 +242,8 @@
                     android:layout_height="25dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:textOff=""
-                    android:textOn="" />
+                    android:textOff="@string/new_edit_activity_vibro"
+                    android:textOn="@string/new_edit_activity_vibro" />
 
             </RelativeLayout>
 
