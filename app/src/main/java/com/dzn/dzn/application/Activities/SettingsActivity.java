@@ -20,8 +20,6 @@ import com.dzn.dzn.application.MainActivity;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 
 public class SettingsActivity extends BaseActivity {
@@ -421,7 +419,9 @@ public class SettingsActivity extends BaseActivity {
      */
     public void decreaseWakeUp(View view) {
         int interval = settings.getInterval();
-        interval--;
+        if (interval > 1) {
+            interval--;
+        }
         settings.setInterval(interval);
         setTvIntervalWakeUp();
         Log.d(TAG, "Interval wakeup: " + interval);
@@ -433,7 +433,9 @@ public class SettingsActivity extends BaseActivity {
      */
     public void increaseWakeUp(View view) {
         int interval = settings.getInterval();
-        interval++;
+        if (interval < 59) {
+            interval++;
+        }
         settings.setInterval(interval);
         setTvIntervalWakeUp();
         Log.d(TAG, "Interval wakeup: " + interval);
@@ -445,7 +447,9 @@ public class SettingsActivity extends BaseActivity {
      */
     public void decreaseRepeatInterval(View view) {
         int interval = settings.getRepeat();
-        interval--;
+        if (interval > 1) {
+            interval--;
+        }
         settings.setRepeat(interval);
         setTvIntervalRepeat();
         Log.d(TAG, "Interval repeat: " + interval);
@@ -457,7 +461,9 @@ public class SettingsActivity extends BaseActivity {
      */
     public void increaseRepeatInterval(View view) {
         int interval = settings.getRepeat();
-        interval++;
+        if (interval < 59) {
+            interval++;
+        }
         settings.setRepeat(interval);
         setTvIntervalRepeat();
         Log.d(TAG, "Interval repeat: " + interval);
