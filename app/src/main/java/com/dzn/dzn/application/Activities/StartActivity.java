@@ -1,40 +1,21 @@
 package com.dzn.dzn.application.Activities;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.dzn.dzn.application.MainActivity;
 import com.dzn.dzn.application.Objects.Alarm;
-import com.dzn.dzn.application.Objects.Settings;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
-import com.dzn.dzn.application.Utils.DateTimeOperator;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
-import com.dzn.dzn.application.Widget.OnWheelChangedListener;
-import com.dzn.dzn.application.Widget.OnWheelScrollListener;
 import com.dzn.dzn.application.Widget.WheelView;
 import com.dzn.dzn.application.Widget.adapters.NumericWheelAdapter;
 
-import java.lang.reflect.Field;
-import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 public class StartActivity extends BaseActivity {
     private static final String TAG = "StartActivity";
@@ -45,8 +26,6 @@ public class StartActivity extends BaseActivity {
     private NumericWheelAdapter hAdapter;
     private NumericWheelAdapter mAdapter;
     private DataBaseHelper dataBaseHelper;
-    private int iHour;
-    private int iMinute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +33,7 @@ public class StartActivity extends BaseActivity {
         setContentView(R.layout.activity_start);
         dataBaseHelper = DataBaseHelper.getInstance(getParent());
 
+        // Initialize view elements
         initView();
     }
 
@@ -66,7 +46,6 @@ public class StartActivity extends BaseActivity {
             startActivity(intent);
         }
     }
-
 
     /**
      * Initialize view elements
@@ -105,12 +84,12 @@ public class StartActivity extends BaseActivity {
         calendar.set(Calendar.MINUTE, whMinutes.getCurrentItem());
         alarm.setTime(calendar.getTime());
         alarm.setDefault();
+        alarm.setSocial(settings);
 
         dataBaseHelper.addAlarm(alarm);
 
-        //Intent intent = new Intent(StartActivity.this, MainActivity.class);
-        //startActivity(intent);
         setResult(RESULT_OK);
+        Log.d(TAG, "Alarm: " + alarm.toString());
         finish();
     }
 

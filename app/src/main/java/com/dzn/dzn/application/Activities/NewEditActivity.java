@@ -50,6 +50,10 @@ public class NewEditActivity extends BaseActivity {
 
     //Section Social Network
     private TextView tvNewEditSocialNetwork;
+    private TextView tvNewEditFacebook;
+    private TextView tvNewEditVkontakte;
+    private TextView tvNewEditTwitter;
+    private TextView tvNewEditInstagram;
     private Spinner spinnerNewEditSocialNetwork;
     private ToggleButton toggleNewEditSocialNetwork;
     private LinearLayout llSocialNetwork;
@@ -83,22 +87,22 @@ public class NewEditActivity extends BaseActivity {
             id = b.getInt("idAlarm", -1);
             edAlarm = dataBaseHelper.getAlarm(id);
             if (edAlarm != null) {
-                iHours = edAlarm.getDate().getHours();
-                iMinutes = edAlarm.getDate().getMinutes();
+                //iHours = edAlarm.getDate().getHours();
+                //iMinutes = edAlarm.getDate().getMinutes();
             } else {
-                Date d = new Date();
-                iHours = d.getHours();
-                iMinutes = d.getMinutes();
+                //Date d = new Date();
+                //iHours = d.getHours();
+                //iMinutes = d.getMinutes();
             }
         } else {
             createAlarm();
-            iHours = edAlarm.getDate().getHours();
-            iMinutes = edAlarm.getDate().getMinutes();
+            //iHours = edAlarm.getDate().getHours();
+            //iMinutes = edAlarm.getDate().getMinutes();
         }
 
         //Initialize settings
-        settings = Settings.getInstance(getApplication());
-        settings.load();
+        //settings = Settings.getInstance(getApplication());
+        //settings.load();
 
         //Initialize view elements
         initView();
@@ -108,11 +112,13 @@ public class NewEditActivity extends BaseActivity {
      * Create new Alarm
      */
     private void createAlarm() {
+        Log.d(TAG, "Create alarm");
         Alarm al = new Alarm();
         Date d = new Date();
         Log.d(TAG, "Current time: " + d.toString());
         al.setTime(d);
         al.setDefault();
+        al.setSocial(settings);
         edAlarm = al;
         Log.d(TAG, "edAlarm: " + edAlarm.toString());
     }
@@ -183,7 +189,6 @@ public class NewEditActivity extends BaseActivity {
         }
     }
 
-
     /**
      * Initialize section Repeat
      */
@@ -208,7 +213,6 @@ public class NewEditActivity extends BaseActivity {
         days[5] = (ToggleButton) findViewById(R.id.toggleNewEditFriday);
         days[6] = (ToggleButton) findViewById(R.id.toggleNewEditSaturday);
 
-
         if (id > 0) {
             for (int i = 0; i < 7; i++) {
                 days[i].setChecked(edAlarm.isDayOn(i));
@@ -221,7 +225,6 @@ public class NewEditActivity extends BaseActivity {
             else if (edAlarm.isWeekEnd()) spinnerNewEditRepeat.setSelection(3);
             else spinnerNewEditRepeat.setSelection(4);
         } else spinnerNewEditRepeat.setSelection(0);
-
 
         linearNewEditWeek = (LinearLayout) findViewById(R.id.linearNewEditWeek);
         spinnerNewEditRepeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -492,31 +495,31 @@ public class NewEditActivity extends BaseActivity {
      * Save data to database
      */
     public void saveData(View view) {
+        /**
         if (id == -1) {
             Alarm al = new Alarm();
             Date d = new Date();
             d.setHours(npHours.getCurrentItem());
             d.setMinutes(npMinutes.getCurrentItem());
-            //d.UTC(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, npHours.getValue(), npMinutes.getValue(),0);
             al.setTime(d);
-            al.setMelody("");
-            al.setRepeat(5);
-            al.setVibro(true);
-            al.setSound(80);
-            al.setTurnOn(true);
+            al.setVibro(toggleNewEditMusic.isChecked());
+
             for (int i = 0; i < 7; i++) {
                 al.setDay(i, days[i].isChecked());
             }
 
             dataBaseHelper.addAlarm(al);
         } else {
+         */
             edAlarm.getDate().setHours(npHours.getCurrentItem());
             edAlarm.getDate().setMinutes(npMinutes.getCurrentItem());
+            edAlarm.setVibro(toggleNewEditMusic.isChecked());
             for (int i = 0; i < 7; i++) {
                 edAlarm.setDay(i, days[i].isChecked());
             }
-            dataBaseHelper.updateAlarm(edAlarm);
-        }
+            dataBaseHelper.addAlarm(edAlarm);
+
+        //}
         Log.d(TAG, "Alarm: " + edAlarm.toString());
         finish();
     }

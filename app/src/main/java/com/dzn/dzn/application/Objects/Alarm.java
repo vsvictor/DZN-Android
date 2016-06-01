@@ -171,6 +171,18 @@ public class Alarm implements Serializable {
         for(int i = 0;i<7;i++) days[i] = false;
     }
 
+    /**
+     * Set social network
+     *
+     * @param settings
+     */
+    public void setSocial(Settings settings) {
+        this.isFacebook = settings.isFacebook();
+        this.isVkontakte = settings.isVkontakte();
+        this.isTwitter = settings.isTwitter();
+        this.isInstagram = settings.isInstagram();
+    }
+
     @Override
     public String toString() {
         return "Alarm{" +
