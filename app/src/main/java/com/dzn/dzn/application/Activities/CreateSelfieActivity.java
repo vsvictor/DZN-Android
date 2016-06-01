@@ -287,7 +287,7 @@ public class CreateSelfieActivity extends BaseActivity {
             Log.d(TAG, "Settings melody: " + settings.getMelody());
             alert = Uri.parse(settings.getMelody());
         } else {
-            Log.d(TAG, "Settings melody: null, set default ringtone");
+            Log.d(TAG, "Set default ringtone");
             alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         }
 

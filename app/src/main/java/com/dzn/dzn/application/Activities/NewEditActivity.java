@@ -293,7 +293,7 @@ public class NewEditActivity extends BaseActivity {
         adapter.setDropDownViewResource(R.layout.new_edit_spinner_drop);
 
         spinnerNewEditMusic.setAdapter(adapter);
-        if (edAlarm.getMelody().equals("")) {
+        if (edAlarm.getMelody() == null || edAlarm.getMelody().equals("")) {
             spinnerNewEditMusic.setSelection(0, false);
         } else {
             spinnerNewEditMusic.setSelection(1, false);
@@ -499,7 +499,7 @@ public class NewEditActivity extends BaseActivity {
             d.setMinutes(npMinutes.getCurrentItem());
             //d.UTC(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, npHours.getValue(), npMinutes.getValue(),0);
             al.setTime(d);
-            al.setMelody("aaa");
+            al.setMelody("");
             al.setRepeat(5);
             al.setVibro(true);
             al.setSound(80);

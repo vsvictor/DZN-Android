@@ -163,7 +163,7 @@ public class Alarm implements Serializable {
      * Set default settings
      */
     public void setDefault() {
-        this.setMelody("default melody");
+        this.setMelody("");
         this.setRepeat(5);
         this.setVibro(true);
         this.setSound(80);
