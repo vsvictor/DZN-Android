@@ -337,8 +337,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             alarm.setRepeat(cursor.getInt(cursor.getColumnIndex(COL_REPEAT)));
             alarm.setSound(cursor.getInt(cursor.getColumnIndex(COL_SOUND)));
             alarm.setMelody(cursor.getString(cursor.getColumnIndex(COL_MELODY)));
-            alarm.setVibro(true);
 
+            alarm.setVibro(cursor.getInt(cursor.getColumnIndex(COL_VIBRO)) == 1);
             alarm.setTurnOn(cursor.getInt(cursor.getColumnIndex(COL_TURN_ON)) == 1);
             alarm.setFacebook(cursor.getInt(cursor.getColumnIndex(COL_FB)) == 1);
             alarm.setVkontakte(cursor.getInt(cursor.getColumnIndex(COL_VK)) == 1);

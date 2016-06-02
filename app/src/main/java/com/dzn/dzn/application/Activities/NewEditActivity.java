@@ -15,7 +15,6 @@ import com.dzn.dzn.application.Adapters.SpinnerRepeatAdapter;
 import com.dzn.dzn.application.Dialog.OpenDialogListener;
 import com.dzn.dzn.application.Dialog.OpenFileDialog;
 import com.dzn.dzn.application.Objects.Alarm;
-import com.dzn.dzn.application.Objects.Settings;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
@@ -65,9 +64,6 @@ public class NewEditActivity extends BaseActivity {
     private WheelView npHours;
     private WheelView npMinutes;
 
-    private int iHours;
-    private int iMinutes;
-
     private Alarm edAlarm;
     private int id = -1;
     private DataBaseHelper dataBaseHelper;
@@ -86,23 +82,9 @@ public class NewEditActivity extends BaseActivity {
         if (b != null) {
             id = b.getInt("idAlarm", -1);
             edAlarm = dataBaseHelper.getAlarm(id);
-            if (edAlarm != null) {
-                //iHours = edAlarm.getDate().getHours();
-                //iMinutes = edAlarm.getDate().getMinutes();
-            } else {
-                //Date d = new Date();
-                //iHours = d.getHours();
-                //iMinutes = d.getMinutes();
-            }
         } else {
             createAlarm();
-            //iHours = edAlarm.getDate().getHours();
-            //iMinutes = edAlarm.getDate().getMinutes();
         }
-
-        //Initialize settings
-        //settings = Settings.getInstance(getApplication());
-        //settings.load();
 
         //Initialize view elements
         initView();
@@ -374,6 +356,15 @@ public class NewEditActivity extends BaseActivity {
         tvNewEditSocialNetwork = (TextView) findViewById(R.id.tvNewEditSocialNetwork);
         PFHandbookProTypeFaces.THIN.apply(tvNewEditSocialNetwork);
 
+        tvNewEditFacebook = (TextView) findViewById(R.id.tvNewEditFacebook);
+        PFHandbookProTypeFaces.THIN.apply(tvNewEditFacebook);
+        tvNewEditVkontakte = (TextView) findViewById(R.id.tvNewEditVkontakte);
+        PFHandbookProTypeFaces.THIN.apply(tvNewEditVkontakte);
+        tvNewEditTwitter = (TextView) findViewById(R.id.tvNewEditTwitter);
+        PFHandbookProTypeFaces.THIN.apply(tvNewEditTwitter);
+        tvNewEditInstagram = (TextView) findViewById(R.id.tvNewEditInstagram);
+        PFHandbookProTypeFaces.THIN.apply(tvNewEditInstagram);
+
         llSocialNetwork = (LinearLayout) findViewById(R.id.linearAlarmSN);
 
         spinnerNewEditSocialNetwork = (Spinner) findViewById(R.id.spinnerNewEditSocialNetwork);
@@ -386,15 +377,14 @@ public class NewEditActivity extends BaseActivity {
         spinnerNewEditSocialNetwork.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    llSocialNetwork.setVisibility(View.GONE);
-                    edAlarm.setFacebook(settings.isFacebook());
-                    edAlarm.setVkontakte(settings.isVkontakte());
-                    edAlarm.setTwitter(settings.isTwitter());
-                    edAlarm.setInstagram(settings.isInstagram());
-                }
-                if (position == 1) {
-                    llSocialNetwork.setVisibility(View.VISIBLE);
+                switch (position) {
+                    case 0:
+                        llSocialNetwork.setVisibility(View.GONE);
+                        edAlarm.setSocial(settings);
+                        break;
+                    case 1:
+                        llSocialNetwork.setVisibility(View.VISIBLE);
+                        break;
                 }
             }
 
@@ -468,14 +458,12 @@ public class NewEditActivity extends BaseActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Log.d(TAG, "Spinner: " + spinnerNewEditSocialNetwork.getSelectedItemPosition());
                 if (isChecked && spinnerNewEditSocialNetwork.getSelectedItemPosition() == 0) {
-                    edAlarm.setFacebook(settings.isFacebook());
-                    edAlarm.setVkontakte(settings.isVkontakte());
-                    edAlarm.setTwitter(settings.isTwitter());
-                    edAlarm.setInstagram(settings.isInstagram());
+                    edAlarm.setSocial(settings);
                 } else if (isChecked && spinnerNewEditSocialNetwork.getSelectedItemPosition() == 1) {
                     llSocialNetwork.setVisibility(View.VISIBLE);
                 } else {
                     llSocialNetwork.setVisibility(View.GONE);
+                    spinnerNewEditSocialNetwork.setSelection(0, false);
                     edAlarm.setFacebook(false);
                     edAlarm.setVkontakte(false);
                     edAlarm.setTwitter(false);
@@ -495,31 +483,13 @@ public class NewEditActivity extends BaseActivity {
      * Save data to database
      */
     public void saveData(View view) {
-        /**
-        if (id == -1) {
-            Alarm al = new Alarm();
-            Date d = new Date();
-            d.setHours(npHours.getCurrentItem());
-            d.setMinutes(npMinutes.getCurrentItem());
-            al.setTime(d);
-            al.setVibro(toggleNewEditMusic.isChecked());
-
-            for (int i = 0; i < 7; i++) {
-                al.setDay(i, days[i].isChecked());
-            }
-
-            dataBaseHelper.addAlarm(al);
-        } else {
-         */
-            edAlarm.getDate().setHours(npHours.getCurrentItem());
-            edAlarm.getDate().setMinutes(npMinutes.getCurrentItem());
-            edAlarm.setVibro(toggleNewEditMusic.isChecked());
-            for (int i = 0; i < 7; i++) {
-                edAlarm.setDay(i, days[i].isChecked());
-            }
-            dataBaseHelper.addAlarm(edAlarm);
-
-        //}
+        edAlarm.getDate().setHours(npHours.getCurrentItem());
+        edAlarm.getDate().setMinutes(npMinutes.getCurrentItem());
+        edAlarm.setVibro(toggleNewEditMusic.isChecked());
+        for (int i = 0; i < 7; i++) {
+            edAlarm.setDay(i, days[i].isChecked());
+        }
+        dataBaseHelper.addAlarm(edAlarm);
         Log.d(TAG, "Alarm: " + edAlarm.toString());
         finish();
     }
