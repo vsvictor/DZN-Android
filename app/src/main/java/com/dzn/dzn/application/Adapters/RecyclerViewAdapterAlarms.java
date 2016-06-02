@@ -71,8 +71,11 @@ public class RecyclerViewAdapterAlarms extends RecyclerView.Adapter<RecyclerView
             public void onClick(View v) {
                 //Log.d(TAG, "Position: " + position);
                 DataBaseHelper db = DataBaseHelper.getInstance(context);
+                if (alarm.isTurnOn()) {
+                    alarm.setTurnOn(false);
+                }
                 if (db != null) {
-                    db.removeAlarm(list.get(position));
+                    db.removeAlarm(alarm);
                 } else {
                     Log.d(TAG, "database null");
                 }

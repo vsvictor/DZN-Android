@@ -3,13 +3,11 @@ package com.dzn.dzn.application.Activities;
 
 import android.app.AlarmManager;
 import android.app.KeyguardManager;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -18,7 +16,6 @@ import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -26,7 +23,6 @@ import android.os.PowerManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
@@ -49,10 +45,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.List;
 
 public class CreateSelfieActivity extends BaseActivity {
     private static final String TAG = "CreateSelfieActivity";
@@ -110,27 +102,28 @@ public class CreateSelfieActivity extends BaseActivity {
         if (b != null) {
             id = getIntent().getExtras().getInt("id", -1);
             if (id > 0) {
-                alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+                //alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
                 dataBaseHelper = DataBaseHelper.getInstance(this);
                 alarm = dataBaseHelper.getAlarm(id);
-                if (alarm.isOne()) {
-                    alarm.setTurnOn(false);
-                    dataBaseHelper.updateAlarm(alarm);
+                if (alarm != null) {
+                    if (alarm.isOne()) {
+                        alarm.setTurnOn(false);
+                        dataBaseHelper.updateAlarm(alarm);
+                    }
+                } else {
+                    finish();
                 }
             }
         } else id = -1;
 
-
         //Initialize settings
         settings = Settings.getInstance(this);
-
 
         //Initialize view elements
         initView();
 
         //Initialize Surface
         initSurface();
-
     }
 
     @Override
