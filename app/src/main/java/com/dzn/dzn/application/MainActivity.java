@@ -106,9 +106,10 @@ public class MainActivity extends BaseActivity {
                     if((today.getTime()>System.currentTimeMillis())&& alarm.isTurnOn()) {
                         Intent intent = new Intent(MainActivity.this, CreateSelfieActivity.class);
                         intent.putExtra("id", alarm.getID());
-                        intent.putExtra("counter", counter);
+                        //intent.putExtra("counter", counter);
                         intent.putExtra("time", today.getTime());
-                        PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, counter, intent, PendingIntent.FLAG_ONE_SHOT);
+                        //PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, counter, intent, PendingIntent.FLAG_ONE_SHOT);
+                        PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, alarm.getID(), intent, PendingIntent.FLAG_ONE_SHOT);
                         alarmManager.set(AlarmManager.RTC_WAKEUP, today.getTime(), pendingIntent);
                         counter++;
                     }

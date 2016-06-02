@@ -1,5 +1,7 @@
 package com.dzn.dzn.application.Adapters;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.dzn.dzn.application.Activities.CreateSelfieActivity;
 import com.dzn.dzn.application.Activities.NewEditActivity;
+import com.dzn.dzn.application.MainActivity;
 import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
@@ -18,6 +22,8 @@ import com.dzn.dzn.application.Utils.DateTimeOperator;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by zhenya on 14.05.2016.
@@ -74,6 +80,23 @@ public class RecyclerViewAdapterAlarms extends RecyclerView.Adapter<RecyclerView
                 Alarm alarm = list.get(position);
                 if (alarm.isTurnOn()) {
                     alarm.setTurnOn(false);
+
+                    // Cancel pendingIntent
+                    Date d = alarm.getDate();
+                    Date today = Calendar.getInstance().getTime();
+                    today.setHours(d.getHours());
+                    today.setMinutes(d.getMinutes());
+                    today.setSeconds(0);
+
+                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                    Intent intent = new Intent(context, CreateSelfieActivity.class);
+                    intent.putExtra("id", alarm.getID());
+                    intent.putExtra("time", today.getTime());
+                    PendingIntent pendingIntent = PendingIntent.getActivity(context, alarm.getID(), intent, PendingIntent.FLAG_ONE_SHOT);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, today.getTime(), pendingIntent);
+                    pendingIntent.cancel();
+                    alarmManager.cancel(pendingIntent);
+
                 }
                 if (db != null) {
                     db.removeAlarm(alarm);
