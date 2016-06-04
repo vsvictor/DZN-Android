@@ -144,64 +144,75 @@ public class CreateSelfieActivity extends BaseActivity {
     private boolean published = false;
 
     private ArrayList<Social> arrSocial;
+    private boolean restored;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
 
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        mWakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.FULL_WAKE_LOCK, CLASS_LABEL);
-        //mWakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, CLASS_LABEL);
-        mWakeLock.acquire();
+        if(savedInstanceState == null) {
 
-        KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-        final KeyguardManager.KeyguardLock kl = km.newKeyguardLock(CLASS_LABEL);
-        kl.disableKeyguard();
+            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            mWakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.FULL_WAKE_LOCK, CLASS_LABEL);
+            //mWakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, CLASS_LABEL);
+            mWakeLock.acquire();
 
-        created = false;
-        setContentView(R.layout.activity_create_selfie);
-        callbackManager= CallbackManager.Factory.create();
-        idCamera = CameraInfo.CAMERA_FACING_FRONT;
+            KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+            final KeyguardManager.KeyguardLock kl = km.newKeyguardLock(CLASS_LABEL);
+            kl.disableKeyguard();
 
-        Bundle b = getIntent().getExtras();
-        if (b != null) {
-            id = getIntent().getExtras().getInt("id", -1);
-            if (id > 0) {
-                alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-                dataBaseHelper = DataBaseHelper.getInstance(this);
-                alarm = dataBaseHelper.getAlarm(id);
-                if (alarm.isOne()) {
-                    alarm.setTurnOn(false);
-                    dataBaseHelper.updateAlarm(alarm);
+            created = false;
+            setContentView(R.layout.activity_create_selfie);
+            callbackManager = CallbackManager.Factory.create();
+            idCamera = CameraInfo.CAMERA_FACING_FRONT;
+
+            Bundle b = getIntent().getExtras();
+            if (b != null) {
+                id = getIntent().getExtras().getInt("id", -1);
+                if (id > 0) {
+                    alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+                    dataBaseHelper = DataBaseHelper.getInstance(this);
+                    alarm = dataBaseHelper.getAlarm(id);
+                    if(alarm == null) {finish();return;}
+                    if (alarm != null && alarm.isOne()) {
+                        alarm.setTurnOn(false);
+                        dataBaseHelper.updateAlarm(alarm);
+                    }
                 }
-            }
-        } else id = -1;
+            } else id = -1;
 
 
-        //Initialize settings
-        settings = Settings.getInstance(this);
+            //Initialize settings
+            settings = Settings.getInstance(this);
 
 
-        //Initialize view elements
-        initView();
+            //Initialize view elements
+            initView();
 
-        //Initialize Surface
-        initSurface();
+            //Initialize Surface
+            initSurface();
 
+            restored = false;
+        }
+        else{
+            restored = true;
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        initCamera();
+        if(!restored) initCamera();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
-        if (camera == null) initCamera();
+        if(!restored) {
+            if (camera == null) initCamera();
+        }
     }
 
     @Override
@@ -375,30 +386,32 @@ public class CreateSelfieActivity extends BaseActivity {
      */
     private void playMelody() {
         Uri alert = null;
-        if (!alarm.getMelody().equals("")) {
-            Log.d(TAG, "Alarm melody: " + alarm.getMelody());
-            alert = Uri.parse(alarm.getMelody());
-        } else if (!settings.getMelody().equals("")) {
-            Log.d(TAG, "Settings melody: " + settings.getMelody());
-            alert = Uri.parse(settings.getMelody());
-        } else {
-            Log.d(TAG, "Set default ringtone");
-            alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        }
+        if(alarm != null) {
+            if ((!alarm.getMelody().equals(""))) {
+                Log.d(TAG, "Alarm melody: " + alarm.getMelody());
+                alert = Uri.parse(alarm.getMelody());
+            } else if (!settings.getMelody().equals("")) {
+                Log.d(TAG, "Settings melody: " + settings.getMelody());
+                alert = Uri.parse(settings.getMelody());
+            } else {
+                Log.d(TAG, "Set default ringtone");
+                alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+            }
 
-        final AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        if (mMediaPlayer == null) mMediaPlayer = new MediaPlayer();
-        if (!mMediaPlayer.isPlaying()) {
-            try {
-                mMediaPlayer.setDataSource(CreateSelfieActivity.this, alert);
-                if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
-                    mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
-                    mMediaPlayer.setLooping(true);
-                    mMediaPlayer.prepare();
-                    mMediaPlayer.start();
+            final AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            if (mMediaPlayer == null) mMediaPlayer = new MediaPlayer();
+            if (!mMediaPlayer.isPlaying()) {
+                try {
+                    mMediaPlayer.setDataSource(CreateSelfieActivity.this, alert);
+                    if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
+                        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+                        mMediaPlayer.setLooping(true);
+                        mMediaPlayer.prepare();
+                        mMediaPlayer.start();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
     }
@@ -483,7 +496,7 @@ public class CreateSelfieActivity extends BaseActivity {
      * @param view
      */
     public void onStopAlarm(View view) {
-        created = true;
+        //created = true;
         mMediaPlayer.stop();
         ibFlash.setVisibility(View.INVISIBLE);
         ibSpread.setVisibility(View.INVISIBLE);
@@ -555,7 +568,7 @@ public class CreateSelfieActivity extends BaseActivity {
                         }
                         publisher(arrSocial);
                     } else {
-                        finish();
+                        //finish();
                     }
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(CreateSelfieActivity.this);
@@ -767,7 +780,7 @@ public class CreateSelfieActivity extends BaseActivity {
             public void onComplete(VKResponse response) {
                 VKApiPhoto photo = ((VKPhotoArray) response.parsedModel).get(0);
                 makePhotoOnWallVk(photo);
-                bitmap.recycle();
+                //bitmap.recycle();
                 for(Social ss:arrSocial){
                     if(ss.getID() == 3) {arrSocial.remove(ss);break;}
                 }
@@ -818,7 +831,11 @@ public class CreateSelfieActivity extends BaseActivity {
     }
 
     private void publisher(ArrayList<Social> arr){
-        if(arr.isEmpty()) return;
+        if(arr.isEmpty()) {
+            startActivity(new Intent(CreateSelfieActivity.this, MainActivity.class));
+            finish();
+            return;
+        }
         Social curr = arr.get(0);
         if(curr.getID() == 1) publishToFacebook();
         else if(curr.getID() == 2) publishToTwitter(uri);

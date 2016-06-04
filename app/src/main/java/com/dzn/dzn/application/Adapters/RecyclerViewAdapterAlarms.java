@@ -92,7 +92,7 @@ public class RecyclerViewAdapterAlarms extends RecyclerView.Adapter<RecyclerView
                     Intent intent = new Intent(context, CreateSelfieActivity.class);
                     intent.putExtra("id", alarm.getID());
                     intent.putExtra("time", today.getTime());
-                    PendingIntent pendingIntent = PendingIntent.getActivity(context, alarm.getID(), intent, PendingIntent.FLAG_ONE_SHOT);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(context, alarm.getID(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
                     alarmManager.set(AlarmManager.RTC_WAKEUP, today.getTime(), pendingIntent);
                     pendingIntent.cancel();
                     alarmManager.cancel(pendingIntent);
