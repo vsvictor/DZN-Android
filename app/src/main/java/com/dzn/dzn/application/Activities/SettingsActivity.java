@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,10 +18,28 @@ import android.widget.ToggleButton;
 import com.dzn.dzn.application.Dialog.OpenDialogListener;
 import com.dzn.dzn.application.Dialog.OpenFileDialog;
 import com.dzn.dzn.application.MainActivity;
+import com.dzn.dzn.application.MainApplication;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.tweetcomposer.TweetComposer;
+import com.vk.sdk.VKAccessToken;
+import com.vk.sdk.VKCallback;
+import com.vk.sdk.VKSdk;
+import com.vk.sdk.api.VKError;
 
+import java.util.Arrays;
 import java.util.Locale;
+
+import io.fabric.sdk.android.Fabric;
 
 public class SettingsActivity extends BaseActivity {
     private static final String TAG = "SettingsActivity";
@@ -62,12 +81,18 @@ public class SettingsActivity extends BaseActivity {
     private ImageButton ibOpenSound;
 
     private int sender = 0;
+    private CallbackManager callbackManager;
+    private boolean ch;
+    private MainApplication app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_settings);
+
+        app = (MainApplication) getApplication();
+
         Bundle b = getIntent().getExtras();
         if(b != null) sender = b.getInt("sender", 0);
         //Initialize view element
@@ -96,6 +121,17 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        if(!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
+            @Override
+            public void onResult(VKAccessToken res) {
+                Log.d(TAG, "VK login success");
+            }
+            @Override
+            public void onError(VKError error) {
+                Log.d(TAG, "VK login error: " + error.errorMessage);
+            }
+        }));
     }
 
     /**
@@ -308,36 +344,90 @@ public class SettingsActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 settings.setFacebook(isChecked);
+                if(isChecked && ch) {
+                    callbackManager = CallbackManager.Factory.create();
+                    LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                        @Override
+                        public void onSuccess(LoginResult loginResult) {
+                            AccessToken token = loginResult.getAccessToken();
+                            AccessToken.setCurrentAccessToken(token);
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            Log.i(TAG, "Cancel");
+                        }
+
+                        @Override
+                        public void onError(FacebookException error) {
+                            Log.i(TAG, "Error");
+                        }
+                    });
+                    LoginManager.getInstance().logInWithReadPermissions(SettingsActivity.this, Arrays.asList("public_profile"));
+                }
             }
         });
+        ch = false;
         toggleSettingsFacebook.setChecked(settings.isFacebook());
+        ch = true;
 
         toggleSettingsVkontakte = (ToggleButton) findViewById(R.id.toggleSettingsVkontakte);
         toggleSettingsVkontakte.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 settings.setVkontakte(isChecked);
+                if(isChecked && ch){
+                    if (!VKSdk.wakeUpSession(SettingsActivity.this)) {
+                        Log.d(TAG, "VK authorize");
+                        VKSdk.login(SettingsActivity.this, app.getVKScope());
+                    }
+                }
             }
         });
+        ch = false;
         toggleSettingsVkontakte.setChecked(settings.isVkontakte());
+        ch = true;
 
         toggleSettingsTwitter = (ToggleButton) findViewById(R.id.toggleSettingsTwitter);
         toggleSettingsTwitter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 settings.setTwitter(isChecked);
+                if(isChecked && ch) {
+                    Intent intent = getPackageManager().getLaunchIntentForPackage("com.twitter.android");
+                    if(intent == null){
+                        intent = new Intent(Intent.ACTION_VIEW);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.setData(Uri.parse("market://details?id="+"com.twitter.android"));
+                        startActivity(intent);
+                    }
+                }
             }
         });
+
+        ch = false;
         toggleSettingsTwitter.setChecked(settings.isTwitter());
+        ch=true;
 
         toggleSettingsInstagram = (ToggleButton) findViewById(R.id.toggleSettingsInstagram);
         toggleSettingsInstagram.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 settings.setInstagram(isChecked);
+                if(isChecked && ch) {
+                    Intent intent = getPackageManager().getLaunchIntentForPackage("com.instagram.android");
+                    if(intent == null){
+                        intent = new Intent(Intent.ACTION_VIEW);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.setData(Uri.parse("market://details?id="+"com.instagram.android"));
+                        startActivity(intent);
+                    }
+                }
             }
         });
+        ch = false;
         toggleSettingsInstagram.setChecked(settings.isInstagram());
+        ch = true;
 
         toggleSettingsUploadPhoto = (ToggleButton) findViewById(R.id.toggleSettingsUploadPhoto);
         toggleSettingsUploadPhoto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -363,10 +453,12 @@ public class SettingsActivity extends BaseActivity {
     }
 
     private void setCheckedSocialNetwork() {
+        ch = false;
         toggleSettingsFacebook.setChecked(settings.isFacebook());
         toggleSettingsVkontakte.setChecked(settings.isVkontakte());
         toggleSettingsTwitter.setChecked(settings.isTwitter());
         toggleSettingsInstagram.setChecked(settings.isInstagram());
+        ch = true;
     }
 
     /**

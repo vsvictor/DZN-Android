@@ -2,39 +2,11 @@
 <items version="2" >
 
     <item
-        jar="/home/victor/DZN-Android/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.android.support/customtabs/23.4.0/jars/classes.jar"
         jumboMode="true"
         revision="23.0.3"
-        sha1="93ce874e038dcafbbcd73d196a941f7aecbdfb92">
-        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/instant-run-bootstrap_252bf039b71f258f7ea30812882dc2610aaad07d.jar" />
-    </item>
-    <item
-        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/8.1.0/jars/classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="4477ea44f5ec5ad064022a22691732d7638ff197">
-        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-appindexing-8.1.0_ec2f847dd0a34aa0be47582022449ccd8f78ab9b.jar" />
-    </item>
-    <item
-        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.3.0/jars/classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="debf30ce0a7560396b6235edef77e447006454c2">
-        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.android.support-recyclerview-v7-23.3.0_0db43d7804e4bc3e805c0cffa2c20422d03484eb.jar" />
-    </item>
-    <item
-        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.3.0/jars/classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="1b8e03daaa43fb0a4cd57e378167c2fd70454c1e">
-        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-23.3.0_096f8632db122ef44e771db2e756ceec7d9a1beb.jar" />
-    </item>
-    <item
-        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/8.1.0/jars/classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="d0dda274b703dd9c5bb056867649d22b4171ae7d">
-        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-basement-8.1.0_74b74ad0f4533298020bef14eb177564c4f1ef46.jar" />
+        sha1="2d1eaa9e0b98f8fc4c2b989d9b30d4f1480648ac">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.android.support-customtabs-23.4.0_f63a747cb3b8b9a52a9001dc77fd13cf34e402e0.jar" />
     </item>
     <item
         jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.3.0/jars/classes.jar"
@@ -44,18 +16,151 @@
         <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.android.support-animated-vector-drawable-23.3.0_4383681105db41dccef938502fdb12bf125b6cfa.jar" />
     </item>
     <item
-        jar="/opt/android-sdk-linux/extras/android/m2repository/com/android/support/support-annotations/23.3.0/support-annotations-23.3.0.jar"
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.4.0/jars/classes.jar"
         jumboMode="true"
         revision="23.0.3"
-        sha1="db7791d75a07fef9844d06236c1c59ba7bf6997c">
-        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/support-annotations-23.3.0_19b29d545cf39be7364c2450f93081be19755ad9.jar" />
+        sha1="67bd36ee9340ec7c254108936ad16b24bed160cc">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-23.4.0_a44d11cb0e8d0c720f95a5d8a476f71ff4f565af.jar" />
     </item>
     <item
-        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.3.0/jars/classes.jar"
+        jar="/home/victor/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit/retrofit/1.8.0/a517f29ed06be2b2879524fcd94b6e9b36e2e0b5/retrofit-1.8.0.jar"
         jumboMode="true"
         revision="23.0.3"
-        sha1="8a034dd16c0dfd75fe86c52c2cd581592acc684a">
-        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-23.3.0_dcb57eb8721fe6834c0873e09662272112ef85f1.jar" />
+        sha1="a517f29ed06be2b2879524fcd94b6e9b36e2e0b5">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/retrofit-1.8.0_1b8fea0bafe438f9dad19026f265e966bc4e8463.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.vk/androidsdk/1.6.5/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="4096d6d003cfb330375ab5dad117c861368e239e">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.vk-androidsdk-1.6.5_41895e2d344efc0495bd095d5ed0123debfab2b4.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.4.0/jars/libs/internal_impl-23.4.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/internal_impl-23.4.0_ba8885077161ac5520b9cc4825f12b875d1a15ce.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.twitter.sdk.android/tweet-ui/1.10.2/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="01cfb3252577c5d4324e9123d1c888823aae095e">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.twitter.sdk.android-tweet-ui-1.10.2_f08d2a7259304db05b095e0c4265ba59788704c8.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="d9ecde39b460470e655de6e47c05573d2d5a8bfb">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.android.support-cardview-v7-23.4.0_6c62ed0f734f0eecb677e67f8193bb8ef38e4456.jar" />
+    </item>
+    <item
+        jar="/opt/android-sdk-linux/extras/android/m2repository/com/android/support/support-annotations/23.4.0/support-annotations-23.4.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="ffbe55fdb2bb456b1485831706a9eac3300bb6b8">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/support-annotations-23.4.0_a5f724aa4c30bd8b758e68b13a4f2d3c5a8c0311.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="debf30ce0a7560396b6235edef77e447006454c2">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.android.support-recyclerview-v7-23.3.0_0db43d7804e4bc3e805c0cffa2c20422d03484eb.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.twitter.sdk.android/twitter-core/1.6.7/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="34ef6a46cb4fcb054a303f8703dc1eae258d57a3">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.twitter.sdk.android-twitter-core-1.6.7_161a8672267fcb1b47072f0c8adb7e9130e9fb34.jar" />
+    </item>
+    <item
+        jar="/home/victor/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-applinks/1.4.0/8ad21bf21784dacce5f2043afb97218cc377e835/bolts-applinks-1.4.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="8ad21bf21784dacce5f2043afb97218cc377e835">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/bolts-applinks-1.4.0_cf9bcc6fb1ad0be7e5543b3325dee0161843522e.jar" />
+    </item>
+    <item
+        jar="/home/victor/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.5.2/7446d06ec8d4f7ffcc53f1da37c95f200dcb9387/picasso-2.5.2.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/picasso-2.5.2_d5b5555f237d6fe66d99e94a485c9a51110b2f82.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/io.fabric.sdk.android/fabric/1.3.11/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="9505232840ada5bc281f012c9798a6e49900d4ea">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/io.fabric.sdk.android-fabric-1.3.11_f90b341a65d599699230f53a04268dc76e68fbc8.jar" />
+    </item>
+    <item
+        jar="/home/victor/.gradle/caches/modules-2/files-2.1/com.twitter/twitter-text/1.13.0/78415b95ae3184c5926d593feab64bfc0b73b2dd/twitter-text-1.13.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="78415b95ae3184c5926d593feab64bfc0b73b2dd">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/twitter-text-1.13.0_6b38309c11020d119be2efedf533f4d160fb7850.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.12.1/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="26645b518694e20a97fc19a6a3c3933c0cc41bc1">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.facebook.android-facebook-android-sdk-4.12.1_2faddf50fdf4cf2fbe44b6b3562d001f26d7859e.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="7bbdd791db1ea110a7a6f8fd0484e09749e74085">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/instant-run_f419e0b862745e5fa3e50b9e6e993ea80ce56bfc.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="8c2029fdb25bc684d277e731ec9e99df0bffff21">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/instant-run-bootstrap_252bf039b71f258f7ea30812882dc2610aaad07d.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="1b8e03daaa43fb0a4cd57e378167c2fd70454c1e">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-23.3.0_096f8632db122ef44e771db2e756ceec7d9a1beb.jar" />
+    </item>
+    <item
+        jar="/home/victor/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.3/5fc52c41ef0239d1093a1eb7c3697036183677ce/gson-2.3.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="5fc52c41ef0239d1093a1eb7c3697036183677ce">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/gson-2.3_2dc0dc0cef87e4c5156f2d3e1b0242eb3692eebc.jar" />
+    </item>
+    <item
+        jar="/home/victor/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-tasks/1.4.0/d85884acf6810a3bbbecb587f239005cbc846dc4/bolts-tasks-1.4.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="d85884acf6810a3bbbecb587f239005cbc846dc4">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/bolts-tasks-1.4.0_35dabe2df6b74e4b83b085f48de7ffc79b7e4768.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.twitter.sdk.android/tweet-composer/1.0.4/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="fccfd6064a414e565d9764620aedbc488b09a5f5">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.twitter.sdk.android-tweet-composer-1.0.4_2a6e7ece2b89540da50b36dba52addb7715b8cf5.jar" />
+    </item>
+    <item
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.digits.sdk.android/digits/1.10.3/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="2b81327f3afb5c0c84ee6f50df6f750737a44653">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.digits.sdk.android-digits-1.10.3_57511fd6b20d391c5aa235dd5832e5f8d2c0c560.jar" />
     </item>
     <item
         jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/23.3.0/jars/classes.jar"
@@ -65,18 +170,11 @@
         <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.android.support-support-vector-drawable-23.3.0_21b46936e511b309a33dc627e989df3373c8c4aa.jar" />
     </item>
     <item
-        jar="/home/victor/DZN-Android/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.twitter.sdk.android/twitter/1.13.2/jars/classes.jar"
         jumboMode="true"
         revision="23.0.3"
-        sha1="9858c5d77e275f6f0873d579dc26b5f353e03bf4">
-        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/instant-run_f419e0b862745e5fa3e50b9e6e993ea80ce56bfc.jar" />
-    </item>
-    <item
-        jar="/home/victor/DZN-Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.3.0/jars/libs/internal_impl-23.3.0.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="4da5a4d697d32497c6f85567a5112e62fdfd0676">
-        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/internal_impl-23.3.0_906f90636864b0352df5e4a116e0a3ad92c23017.jar" />
+        sha1="9648ff4751043ee88b6221787564e23aa2e8c216">
+        <dex dex="/home/victor/DZN-Android/app/build/intermediates/pre-dexed/debug/com.twitter.sdk.android-twitter-1.13.2_cce0712b3c995dfcc26b08771c3021535c478b72.jar" />
     </item>
 
 </items>

@@ -3,11 +3,14 @@ package com.dzn.dzn.application.Activities;
 
 import android.app.AlarmManager;
 import android.app.KeyguardManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -16,6 +19,7 @@ import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -23,6 +27,7 @@ import android.os.PowerManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
@@ -37,14 +42,69 @@ import android.widget.TextView;
 import com.dzn.dzn.application.MainActivity;
 import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.Objects.Settings;
+import com.dzn.dzn.application.Objects.Social;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.share.ShareApi;
+import com.facebook.share.ShareBuilder;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareContent;
+import com.facebook.share.model.ShareMediaContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterApiClient;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterAuthClient;
+import com.twitter.sdk.android.core.models.Media;
+import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.services.MediaService;
+import com.twitter.sdk.android.core.services.StatusesService;
+import com.twitter.sdk.android.tweetcomposer.TweetComposer;
+import com.vk.sdk.VKAccessToken;
+import com.vk.sdk.VKCallback;
+import com.vk.sdk.VKSdk;
+import com.vk.sdk.api.VKApi;
+import com.vk.sdk.api.VKApiConst;
+import com.vk.sdk.api.VKError;
+import com.vk.sdk.api.VKParameters;
+import com.vk.sdk.api.VKRequest;
+import com.vk.sdk.api.VKResponse;
+import com.vk.sdk.api.model.VKApiPhoto;
+import com.vk.sdk.api.model.VKAttachments;
+import com.vk.sdk.api.model.VKPhotoArray;
+import com.vk.sdk.api.model.VKWallPostResult;
+import com.vk.sdk.api.photo.VKImageParameters;
+import com.vk.sdk.api.photo.VKUploadImage;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import io.fabric.sdk.android.Fabric;
+import retrofit.mime.TypedFile;
 
 public class CreateSelfieActivity extends BaseActivity {
     private static final String TAG = "CreateSelfieActivity";
@@ -79,6 +139,11 @@ public class CreateSelfieActivity extends BaseActivity {
 
     private Settings settings;
     private MediaPlayer mMediaPlayer;
+    private CallbackManager callbackManager;
+
+    private boolean published = false;
+
+    private ArrayList<Social> arrSocial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,34 +161,34 @@ public class CreateSelfieActivity extends BaseActivity {
 
         created = false;
         setContentView(R.layout.activity_create_selfie);
+        callbackManager= CallbackManager.Factory.create();
         idCamera = CameraInfo.CAMERA_FACING_FRONT;
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
             id = getIntent().getExtras().getInt("id", -1);
             if (id > 0) {
-                //alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+                alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
                 dataBaseHelper = DataBaseHelper.getInstance(this);
                 alarm = dataBaseHelper.getAlarm(id);
-                if (alarm != null) {
-                    if (alarm.isOne()) {
-                        alarm.setTurnOn(false);
-                        dataBaseHelper.updateAlarm(alarm);
-                    }
-                } else {
-                    finish();
+                if (alarm.isOne()) {
+                    alarm.setTurnOn(false);
+                    dataBaseHelper.updateAlarm(alarm);
                 }
             }
         } else id = -1;
 
+
         //Initialize settings
         settings = Settings.getInstance(this);
+
 
         //Initialize view elements
         initView();
 
         //Initialize Surface
         initSurface();
+
     }
 
     @Override
@@ -162,6 +227,43 @@ public class CreateSelfieActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        //requestCode==100 - Instagram published
+        //requestCode==101 - Instagram instaled
+        //requestCode==102 - twitter paublished
+        //requestCode==103 - twitter instaled
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        if(!published){
+            publishToFacebook();
+            published = true;
+        }
+        if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
+            @Override
+            public void onResult(VKAccessToken res) {
+                Log.d(TAG, "VK login success");
+            }
+            @Override
+            public void onError(VKError error) {
+                Log.d(TAG, "VK login error: " + error.errorMessage);
+            }
+        })) ;
+        if(requestCode == 100){
+            for(Social ss:arrSocial){
+                if(ss.getID() == 4){arrSocial.remove(ss);break;}
+            }
+            publisher(arrSocial);
+        }
+        if(requestCode == 101){
+            publishToInstagram(uri);
+        }
+        if(requestCode == 102){
+            for(Social ss:arrSocial){
+                if(ss.getID() == 2){arrSocial.remove(ss);break;}
+            }
+            publisher(arrSocial);
+        }
+        if(requestCode == 103){
+            publishToTwitter(uri);
+        }
     }
 
     private void initCamera() {
@@ -419,34 +521,40 @@ public class CreateSelfieActivity extends BaseActivity {
                         Bitmap bob = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
                         btm = Bitmap.createScaledBitmap(bob, bitmap.getWidth() / 2, bitmap.getHeight(), false);
                     }
-
+                    ivPhoto.setImageBitmap(btm);
                     uri = getImageUri(btm);
-
                     if (settings.isSocial()) {
-
-                        new AsyncTask<Void, Void, Void>() {
-                            @Override
-                            protected void onPreExecute() {
-                                //set photo
-                                ivPhoto.setImageBitmap(btm);
-                            }
-
-                            @Override
-                            protected Void doInBackground(Void... params) {
-                                //post photo to FB
-                                Log.d(TAG, "Alarm: " + alarm.toString());
-
-                                return null;
-                            }
-
-                            @Override
-                            protected void onPostExecute(Void aVoid) {
-                                startActivity(new Intent(CreateSelfieActivity.this, MainActivity.class));
-                                finish();
-                            }
-                        }.execute();
+                       // LoginManager.getInstance().logInWithPublishPermissions(CreateSelfieActivity.this,Arrays.asList("publish_actions"));
+                        //publishToTwitter(uri);
+                        //publishPhotoToVK(btm);
+                        //postPhotoToInstagram(uri);
+                        arrSocial = new ArrayList<Social>();
+                        if(alarm.isFacebook()){
+                            Social fb = new Social();
+                            fb.setID(1);
+                            fb.setName("Facebook");
+                            arrSocial.add(fb);
+                        }
+                        if(alarm.isTwitter()){
+                            Social tw = new Social();
+                            tw.setID(2);
+                            tw.setName("Twitter");
+                            arrSocial.add(tw);
+                        }
+                        if(alarm.isVkontakte()){
+                            Social vk = new Social();
+                            vk.setID(3);
+                            vk.setName("VKontakte");
+                            arrSocial.add(vk);
+                        }
+                        if(alarm.isInstagram()){
+                            Social im = new Social();
+                            im.setID(4);
+                            im.setName("Facebook");
+                            arrSocial.add(im);
+                        }
+                        publisher(arrSocial);
                     } else {
-                        ivPhoto.setImageBitmap(btm);
                         finish();
                     }
                 } else {
@@ -478,7 +586,17 @@ public class CreateSelfieActivity extends BaseActivity {
         String path = MediaStore.Images.Media.insertImage(getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
-
+    public String getRealPathFromURI(Uri contentUri) {
+        try {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } catch (Exception e) {
+            return contentUri.getPath();
+        }
+    }
     /**
      * Set preview size
      *
@@ -568,5 +686,143 @@ public class CreateSelfieActivity extends BaseActivity {
             }
         result = result % 360;
         camera.setDisplayOrientation(result);
+    }
+    private void publishToFacebook() {
+        Bitmap image = btm;
+        SharePhoto photo = new SharePhoto.Builder()
+                .setBitmap(image)
+                .setCaption("Like me!")
+                .build();
+
+        SharePhotoContent content = new SharePhotoContent.Builder()
+                .addPhoto(photo)
+                .build();
+
+        ShareApi.share(content, new FacebookCallback<Sharer.Result>() {
+            @Override
+            public void onSuccess(Sharer.Result result) {
+                for(Social ss:arrSocial){
+                    if(ss.getID() == 1) {arrSocial.remove(ss);break;}
+                }
+                publisher(arrSocial);
+            }
+            @Override
+            public void onCancel() {
+                for(Social ss:arrSocial){
+                    if(ss.getID() == 1) {arrSocial.remove(ss);break;}
+                }
+                publisher(arrSocial);
+            }
+            @Override
+            public void onError(FacebookException error) {
+                for(Social ss:arrSocial){
+                    if(ss.getID() == 1) {arrSocial.remove(ss);break;}
+                }
+                publisher(arrSocial);
+            }
+        });
+    }
+    private FacebookCallback<LoginResult> login = new FacebookCallback<LoginResult>() {
+        @Override
+        public void onSuccess(LoginResult loginResult) {
+            publishToFacebook();
+            Log.i(TAG, "Shared");
+        }
+
+        @Override
+        public void onCancel() {
+            Log.i(TAG, "Cancel");
+        }
+
+        @Override
+        public void onError(FacebookException error) {
+            Log.i(TAG, "Error: "+error.getMessage());
+        }
+    };
+    public void publishToTwitter(Uri uriImage){
+        Intent intent = getPackageManager().getLaunchIntentForPackage("com.twitter.android");
+        if(intent != null) {
+            TwitterAuthConfig authConfig = new TwitterAuthConfig(
+                    CreateSelfieActivity.this.getResources().getString(R.string.twitter_key),
+                    CreateSelfieActivity.this.getResources().getString(R.string.twitter_secret));
+            Fabric.with(CreateSelfieActivity.this, new TwitterCore(authConfig), new TweetComposer());
+            final TweetComposer.Builder builder = new TweetComposer.Builder(CreateSelfieActivity.this)
+                    .text("Like me!")
+                    .image(uriImage);
+            //builder.show();
+            Intent intent_tw =  builder.createIntent();
+            startActivityForResult(intent_tw, 102);
+        }
+        else{
+            intent = new Intent(Intent.ACTION_VIEW);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setData(Uri.parse("market://details?id="+"com.twitter.android"));
+            startActivityForResult(intent, 103);
+        }
+    }
+    private void publishPhotoToVK(final Bitmap bitmap) {
+        VKRequest request = VKApi.uploadWallPhotoRequest(new VKUploadImage(bitmap, VKImageParameters.pngImage()), 0, 0);
+        request.executeWithListener(new VKRequest.VKRequestListener() {
+            @Override
+            public void onComplete(VKResponse response) {
+                VKApiPhoto photo = ((VKPhotoArray) response.parsedModel).get(0);
+                makePhotoOnWallVk(photo);
+                bitmap.recycle();
+                for(Social ss:arrSocial){
+                    if(ss.getID() == 3) {arrSocial.remove(ss);break;}
+                }
+                publisher(arrSocial);
+            }
+            @Override
+            public void onError(VKError error) {
+                for(Social ss:arrSocial){
+                    if(ss.getID() == 3) {arrSocial.remove(ss);break;}
+                }
+                publisher(arrSocial);
+            }
+        });
+    }
+    private void makePhotoOnWallVk(final VKApiPhoto photo) {
+        VKRequest post = VKApi.wall().post(VKParameters.from(VKApiConst.ATTACHMENTS, new VKAttachments(photo), VKApiConst.MESSAGE, "Dzn-Dzn photo"));
+        post.setModelClass(VKWallPostResult.class);
+        post.executeWithListener(new VKRequest.VKRequestListener() {
+            @Override
+            public void onComplete(VKResponse response) {
+                Log.d(TAG, "makePhotoOnWallVk complete");
+            }
+
+            @Override
+            public void onError(VKError error) {
+                Log.d(TAG, "makePhotoOnWallVk error: " + error.errorMessage);
+            }
+        });
+    }
+    private void publishToInstagram(Uri uri) {
+        Intent intent = getPackageManager().getLaunchIntentForPackage("com.instagram.android");
+        if(intent != null) {
+            String path = getRealPathFromURI(uri);
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setType("image/*");
+            File media = new File(path);
+            Uri shareUri = Uri.fromFile(media);
+            share.putExtra(Intent.EXTRA_STREAM, shareUri);
+            share.setPackage("com.instagram.android");
+            startActivityForResult(share, 100);
+        }
+        else{
+            intent = new Intent(Intent.ACTION_VIEW);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setData(Uri.parse("market://details?id="+"com.instagram.android"));
+            startActivityForResult(intent, 101);
+        }
+    }
+
+    private void publisher(ArrayList<Social> arr){
+        if(arr.isEmpty()) return;
+        Social curr = arr.get(0);
+        if(curr.getID() == 1) publishToFacebook();
+        else if(curr.getID() == 2) publishToTwitter(uri);
+        else if (curr.getID() == 3) publishPhotoToVK(btm);
+        else if(curr.getID() == 4) publishToInstagram(uri);
     }
 }
