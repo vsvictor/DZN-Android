@@ -402,9 +402,12 @@ public class CreateSelfieActivity extends BaseActivity {
             if (mMediaPlayer == null) mMediaPlayer = new MediaPlayer();
             if (!mMediaPlayer.isPlaying()) {
                 try {
+                    float vol = ((float)settings.getSound())/100;
+                    Log.i(TAG, "!!!!!!!!!Volue:"+vol);
                     mMediaPlayer.setDataSource(CreateSelfieActivity.this, alert);
                     if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
                         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+                        mMediaPlayer.setVolume(vol, vol);
                         mMediaPlayer.setLooping(true);
                         mMediaPlayer.prepare();
                         mMediaPlayer.start();
