@@ -242,7 +242,9 @@ public class CreateSelfieActivity extends BaseActivity {
         //requestCode==101 - Instagram instaled
         //requestCode==102 - twitter paublished
         //requestCode==103 - twitter instaled
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        if (callbackManager != null) {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
         if(!published){
             publishToFacebook();
             published = true;
