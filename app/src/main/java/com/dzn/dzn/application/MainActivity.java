@@ -5,15 +5,12 @@ import android.app.KeyguardManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.PowerManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -26,15 +23,12 @@ import com.dzn.dzn.application.Activities.SettingsActivity;
 import com.dzn.dzn.application.Activities.StartActivity;
 import com.dzn.dzn.application.Adapters.RecyclerViewAdapterMain;
 import com.dzn.dzn.application.Objects.Alarm;
-import com.dzn.dzn.application.Objects.Settings;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.Locale;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
@@ -94,7 +88,8 @@ public class MainActivity extends BaseActivity {
                 if(list.isEmpty()){
                     runFirstActivity();
                 }
-                recycleViewAdapter = new RecyclerViewAdapterMain(list);
+                //recycleViewAdapter = new RecyclerViewAdapterMain(list);
+                recycleViewAdapter = new RecyclerViewAdapterMain(MainActivity.this, list, dataBaseHelper);
                 recyclerViewMain.setAdapter(recycleViewAdapter);
                 int counter = 1;
                 for(Alarm alarm : list){
@@ -136,10 +131,6 @@ public class MainActivity extends BaseActivity {
 ///            }
         }
     }
-
-    /**
-     * Initialize settings and locale
-     */
 
     /**
      * Initialize view elements
@@ -185,6 +176,15 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
+     * Run NewEdit activity
+     * @param view
+     */
+    public void onNewEditActivity(View view) {
+        Intent intent = new Intent(MainActivity.this, NewEditActivity.class);
+        startActivity(intent);
+    }
+
+    /**
      * Initialize recyclerView of alarms
      */
     private void initRecyclerViewMain() {
@@ -196,7 +196,8 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * This method is for tested
+     * Return list of Alarm
+     *
      * @return
      */
     private ArrayList<Alarm> getListAlarm() {
@@ -205,8 +206,8 @@ public class MainActivity extends BaseActivity {
             dataBaseHelper = DataBaseHelper.getInstance(this);
         }
 
-        //ArrayList<Alarm> ar = dataBaseHelper.getAlarmList();
-        ArrayList<Alarm> ar = dataBaseHelper.getAlarmList(true);
+        ArrayList<Alarm> ar = dataBaseHelper.getAlarmList();
+        //ArrayList<Alarm> ar = dataBaseHelper.getAlarmList(true);
         if(ar == null) return new ArrayList<Alarm>();
 
         return ar;
