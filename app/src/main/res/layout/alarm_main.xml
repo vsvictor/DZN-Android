@@ -5,35 +5,44 @@
     android:background="@color/colorBackgroundMain"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
-        android:paddingBottom="@dimen/activity_vertical_margin">
+        android:padding="@dimen/activity_vertical_margin">
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/delete" />
 
         <TextView
-            android:id="@+id/tvHour"
+            android:id="@+id/tvAlarmTime"
             style="@style/MainActivityTextClock"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="00" />
+            android:gravity="center"
+            android:text="00:00"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="@dimen/app_padding_16dp"
+            android:layout_marginRight="50dp"
+            android:layout_toEndOf="@+id/btnDelete"
+            android:layout_toRightOf="@+id/btnDelete" />
 
-        <TextView
-            android:id="@+id/tvColon"
-            style="@style/MainActivityTextClock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/app_colon" />
+        <ToggleButton
+            android:id="@+id/toggleAlarmOnOff"
+            style="@style/NewEditToggleHandler"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textOff=""
+            android:textOn="" />
 
-        <TextView
-            android:id="@+id/tvMinute"
-            style="@style/MainActivityTextClock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="00" />
-
-    </LinearLayout>
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
