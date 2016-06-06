@@ -2,6 +2,7 @@ package com.dzn.dzn.application.Objects;
 
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.Date;
  * Created by zhenya on 09.05.2016.
  */
 public class Alarm implements Serializable {
+    private static final String TIME_FORMAT = "HH:mm";
 
     private int ID;
     private Date date;
@@ -56,14 +58,16 @@ public class Alarm implements Serializable {
         return melody;
     }
 
+    /**
+     * Return string value of time HH:mm
+     *
+     * @return
+     */
     public String getTime() {
-        String time = "00:00";
-        if (date != null) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
-            time = calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE);
-        }
-        return time;
+        if (date == null) return "";
+        SimpleDateFormat simpledateformat = new SimpleDateFormat(TIME_FORMAT);
+        String stringDate = simpledateformat.format(date);
+        return stringDate;
     }
 
     public boolean isVibro() {
