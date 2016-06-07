@@ -541,6 +541,7 @@ public class CreateSelfieActivity extends BaseActivity {
                     }
                     ivPhoto.setImageBitmap(btm);
                     uri = getImageUri(btm);
+                    created = !(settings.isSocial());
                     if (settings.isSocial()) {
                        // LoginManager.getInstance().logInWithPublishPermissions(CreateSelfieActivity.this,Arrays.asList("publish_actions"));
                         //publishToTwitter(uri);
