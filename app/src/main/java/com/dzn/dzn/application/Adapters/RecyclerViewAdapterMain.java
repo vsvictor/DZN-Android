@@ -5,11 +5,14 @@ import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -88,7 +91,7 @@ public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAd
             public void onClick(View v) {
                 //Log.d(TAG, "Position: " + position);
                 DataBaseHelper db = DataBaseHelper.getInstance(context);
-                Alarm alarm = list.get(position);
+                //Alarm alarm = list.get(position);
                 getDialog(alarm, db, position);
                 /**
                 if (alarm.isTurnOn()) {
@@ -162,11 +165,16 @@ public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAd
      */
     private void getDialog(final Alarm alarm, final DataBaseHelper db, final int position) {
         final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_delete);
-        //dialog.setTitle("Delete alarm?");
         dialog.show();
 
-        Button btnYes = (Button) dialog.findViewById(R.id.btn_yes);
+        TextView tvDialogDelete = (TextView) dialog.findViewById(R.id.tvDialogDelete);
+        PFHandbookProTypeFaces.THIN.apply(tvDialogDelete);
+
+        Button btnYes = (Button) dialog.findViewById(R.id.btnYes);
+        PFHandbookProTypeFaces.THIN.apply(btnYes);
         btnYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,7 +210,8 @@ public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAd
             }
         });
 
-        Button btnNo = (Button) dialog.findViewById(R.id.btn_no);
+        Button btnNo = (Button) dialog.findViewById(R.id.btnNo);
+        PFHandbookProTypeFaces.THIN.apply(btnNo);
         btnNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

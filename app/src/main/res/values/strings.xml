@@ -100,4 +100,9 @@
     <string name="morning">My morning</string>
     <string name="publish_message">Dzn-Dzn photo</string>
 
+    <!-- Dialog of delete alarm -->
+    <string name="dialog_delete_alarm">Are you sure to delete the alarm?</string>
+    <string name="dialog_yes">YES</string>
+    <string name="dialog_no">NO</string>
+
 </resources>

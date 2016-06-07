@@ -100,4 +100,9 @@
     <string name="morning">Мое утро</string>
     <string name="publish_message">Dzn-Dzn фото</string>
 
+    <!-- Dialog of delete alarm -->
+    <string name="dialog_delete_alarm">Вы действительно хотите удалить будильник?</string>
+    <string name="dialog_yes">ДА</string>
+    <string name="dialog_no">НЕТ</string>
+
 </resources>

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/colorYellow" >
+    android:background="@drawable/ll_corner" >
 
     <TextView
+        android:id="@+id/tvDialogDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -13,16 +14,16 @@
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:textColor="#0D1DFF"
         android:textSize="30sp"
-        android:text="Вы хотите удалить будильник?"/>
+        android:text="@string/dialog_delete_alarm"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_margin="@dimen/activity_vertical_margin">
 
         <Button
-            android:id="@+id/btn_yes"
+            android:id="@+id/btnYes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
@@ -30,10 +31,10 @@
             android:layout_weight="1"
             android:textColor="#0D1DFF"
             android:textSize="30sp"
-            android:text="YES"/>
+            android:text="@string/dialog_yes"/>
 
         <Button
-            android:id="@+id/btn_no"
+            android:id="@+id/btnNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -41,7 +42,7 @@
             android:layout_weight="1"
             android:textColor="#0D1DFF"
             android:textSize="30sp"
-            android:text="NO"/>
+            android:text="@string/dialog_no"/>
 
     </LinearLayout>
 
