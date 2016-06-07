@@ -1,6 +1,7 @@
 package com.dzn.dzn.application.Adapters;
 
 import android.app.AlarmManager;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -88,6 +89,8 @@ public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAd
                 //Log.d(TAG, "Position: " + position);
                 DataBaseHelper db = DataBaseHelper.getInstance(context);
                 Alarm alarm = list.get(position);
+                getDialog(alarm, db, position);
+                /**
                 if (alarm.isTurnOn()) {
                     alarm.setTurnOn(false);
 
@@ -116,6 +119,7 @@ public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAd
                 list.remove(position);
                 notifyDataSetChanged();
                 if(listener != null) listener.isEmpty(list.size()==0);
+                 */
             }
         });
     }
@@ -147,5 +151,63 @@ public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAd
     }
     public interface OnCheckEmpty{
         void isEmpty(boolean isEmpty);
+    }
+
+    /**
+     * Show dialog of delete alarm
+     *
+     * @param alarm
+     * @param db
+     * @param position
+     */
+    private void getDialog(final Alarm alarm, final DataBaseHelper db, final int position) {
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_delete);
+        //dialog.setTitle("Delete alarm?");
+        dialog.show();
+
+        Button btnYes = (Button) dialog.findViewById(R.id.btn_yes);
+        btnYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (alarm.isTurnOn()) {
+                    alarm.setTurnOn(false);
+
+                    // Cancel pendingIntent
+                    Date d = alarm.getDate();
+                    Date today = Calendar.getInstance().getTime();
+                    today.setHours(d.getHours());
+                    today.setMinutes(d.getMinutes());
+                    today.setSeconds(0);
+
+                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                    Intent intent = new Intent(context, CreateSelfieActivity.class);
+                    intent.putExtra("id", alarm.getID());
+                    intent.putExtra("time", today.getTime());
+                    PendingIntent pendingIntent = PendingIntent.getActivity(context, alarm.getID(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, today.getTime(), pendingIntent);
+                    pendingIntent.cancel();
+                    alarmManager.cancel(pendingIntent);
+                }
+                if (db != null) {
+                    db.removeAlarm(alarm);
+                    Log.d(TAG, "Alarm deleted: " + alarm.toString());
+                } else {
+                    Log.d(TAG, "database null");
+                }
+                list.remove(position);
+                notifyDataSetChanged();
+                if(listener != null) listener.isEmpty(list.size()==0);
+                dialog.cancel();
+            }
+        });
+
+        Button btnNo = (Button) dialog.findViewById(R.id.btn_no);
+        btnNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
     }
 }
