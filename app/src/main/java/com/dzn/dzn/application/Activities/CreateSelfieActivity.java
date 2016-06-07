@@ -571,6 +571,7 @@ public class CreateSelfieActivity extends BaseActivity {
                             im.setName("Facebook");
                             arrSocial.add(im);
                         }
+                        created = !(arrSocial.size()>0);
                         publisher(arrSocial);
                     } else {
                         //finish();

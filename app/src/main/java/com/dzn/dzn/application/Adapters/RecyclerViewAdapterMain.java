@@ -34,6 +34,7 @@ public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAd
     private Context context;
     private ArrayList<Alarm> list;
     private DataBaseHelper dataBaseHelper;
+    private OnCheckEmpty listener;
 
     public RecyclerViewAdapterMain(ArrayList<Alarm> list) {
         this.list = list;
@@ -114,6 +115,7 @@ public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAd
                 }
                 list.remove(position);
                 notifyDataSetChanged();
+                if(listener != null) listener.isEmpty(list.size()==0);
             }
         });
     }
@@ -139,5 +141,11 @@ public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAd
             btnDelete = (Button) itemView.findViewById(R.id.btnDelete);
             toggleAlarmOnOff = (ToggleButton) itemView.findViewById(R.id.toggleAlarmOnOff);
         }
+    }
+    public void setOnCheckEmpty(OnCheckEmpty listener){
+        this.listener = listener;
+    }
+    public interface OnCheckEmpty{
+        void isEmpty(boolean isEmpty);
     }
 }

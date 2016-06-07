@@ -107,6 +107,12 @@ public class MainActivity extends BaseActivity {
                         alarmManager.set(AlarmManager.RTC_WAKEUP, today.getTime(), pendingIntent);
                         counter++;
                     }
+                    recycleViewAdapter.setOnCheckEmpty(new RecyclerViewAdapterMain.OnCheckEmpty() {
+                        @Override
+                        public void isEmpty(boolean isEmpty) {
+                            if(isEmpty) startActivity(new Intent(MainActivity.this, StartActivity.class));
+                        }
+                    });
                 }
             }
         }.execute();
