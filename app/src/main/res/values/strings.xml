@@ -95,6 +95,7 @@
     <string name="create_selfie_activity_create">Take a selfie to turn off the alarm clock!</string>
     <string name="good_morning">GOOD MORNING!</string>
     <string name="create_selfie_activity_spread">publish selfie...</string>
+    <string name="network_error">Network is not available. Check connection.</string>
 
     <string name="morning">My morning</string>
     <string name="publish_message">Dzn-Dzn photo</string>

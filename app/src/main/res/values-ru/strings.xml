@@ -95,6 +95,7 @@
     <string name="create_selfie_activity_create">Сделай селфи, чтобы выключить будильник!</string>
     <string name="good_morning">ДОБРОЕ УТРО!</string>
     <string name="create_selfie_activity_spread">публикую селфи...</string>
+    <string name="network_error">Отсутствует соединение к сети Интернет. Проверте подключение.</string>
 
     <string name="morning">Мое утро</string>
     <string name="publish_message">Dzn-Dzn фото</string>

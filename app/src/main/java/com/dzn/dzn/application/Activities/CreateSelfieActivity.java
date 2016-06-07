@@ -3,13 +3,11 @@ package com.dzn.dzn.application.Activities;
 
 import android.app.AlarmManager;
 import android.app.KeyguardManager;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,15 +17,14 @@ import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.Ringtone;
 import android.media.RingtoneManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.PowerManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
@@ -38,6 +35,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dzn.dzn.application.MainActivity;
 import com.dzn.dzn.application.Objects.Alarm;
@@ -46,34 +44,16 @@ import com.dzn.dzn.application.Objects.Social;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
 import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.share.ShareApi;
-import com.facebook.share.ShareBuilder;
 import com.facebook.share.Sharer;
-import com.facebook.share.model.ShareContent;
-import com.facebook.share.model.ShareMediaContent;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
-import com.facebook.share.widget.ShareDialog;
-import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.TwitterSession;
-import com.twitter.sdk.android.core.identity.TwitterAuthClient;
-import com.twitter.sdk.android.core.models.Media;
-import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.core.services.MediaService;
-import com.twitter.sdk.android.core.services.StatusesService;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
@@ -94,22 +74,14 @@ import com.vk.sdk.api.photo.VKUploadImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
-import retrofit.mime.TypedFile;
 
 public class CreateSelfieActivity extends BaseActivity {
     private static final String TAG = "CreateSelfieActivity";
-
-    private Bitmap btm;
+    private final static String CLASS_LABEL = "CreateSelfieActivity";
 
     private TextView tvCreateSelfie;
     private ImageView ivPhoto;
@@ -119,6 +91,7 @@ public class CreateSelfieActivity extends BaseActivity {
     private LinearLayout llSpreadSelfie;
     private TextView tvSelfieSpread;
 
+    private Bitmap btm;
     private Camera camera;
     private SurfaceView sv;
     private SurfaceHolder surfaceHolder;
@@ -127,7 +100,6 @@ public class CreateSelfieActivity extends BaseActivity {
 
     private boolean created = false;
     private PowerManager.WakeLock mWakeLock;
-    private final static String CLASS_LABEL = "CreateSelfieActivity";
 
     private static int counter = 1;
     private int id;
@@ -182,10 +154,8 @@ public class CreateSelfieActivity extends BaseActivity {
                 }
             } else id = -1;
 
-
             //Initialize settings
             settings = Settings.getInstance(this);
-
 
             //Initialize view elements
             initView();
@@ -547,33 +517,38 @@ public class CreateSelfieActivity extends BaseActivity {
                         //publishToTwitter(uri);
                         //publishPhotoToVK(btm);
                         //postPhotoToInstagram(uri);
-                        arrSocial = new ArrayList<Social>();
-                        if(alarm.isFacebook()){
-                            Social fb = new Social();
-                            fb.setID(1);
-                            fb.setName("Facebook");
-                            arrSocial.add(fb);
+                        if (isNetworkAvailable()) {
+                            arrSocial = new ArrayList<Social>();
+                            if (alarm.isFacebook()) {
+                                Social fb = new Social();
+                                fb.setID(1);
+                                fb.setName("Facebook");
+                                arrSocial.add(fb);
+                            }
+                            if (alarm.isTwitter()) {
+                                Social tw = new Social();
+                                tw.setID(2);
+                                tw.setName("Twitter");
+                                arrSocial.add(tw);
+                            }
+                            if (alarm.isVkontakte()) {
+                                Social vk = new Social();
+                                vk.setID(3);
+                                vk.setName("VKontakte");
+                                arrSocial.add(vk);
+                            }
+                            if (alarm.isInstagram()) {
+                                Social im = new Social();
+                                im.setID(4);
+                                im.setName("Facebook");
+                                arrSocial.add(im);
+                            }
+                            created = !(arrSocial.size() > 0);
+                            publisher(arrSocial);
+                        } else {
+                            Toast.makeText(CreateSelfieActivity.this, getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                            finish();
                         }
-                        if(alarm.isTwitter()){
-                            Social tw = new Social();
-                            tw.setID(2);
-                            tw.setName("Twitter");
-                            arrSocial.add(tw);
-                        }
-                        if(alarm.isVkontakte()){
-                            Social vk = new Social();
-                            vk.setID(3);
-                            vk.setName("VKontakte");
-                            arrSocial.add(vk);
-                        }
-                        if(alarm.isInstagram()){
-                            Social im = new Social();
-                            im.setID(4);
-                            im.setName("Facebook");
-                            arrSocial.add(im);
-                        }
-                        created = !(arrSocial.size()>0);
-                        publisher(arrSocial);
                     } else {
                         //finish();
                     }
@@ -848,5 +823,16 @@ public class CreateSelfieActivity extends BaseActivity {
         else if(curr.getID() == 2) publishToTwitter(uri);
         else if (curr.getID() == 3) publishPhotoToVK(btm);
         else if(curr.getID() == 4) publishToInstagram(uri);
+    }
+
+    /**
+     * Return value of the internet available or not
+     *
+     * @return
+     */
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 }
