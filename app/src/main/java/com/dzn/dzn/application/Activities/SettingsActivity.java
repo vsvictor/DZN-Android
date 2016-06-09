@@ -72,7 +72,6 @@ public class SettingsActivity extends BaseActivity {
 
     private ImageButton ibSoundMin;
     private ImageButton ibSoundMax;
-    //private ImageButton ibOpenSound;
 
     private LinearLayout llChoiceMelody;
 
@@ -244,7 +243,9 @@ public class SettingsActivity extends BaseActivity {
                     public void OnSelectedFile(String fileName) {
                         Log.d(TAG, "Selected file: " + fileName);
                         settings.setMelody(fileName);
-                        tvNameMelody.setText(settings.getMelodyTitle());
+                        if (!settings.getMelodyTitle().isEmpty()) {
+                            tvNameMelody.setText(settings.getMelodyTitle());
+                        }
                     }
                 });
                 builder.show();
