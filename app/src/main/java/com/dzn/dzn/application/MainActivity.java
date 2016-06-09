@@ -240,4 +240,10 @@ public class MainActivity extends BaseActivity {
             finish();
         }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        dataBaseHelper.close();
+    }
 }

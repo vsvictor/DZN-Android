@@ -152,6 +152,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * @param alarm
      */
     public void addAlarm(Alarm alarm) {
+        Log.d(TAG, "Alarm add: " + alarm.toString());
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -185,6 +186,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.insertWithOnConflict(TBL_DAYS, null, days, SQLiteDatabase.CONFLICT_REPLACE);
 
         db.close();
+        Log.d(TAG, "Alarm added");
     }
 
     public void updateAlarm(Alarm alarm) {
@@ -233,8 +235,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         try {
             String[] args = {String.valueOf(alarm.getID())};
-            db.delete(TBL_ALARMS, COL_ID + "=?", args);
-            db.delete(TBL_DAYS, COL_ALARM_ID + "=?", args);
+            int ala = db.delete(TBL_ALARMS, COL_ID + "=?", args);
+            Log.d(TAG, "Delete alarm: " + ala);
+            int da = db.delete(TBL_DAYS, COL_ALARM_ID + "=?", args);
+            Log.d(TAG, "Delete days: " + da);
         } finally {
             db.close();
         }

@@ -39,6 +39,7 @@ public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAd
     private ArrayList<Alarm> list;
     private DataBaseHelper dataBaseHelper;
     private OnCheckEmpty listener;
+    private boolean checked;
 
     public RecyclerViewAdapterMain(ArrayList<Alarm> list) {
         this.list = list;
@@ -77,52 +78,23 @@ public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAd
             }
         });
 
+        checked = false;
         holder.toggleAlarmOnOff.setChecked(alarm.isTurnOn());
+        checked = true;
         holder.toggleAlarmOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                alarm.setTurnOn(isChecked);
-                dataBaseHelper.addAlarm(alarm);
+                if (checked) {
+                    alarm.setTurnOn(isChecked);
+                    dataBaseHelper.addAlarm(alarm);
+                }
             }
         });
 
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Log.d(TAG, "Position: " + position);
-                DataBaseHelper db = DataBaseHelper.getInstance(context);
-                //Alarm alarm = list.get(position);
-                getDialog(alarm, db, position);
-                /**
-                if (alarm.isTurnOn()) {
-                    alarm.setTurnOn(false);
-
-                    // Cancel pendingIntent
-                    Date d = alarm.getDate();
-                    Date today = Calendar.getInstance().getTime();
-                    today.setHours(d.getHours());
-                    today.setMinutes(d.getMinutes());
-                    today.setSeconds(0);
-
-                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                    Intent intent = new Intent(context, CreateSelfieActivity.class);
-                    intent.putExtra("id", alarm.getID());
-                    intent.putExtra("time", today.getTime());
-                    PendingIntent pendingIntent = PendingIntent.getActivity(context, alarm.getID(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, today.getTime(), pendingIntent);
-                    pendingIntent.cancel();
-                    alarmManager.cancel(pendingIntent);
-
-                }
-                if (db != null) {
-                    db.removeAlarm(alarm);
-                } else {
-                    Log.d(TAG, "database null");
-                }
-                list.remove(position);
-                notifyDataSetChanged();
-                if(listener != null) listener.isEmpty(list.size()==0);
-                 */
+                getDialog(alarm, dataBaseHelper, position);
             }
         });
     }
@@ -179,8 +151,6 @@ public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAd
             @Override
             public void onClick(View v) {
                 if (alarm.isTurnOn()) {
-                    alarm.setTurnOn(false);
-
                     // Cancel pendingIntent
                     Date d = alarm.getDate();
                     Date today = Calendar.getInstance().getTime();
