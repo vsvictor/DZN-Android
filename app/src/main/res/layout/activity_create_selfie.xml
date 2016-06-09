@@ -125,7 +125,7 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="35dp"
-                    android:background="@mipmap/spread_social_network" />
+                    android:background="@mipmap/ic_social_network" />
 
                 <TextView
                     android:id="@+id/tvSelfieSpread"

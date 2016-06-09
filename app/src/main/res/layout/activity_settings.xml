@@ -15,12 +15,12 @@
 
         <ImageButton
             android:id="@+id/ibSettingsMenu"
-            android:layout_width="26dp"
-            android:layout_height="20dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:background="@mipmap/menu"
+            android:background="@mipmap/ic_menu"
             android:onClick="onList" />
 
         <TextView
@@ -124,14 +124,30 @@
                     android:layout_centerVertical="true"
                     android:text="@string/settings_activity_sound" />
 
-                <TextView
-                    android:id="@+id/tvSettingsFolder"
-                    style="@style/NameOfPoint"
+                <LinearLayout
+                    android:id="@+id/llChoiceMelody"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:text="@string/settings_activity_folder" />
+                    android:layout_centerVertical="true" >
+
+                    <TextView
+                        android:id="@+id/tvNameMelody"
+                        style="@style/NameOfPoint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_activity_select_melody" />
+
+                    <View
+                        android:layout_width="12dp"
+                        android:layout_height="26dp"
+                        android:layout_marginLeft="@dimen/app_padding_16dp"
+                        android:background="@drawable/to_right" />
+
+                </LinearLayout>
+
+
 
             </RelativeLayout>
 
@@ -144,8 +160,8 @@
 
                 <ImageButton
                     android:id="@+id/idSettingsSoundOff"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@mipmap/ic_sound_off" />
@@ -161,12 +177,13 @@
 
                 <ImageButton
                     android:id="@+id/idSettingsSoundOn"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@mipmap/ic_sound_on" />
 
+                <!--
                 <ImageButton
                     android:id="@+id/idSettingsOpenSound"
                     android:layout_width="30dp"
@@ -175,6 +192,7 @@
                     android:layout_marginLeft="@dimen/activity_vertical_margin"
                     android:layout_weight="1"
                     android:src="@mipmap/ic_open_sound" />
+                    -->
 
             </LinearLayout>
 

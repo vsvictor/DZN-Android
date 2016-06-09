@@ -27,10 +27,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKSdk;
@@ -39,8 +35,6 @@ import com.vk.sdk.api.VKError;
 import java.util.Arrays;
 import java.util.Locale;
 
-import io.fabric.sdk.android.Fabric;
-
 public class SettingsActivity extends BaseActivity {
     private static final String TAG = "SettingsActivity";
 
@@ -48,7 +42,7 @@ public class SettingsActivity extends BaseActivity {
     private TextView tvSettingsReady;
     private TextView tvSettingsSectionSound;
     private TextView tvSettingsSound;
-    private TextView tvSettingsFolder;
+    private TextView tvNameMelody;
     private TextView tvSettingsSectionAlarm;
     private TextView tvSettingsIntervalRepeat;
     private TextView tvSettingsSectionSocialNetwork;
@@ -78,7 +72,9 @@ public class SettingsActivity extends BaseActivity {
 
     private ImageButton ibSoundMin;
     private ImageButton ibSoundMax;
-    private ImageButton ibOpenSound;
+    //private ImageButton ibOpenSound;
+
+    private LinearLayout llChoiceMelody;
 
     private int sender = 0;
     private CallbackManager callbackManager;
@@ -227,8 +223,33 @@ public class SettingsActivity extends BaseActivity {
         tvSettingsSound = (TextView) findViewById(R.id.tvSettingsSound);
         PFHandbookProTypeFaces.THIN.apply(tvSettingsSound);
 
-        tvSettingsFolder = (TextView) findViewById(R.id.tvSettingsFolder);
-        PFHandbookProTypeFaces.THIN.apply(tvSettingsFolder);
+        tvNameMelody = (TextView) findViewById(R.id.tvNameMelody);
+        PFHandbookProTypeFaces.THIN.apply(tvNameMelody);
+        Log.d(TAG, "Settings melody: " + settings.getMelody());
+        Log.d(TAG, "Settings title of melody: " + settings.getMelodyTitle());
+        if (settings != null && !settings.getMelodyTitle().isEmpty()) {
+            Log.d(TAG, "Settings title of melody not null");
+            tvNameMelody.setText(settings.getMelodyTitle());
+        }
+
+        llChoiceMelody = (LinearLayout) findViewById(R.id.llChoiceMelody);
+        llChoiceMelody.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenFileDialog builder = new OpenFileDialog(SettingsActivity.this);
+                builder.setAccessDeniedMessage("Access denied");
+                builder.setFilter(OpenFileDialog.FILE_FILTER);
+                builder.setOpenDialogListener(new OpenDialogListener() {
+                    @Override
+                    public void OnSelectedFile(String fileName) {
+                        Log.d(TAG, "Selected file: " + fileName);
+                        settings.setMelody(fileName);
+                        tvNameMelody.setText(settings.getMelodyTitle());
+                    }
+                });
+                builder.show();
+            }
+        });
 
         sbSettingsSound = (SeekBar) findViewById(R.id.sbSettingsSound);
         sbSettingsSound.setProgress(settings.getSound());
@@ -264,24 +285,6 @@ public class SettingsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 sbSettingsSound.setProgress(100);
-            }
-        });
-
-        ibOpenSound = (ImageButton) findViewById(R.id.idSettingsOpenSound);
-        ibOpenSound.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenFileDialog builder = new OpenFileDialog(SettingsActivity.this);
-                builder.setAccessDeniedMessage("Access denied");
-                builder.setFilter(OpenFileDialog.FILE_FILTER);
-                builder.setOpenDialogListener(new OpenDialogListener() {
-                    @Override
-                    public void OnSelectedFile(String fileName) {
-                        Log.d(TAG, "Selected file: " + fileName);
-                        settings.setMelody(fileName);
-                    }
-                });
-                builder.show();
             }
         });
     }

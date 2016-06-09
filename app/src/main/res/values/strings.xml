@@ -81,7 +81,7 @@
     <string name="settings_activity_section_social_network">Settings social networks</string>
     <string name="settings_activity_upload_photo">Turn on photos pf the publication</string>
     <string name="settings_activity_minutes">min</string>
-    <string name="settings_activity_folder">Select sound</string>
+    <string name="settings_activity_select_melody">Select melody</string>
 
     <!-- Alarms activity -->
     <string name="alarms_activity_name">Alarms</string>

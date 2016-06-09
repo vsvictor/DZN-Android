@@ -2,6 +2,10 @@ package com.dzn.dzn.application.Objects;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.util.Log;
 
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
@@ -12,6 +16,7 @@ import java.util.ArrayList;
  * Created by victor on 09.05.16.
  */
 public class Settings {
+    private static final String TAG = "Settings";
     private SharedPreferences settings;
     private Context context;
 
@@ -163,4 +168,21 @@ public class Settings {
         return context;
     }
 
+    /**
+     * Return title of melody
+     *
+     * @return
+     */
+    public String getMelodyTitle() {
+        if (melody != null && !melody.isEmpty()) {
+            Ringtone ringtone = RingtoneManager.getRingtone(context, Uri.parse(melody));
+            if (ringtone.getTitle(context).length() > 24) {
+                String str = ringtone.getTitle(context);
+                str = str.substring(0, 24);
+                return str;
+            }
+            return ringtone.getTitle(context);
+        }
+        return "";
+    }
 }
