@@ -177,18 +177,13 @@ public class Settings {
      */
     public String getMelodyTitle() {
         if (melody != null && !melody.isEmpty()) {
-            Ringtone ringtone = RingtoneManager.getRingtone(context, Uri.parse(melody));
-            if (ringtone.getTitle(context).length() > 24) {
-                String str = ringtone.getTitle(context);
-                str = str.substring(0, 24);
-                return str;
-            }
-            if (!ringtone.getTitle(context).isEmpty()) {
-                return ringtone.getTitle(context);
+            File file = new File(melody);
+            String name = file.getName();
+            Log.d(TAG, "File name: " + name);
+            if (name.length() > 24) {
+                return name.substring(0, 24);
             } else {
-                File file = new File(melody);
-                Log.d(TAG, "File name: " + file.getName());
-                return file.getName();
+                return name;
             }
         }
         return "";
