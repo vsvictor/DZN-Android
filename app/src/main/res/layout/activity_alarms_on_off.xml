@@ -14,7 +14,7 @@
         android:padding="@dimen/activity_vertical_margin">
 
         <ImageView
-            android:background="@mipmap/ic_cl_yellow"
+            android:background="@drawable/ic_cl_yellow"
             android:onClick="onClose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

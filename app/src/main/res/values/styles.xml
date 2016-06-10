@@ -123,12 +123,12 @@
     </style>
 
     <style name="MinusButton">
-        <item name="android:background">@mipmap/ic_cyrcle_yellow</item>
+        <item name="android:background">@drawable/ic_cyrcle_yellow</item>
         <item name="android:src">@drawable/ic_minus</item>
     </style>
 
     <style name="PlusButton">
-        <item name="android:background">@mipmap/ic_cyrcle_yellow</item>
+        <item name="android:background">@drawable/ic_cyrcle_yellow</item>
         <item name="android:src">@drawable/ic_plus</item>
     </style>
 

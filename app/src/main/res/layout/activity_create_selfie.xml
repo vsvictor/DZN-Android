@@ -20,7 +20,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:background="@mipmap/ic_flash"
+            android:background="@drawable/ic_flash"
             android:onClick="onFlash"
             android:scaleType="fitXY" />
 
@@ -30,7 +30,7 @@
             android:layout_height="30dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:background="@mipmap/dzn_dzn" />
+            android:background="@drawable/dzn_dzn" />
 
         <ImageButton
             android:id="@+id/ibSpread"
@@ -39,7 +39,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:background="@mipmap/ic_camera"
+            android:background="@drawable/ic_camera"
             android:onClick="onCamera" />
 
     </RelativeLayout>
@@ -97,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:background="@mipmap/ic_stop"
+                android:background="@drawable/ic_stop"
                 android:foregroundGravity="fill"
                 android:onClick="onStopAlarm"
                 android:scaleType="fitXY" />
@@ -125,7 +125,7 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="35dp"
-                    android:background="@mipmap/ic_social_network" />
+                    android:background="@drawable/ic_social_network" />
 
                 <TextView
                     android:id="@+id/tvSelfieSpread"
