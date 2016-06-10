@@ -2,6 +2,7 @@ package com.dzn.dzn.application.Objects;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.AudioAttributes;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.util.Log;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -181,7 +183,13 @@ public class Settings {
                 str = str.substring(0, 24);
                 return str;
             }
-            return ringtone.getTitle(context);
+            if (!ringtone.getTitle(context).isEmpty()) {
+                return ringtone.getTitle(context);
+            } else {
+                File file = new File(melody);
+                Log.d(TAG, "File name: " + file.getName());
+                return file.getName();
+            }
         }
         return "";
     }
