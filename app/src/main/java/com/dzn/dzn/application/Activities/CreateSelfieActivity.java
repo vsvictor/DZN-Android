@@ -21,10 +21,12 @@ import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
@@ -258,7 +260,12 @@ public class CreateSelfieActivity extends BaseActivity {
         if (camera == null) {
             Log.d(TAG, "Camera null");
             try {
-                camera = Camera.open(idCamera);
+                if(Camera.getNumberOfCameras()>1){
+                    camera = Camera.open(idCamera);
+                }
+                else{
+                    camera = Camera.open();
+                }
                 initSurface();
                 camera.setPreviewDisplay(surfaceHolder);
                 setCameraDisplayOrientation(idCamera);
@@ -329,7 +336,6 @@ public class CreateSelfieActivity extends BaseActivity {
                     Log.d(TAG, "" + ex.getMessage());
                 }
 
-                // Play melody or default ringtone
                 playMelody();
             }
 
@@ -385,6 +391,9 @@ public class CreateSelfieActivity extends BaseActivity {
                         mMediaPlayer.start();
                     }
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (IllegalStateException e){
+                    Log.i(TAG, alert.toString());
                     e.printStackTrace();
                 }
             }
@@ -464,6 +473,34 @@ public class CreateSelfieActivity extends BaseActivity {
         }
     }
 
+    private Bitmap createPhoto(byte[] data){
+        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+        Bitmap res = null;
+        if(bitmap != null){
+            int width = bitmap.getWidth();
+            int height = bitmap.getHeight();
+            float dx = 1;
+            float dy = 1;
+            float scale = 1;
+            Log.i(TAG, "Width:"+width+" height:"+height);
+            if(width>=2048||height>=2048){
+                dx = 2048f/((float)width);
+                dy = 2048f/((float)height);
+                scale = ((dx<dy)?dx:dy);
+                Log.i(TAG, "Scale:"+scale);
+            }
+            width = Math.round((((float)width)*scale));
+            height = Math.round((((float)height)*scale));
+            Log.i(TAG, "Width:"+width+" height:"+height);
+            int angle = ((idCamera == Camera.CameraInfo.CAMERA_FACING_FRONT)?-90:90);
+            Matrix matrix = new Matrix();
+            matrix.postScale(scale, scale);
+            matrix.postRotate(angle);
+            res = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        }
+        return res;
+    }
+
     /**
      * Click on stop alarm
      *
@@ -484,64 +521,46 @@ public class CreateSelfieActivity extends BaseActivity {
 
         tvCreateSelfie.setTextSize(getResources().getDimension(R.dimen.app_padding_16dp));
 
-        llSpreadSelfie.setVisibility(View.VISIBLE);
+        arrSocial = new ArrayList<Social>();
+        if (alarm.isFacebook()) {
+            Social fb = new Social();
+            fb.setID(1);
+            fb.setName("Facebook");
+            arrSocial.add(fb);
+        }
+        if (alarm.isTwitter()) {
+            Social tw = new Social();
+            tw.setID(2);
+            tw.setName("Twitter");
+            arrSocial.add(tw);
+        }
+        if (alarm.isVkontakte()) {
+            Social vk = new Social();
+            vk.setID(3);
+            vk.setName("VKontakte");
+            arrSocial.add(vk);
+        }
+        if (alarm.isInstagram()) {
+            Social im = new Social();
+            im.setID(4);
+            im.setName("Facebook");
+            arrSocial.add(im);
+        }
+
+
+        llSpreadSelfie.setVisibility((settings.isSocial() && (arrSocial.size() > 0))?View.VISIBLE:View.INVISIBLE);
 
         camera.takePicture(null, null, new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
                 Log.d(TAG, "Bitmap length: " + data.length);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                if (bitmap != null) {
-                    int width = bitmap.getWidth();
-                    int height = bitmap.getHeight();
-                    //rotate bitmap
-                    if (idCamera == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-                        Matrix matrix = new Matrix();
-                        matrix.postRotate(-90);
-                        btm = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
-                    }
-                    //btm = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight());
-                    //set photo
-                    else if (idCamera == Camera.CameraInfo.CAMERA_FACING_BACK) {
-                        Matrix matrix = new Matrix();
-                        matrix.postRotate(90);
-                        Bitmap bob = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
-                        btm = Bitmap.createScaledBitmap(bob, bitmap.getWidth() / 2, bitmap.getHeight(), false);
-                    }
+                btm = createPhoto(data);
+                if (btm != null) {
                     ivPhoto.setImageBitmap(btm);
                     uri = getImageUri(btm);
                     created = !(settings.isSocial());
                     if (settings.isSocial()) {
-                       // LoginManager.getInstance().logInWithPublishPermissions(CreateSelfieActivity.this,Arrays.asList("publish_actions"));
-                        //publishToTwitter(uri);
-                        //publishPhotoToVK(btm);
-                        //postPhotoToInstagram(uri);
                         if (isNetworkAvailable()) {
-                            arrSocial = new ArrayList<Social>();
-                            if (alarm.isFacebook()) {
-                                Social fb = new Social();
-                                fb.setID(1);
-                                fb.setName("Facebook");
-                                arrSocial.add(fb);
-                            }
-                            if (alarm.isTwitter()) {
-                                Social tw = new Social();
-                                tw.setID(2);
-                                tw.setName("Twitter");
-                                arrSocial.add(tw);
-                            }
-                            if (alarm.isVkontakte()) {
-                                Social vk = new Social();
-                                vk.setID(3);
-                                vk.setName("VKontakte");
-                                arrSocial.add(vk);
-                            }
-                            if (alarm.isInstagram()) {
-                                Social im = new Social();
-                                im.setID(4);
-                                im.setName("Facebook");
-                                arrSocial.add(im);
-                            }
                             created = !(arrSocial.size() > 0);
                             publisher(arrSocial);
                         } else {
@@ -549,7 +568,13 @@ public class CreateSelfieActivity extends BaseActivity {
                             finish();
                         }
                     } else {
-                        //finish();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            public void run() {
+                                startActivity(new Intent(CreateSelfieActivity.this, MainActivity.class));
+                            }
+                        }, 5000);
+                        //created = true;
                     }
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(CreateSelfieActivity.this);
@@ -667,8 +692,12 @@ public class CreateSelfieActivity extends BaseActivity {
 
         // получаем инфо по камере cameraId
         CameraInfo info = new CameraInfo();
-        Camera.getCameraInfo(cameraId, info);
-
+        if(Camera.getNumberOfCameras()>1) {
+            Camera.getCameraInfo(cameraId, info);
+        }
+        else{
+            Camera.getCameraInfo(0, info);
+        }
         // задняя камера
         if (info.facing == CameraInfo.CAMERA_FACING_BACK) {
             result = ((360 - degrees) + info.orientation);
