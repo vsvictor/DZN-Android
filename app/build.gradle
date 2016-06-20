@@ -20,12 +20,15 @@ android {
         versionCode 5
         versionName '1.0.0.4b'
     }
+    lintOptions {
+        checkReleaseBuilds false
+    }
     signingConfigs {
         release {
-            storeFile file("release.jks")
-            storePassword "DznDzn2016"
-            keyAlias "DznDzn"
-            keyPassword "DznDzn2016"
+            storeFile file("keystore.jks")
+            storePassword "Vestern74"
+            keyAlias "dzn-release"
+            keyPassword "Vargas"
         }
     }
     buildTypes {
