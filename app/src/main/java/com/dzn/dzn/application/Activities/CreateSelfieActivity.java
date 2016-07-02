@@ -899,9 +899,10 @@ public class CreateSelfieActivity extends BaseActivity {
     private void drawText(Bitmap selphie){
         StringBuilder sb = new StringBuilder();
         Date dd = Calendar.getInstance().getTime();
-        //Добавить сюда формат даты наш или буржуйский в зависимости от значений в настройках, а именно, языка
-        String format = "dd.MM.yyyy HH:mm";
-        ///////
+        String format;
+        if(settings.getLocale() == 1) format = "dd.MM.yyyy HH:mm";
+        else format = "yyyy-MM-dd HH:mm";
+
         sb.append(DateTimeOperator.dateToString(dd, format));
         sb.append(" , ");
         sb.append(String.valueOf(location.latitude));
