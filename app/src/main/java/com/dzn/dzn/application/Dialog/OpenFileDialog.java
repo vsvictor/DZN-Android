@@ -57,6 +57,14 @@ public class OpenFileDialog extends AlertDialog.Builder {
         LinearLayout linearLayout = createMainLayout(context);
         linearLayout.addView(createBackItem(context));
         listView = createListView(context);
+        //listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //    @Override
+        //    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        //        if (position > -1 && listener != null) {
+        //            listener.OnSelectFile(listView.getItemAtPosition(position).toString());
+        //        }
+        //    }
+        //});
         linearLayout.addView(listView);
         setCustomTitle(title)
                 .setView(linearLayout)
@@ -288,8 +296,12 @@ public class OpenFileDialog extends AlertDialog.Builder {
                     currentPath = file.getPath();
                     RebuildFiles(adapter);
                 } else {
-                    if (index != selectedIndex)
+                    if (index != selectedIndex) {
                         selectedIndex = index;
+                                if (selectedIndex > -1 && listener != null) {
+                                    listener.OnSelectFile(adapterView.getItemAtPosition(selectedIndex).toString());
+                                }
+                    }
                     else
                         selectedIndex = -1;
                     adapter.notifyDataSetChanged();

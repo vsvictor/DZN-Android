@@ -1,6 +1,10 @@
 package com.dzn.dzn.application.Activities;
 
+import android.content.Context;
 import android.graphics.Typeface;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +25,7 @@ import com.dzn.dzn.application.Utils.PFHandbookProTypeFaces;
 import com.dzn.dzn.application.Widget.WheelView;
 import com.dzn.dzn.application.Widget.adapters.NumericWheelAdapter;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -70,6 +75,7 @@ public class NewEditActivity extends BaseActivity {
     private NumericWheelAdapter hAdapter;
     private NumericWheelAdapter mAdapter;
     private ToggleButton[] days;
+    private MediaPlayer mMediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -304,6 +310,42 @@ public class NewEditActivity extends BaseActivity {
                                     Log.d(TAG, "Selected file: null");
                                     edAlarm.setMelody("");
                                     spinnerNewEditMusic.setSelection(0);
+                                }
+
+                                if(mMediaPlayer != null && mMediaPlayer.isPlaying()){
+                                    mMediaPlayer.stop();
+                                    mMediaPlayer.release();
+                                    mMediaPlayer = null;
+                                }
+
+                            }
+
+                            @Override
+                            public void OnSelectFile(String filename) {
+                                final AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+                                Log.i(TAG, "Selected file:"+filename);
+                                Uri uri = Uri.parse(filename);
+                                if (mMediaPlayer == null) mMediaPlayer = new MediaPlayer();
+                                if(mMediaPlayer.isPlaying()){
+                                    mMediaPlayer.stop();
+                                    mMediaPlayer.release();
+                                    mMediaPlayer = new MediaPlayer();
+                                }
+                                float vol = ((float)settings.getSound())/100;
+                                Log.i(TAG, "!!!!!!!!!Volue:"+vol);
+                                try {
+                                    mMediaPlayer.setDataSource(NewEditActivity.this, uri);
+                                    if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
+                                        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+                                        mMediaPlayer.setVolume(vol, vol);
+                                        mMediaPlayer.setLooping(true);
+                                        mMediaPlayer.prepare();
+                                        mMediaPlayer.start();
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } catch (IllegalStateException e){
+
                                 }
                             }
                         });

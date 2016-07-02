@@ -1,9 +1,12 @@
 package com.dzn.dzn.application.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +35,7 @@ import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKError;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -81,6 +85,7 @@ public class SettingsActivity extends BaseActivity {
     private CallbackManager callbackManager;
     private boolean ch;
     private MainApplication app;
+    private MediaPlayer mMediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -247,6 +252,40 @@ public class SettingsActivity extends BaseActivity {
                         settings.setMelody(fileName);
                         if (!settings.getMelodyTitle().isEmpty()) {
                             tvNameMelody.setText(settings.getMelodyTitle());
+                        }
+                        if(mMediaPlayer != null && mMediaPlayer.isPlaying()){
+                            mMediaPlayer.stop();
+                            mMediaPlayer.release();
+                            mMediaPlayer = null;
+                        }
+
+                    }
+                    @Override
+                    public void OnSelectFile(String filename) {
+                        final AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+                        Log.i(TAG, "Selected file:"+filename);
+                        Uri uri = Uri.parse(filename);
+                        if (mMediaPlayer == null) mMediaPlayer = new MediaPlayer();
+                        if(mMediaPlayer.isPlaying()){
+                            mMediaPlayer.stop();
+                            mMediaPlayer.release();
+                            mMediaPlayer = new MediaPlayer();
+                        }
+                        float vol = ((float)settings.getSound())/100;
+                        Log.i(TAG, "!!!!!!!!!Volue:"+vol);
+                        try {
+                            mMediaPlayer.setDataSource(SettingsActivity.this, uri);
+                            if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
+                                mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+                                mMediaPlayer.setVolume(vol, vol);
+                                mMediaPlayer.setLooping(true);
+                                mMediaPlayer.prepare();
+                                mMediaPlayer.start();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (IllegalStateException e){
+
                         }
                     }
                 });

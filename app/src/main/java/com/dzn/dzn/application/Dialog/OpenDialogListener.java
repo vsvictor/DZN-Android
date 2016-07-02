@@ -5,4 +5,5 @@ package com.dzn.dzn.application.Dialog;
  */
 public interface OpenDialogListener {
     public void OnSelectedFile(String fileName);
+    public void OnSelectFile(String filename);
 }
