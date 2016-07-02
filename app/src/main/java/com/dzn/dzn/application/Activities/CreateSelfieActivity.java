@@ -3,15 +3,21 @@ package com.dzn.dzn.application.Activities;
 
 import android.app.AlarmManager;
 import android.app.KeyguardManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
@@ -39,6 +45,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dzn.dzn.application.Utils.DateTimeOperator;
+import com.google.android.gms.maps.model.LatLng;
+
+import com.dzn.dzn.application.LocationService;
 import com.dzn.dzn.application.MainActivity;
 import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.Objects.Settings;
@@ -78,6 +88,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -120,6 +132,7 @@ public class CreateSelfieActivity extends BaseActivity {
     private ArrayList<Social> arrSocial;
     private boolean restored;
     private int oldMode;
+    private LatLng location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,6 +172,13 @@ public class CreateSelfieActivity extends BaseActivity {
 
             //Initialize settings
             settings = Settings.getInstance(this);
+
+            location = new LatLng(0,0);
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(LocationService.BROADCAST_ACTION);
+            registerReceiver(locationReceiver, filter);
+            startService(new Intent(this, LocationService.class));
+
 
             //Initialize view elements
             initView();
@@ -872,4 +892,36 @@ public class CreateSelfieActivity extends BaseActivity {
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
     }
+
+    private void drawText(Bitmap selphie){
+        StringBuilder sb = new StringBuilder();
+        Date dd = Calendar.getInstance().getTime();
+        sb.append(DateTimeOperator.dateToTimeString(dd));
+        sb.append(" , ");
+        sb.append(String.valueOf(location.latitude));
+        sb.append(" , ");
+        sb.append(String.valueOf(location.longitude));
+        String text = sb.toString();
+
+        Canvas canvas = new Canvas(selphie);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(Color.rgb(110,110, 110));
+        paint.setTextSize((int)(22));
+        paint.setShadowLayer(1f, 0f, 1f, Color.DKGRAY);
+        Rect bounds = new Rect();
+        paint.getTextBounds(text, 0, text.length(), bounds);
+        int x = (selphie.getWidth() - bounds.width())/6;
+        int y = (selphie.getHeight() + bounds.height())/5;
+        canvas.drawText(text, x, y, paint);
+    }
+
+    private BroadcastReceiver locationReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent != null) {
+                location = new LatLng(intent.getExtras().getDouble(LocationService.LATITUDE), intent.getExtras().getDouble(LocationService.LONGITUDE));
+                Log.i(TAG, ""+location.latitude+","+location.longitude);
+            }
+        }
+    };
 }
