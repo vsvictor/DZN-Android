@@ -119,6 +119,7 @@ public class CreateSelfieActivity extends BaseActivity {
 
     private ArrayList<Social> arrSocial;
     private boolean restored;
+    private int oldMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,6 +197,12 @@ public class CreateSelfieActivity extends BaseActivity {
             camera.release();
             camera = null;
         }
+    }
+    @Override
+    protected void onDestroy(){
+        final AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setRingerMode(oldMode);
+        super.onDestroy();
     }
 
     @Override
@@ -377,6 +384,8 @@ public class CreateSelfieActivity extends BaseActivity {
             }
 
             final AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            oldMode = audioManager.getRingerMode();
+            audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
             if (mMediaPlayer == null) mMediaPlayer = new MediaPlayer();
             if (!mMediaPlayer.isPlaying()) {
                 try {
