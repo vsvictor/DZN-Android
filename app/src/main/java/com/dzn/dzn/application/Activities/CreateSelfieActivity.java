@@ -174,10 +174,6 @@ public class CreateSelfieActivity extends BaseActivity {
             settings = Settings.getInstance(this);
 
             location = new LatLng(0,0);
-            IntentFilter filter = new IntentFilter();
-            filter.addAction(LocationService.BROADCAST_ACTION);
-            registerReceiver(locationReceiver, filter);
-            startService(new Intent(this, LocationService.class));
 
 
             //Initialize view elements
@@ -203,6 +199,11 @@ public class CreateSelfieActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(LocationService.BROADCAST_ACTION);
+        registerReceiver(locationReceiver, filter);
+        startService(new Intent(this, LocationService.class));
+
         if(!restored) {
             if (camera == null) initCamera();
         }
@@ -212,6 +213,7 @@ public class CreateSelfieActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause");
+        unregisterReceiver(locationReceiver);
         if (camera != null) {
             camera.stopPreview();
             camera.release();
@@ -526,6 +528,7 @@ public class CreateSelfieActivity extends BaseActivity {
             matrix.postScale(scale, scale);
             matrix.postRotate(angle);
             res = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+            if(settings.isLocation()) drawText(res);
         }
         return res;
     }
@@ -896,7 +899,10 @@ public class CreateSelfieActivity extends BaseActivity {
     private void drawText(Bitmap selphie){
         StringBuilder sb = new StringBuilder();
         Date dd = Calendar.getInstance().getTime();
-        sb.append(DateTimeOperator.dateToTimeString(dd));
+        //Добавить сюда формат даты наш или буржуйский в зависимости от значений в настройках, а именно, языка
+        String format = "dd.MM.yyyy HH:mm";
+        ///////
+        sb.append(DateTimeOperator.dateToString(dd, format));
         sb.append(" , ");
         sb.append(String.valueOf(location.latitude));
         sb.append(" , ");
@@ -911,7 +917,7 @@ public class CreateSelfieActivity extends BaseActivity {
         Rect bounds = new Rect();
         paint.getTextBounds(text, 0, text.length(), bounds);
         int x = (selphie.getWidth() - bounds.width())/6;
-        int y = (selphie.getHeight() + bounds.height())/5;
+        int y = (selphie.getHeight() - bounds.height());
         canvas.drawText(text, x, y, paint);
     }
 

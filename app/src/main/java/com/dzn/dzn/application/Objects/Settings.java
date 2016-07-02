@@ -33,7 +33,7 @@ public class Settings {
     private boolean addTime;
     private boolean addGeo;
     private String melody;
-
+    private boolean isLocation;
     private boolean isFacebook;
     private boolean isVkontakte;
     private boolean isTwitter;
@@ -60,6 +60,8 @@ public class Settings {
 
     public static final String LOCALE_RU = "ru";
     public static final String LOCALE_EN = "en";
+    public static final String IS_LOCATION = "isLocation";
+
 
     public Settings(Context context){
         this.context = context;
@@ -90,6 +92,7 @@ public class Settings {
         isTwitter = settings.getBoolean(TWITTER, false);
         isInstagram = settings.getBoolean(INSTAGRAM, false);
         list = dbHelper.getSocial();
+        isLocation = settings.getBoolean(IS_LOCATION,true);
     }
 
     public synchronized void save(){
@@ -107,6 +110,7 @@ public class Settings {
         ed.putBoolean(VKONTAKTE, isVkontakte);
         ed.putBoolean(TWITTER, isTwitter);
         ed.putBoolean(INSTAGRAM, isInstagram);
+        ed.putBoolean(IS_LOCATION, isLocation);
         ed.commit();
         dbHelper.setSocial(list);
     }
@@ -133,7 +137,8 @@ public class Settings {
     public void setMelody(String melody) {
         this.melody = melody;
     }
-
+    public void setIsLocation(boolean b){this.isLocation = b;}
+    public boolean isLocation(){return this.isLocation;}
     public void setFacebook(boolean isFacebook) { this.isFacebook = isFacebook; }
     public boolean isFacebook() { return this.isFacebook; }
 

@@ -15,4 +15,12 @@ public class DateTimeOperator {
         String stringDate = simpledateformat.format(aDate);
         return stringDate;
     }
+    public static String dateToString(Date aDate, String format) {
+        if (aDate == null)
+            return "";
+        SimpleDateFormat simpledateformat = new SimpleDateFormat(format);
+        String stringDate = simpledateformat.format(aDate);
+        return stringDate;
+    }
+
 }
