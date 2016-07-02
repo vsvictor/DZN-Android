@@ -310,6 +310,7 @@
 
             </LinearLayout>
 
+            <!-- Section of vibration -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/app_divider_line"
@@ -331,6 +332,38 @@
 
                 <ToggleButton
                     android:id="@+id/toggleSettingsVibro"
+                    style="@style/CommonToggle"
+                    android:layout_width="50dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:textOff=""
+                    android:textOn="" />
+
+            </RelativeLayout>
+
+            <!-- Section of location -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_divider_line"
+                android:background="@android:color/white" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_vertical_margin">
+
+                <TextView
+                    android:id="@+id/tvSettingsLocation"
+                    style="@style/NameOfPoint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/settings_activity_location" />
+
+                <ToggleButton
+                    android:id="@+id/toggleSettingsLocation"
                     style="@style/CommonToggle"
                     android:layout_width="50dp"
                     android:layout_height="25dp"

@@ -18,7 +18,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 5
-        versionName '1.0.0.4b'
+        versionName '1.0.0.5b'
     }
     lintOptions {
         checkReleaseBuilds false
@@ -39,7 +39,7 @@ android {
         }
 
         debug {
-            signingConfig signingConfigs.release
+            //signingConfig signingConfigs.release
         }
     }
     productFlavors {

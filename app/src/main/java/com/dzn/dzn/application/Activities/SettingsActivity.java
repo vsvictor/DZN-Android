@@ -47,6 +47,7 @@ public class SettingsActivity extends BaseActivity {
     private TextView tvSettingsIntervalRepeat;
     private TextView tvSettingsSectionSocialNetwork;
     private TextView tvSettingsVibro;
+    private TextView tvSettingsLocation;
     private TextView tvSettingsUploadPhoto;
     private TextView tvSettingsRU;
     private TextView tvSettingsEN;
@@ -55,6 +56,7 @@ public class SettingsActivity extends BaseActivity {
     private TextView tvIntervalRepeat;
 
     private ToggleButton toggleSettingsVibro;
+    private ToggleButton toggleSettingsLocation;
     private ToggleButton toggleSettingsUploadPhoto;
 
     //Section Social network
@@ -303,6 +305,7 @@ public class SettingsActivity extends BaseActivity {
         tvSettingsIntervalRepeat = (TextView) findViewById(R.id.tvSettingsIntervalRepeat);
         PFHandbookProTypeFaces.THIN.apply(tvSettingsIntervalRepeat);
 
+        //menu item of vibration
         tvSettingsVibro = (TextView) findViewById(R.id.tvSettingsVibro);
         PFHandbookProTypeFaces.THIN.apply(tvSettingsVibro);
 
@@ -312,6 +315,20 @@ public class SettingsActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 settings.setVibro(isChecked);
+                settings.save();
+            }
+        });
+
+        //menu item of location
+        tvSettingsLocation = (TextView) findViewById(R.id.tvSettingsLocation);
+        PFHandbookProTypeFaces.THIN.apply(tvSettingsLocation);
+
+        toggleSettingsLocation = (ToggleButton) findViewById(R.id.toggleSettingsLocation);
+        toggleSettingsLocation.setChecked(settings.isLocation());
+        toggleSettingsLocation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                settings.setIsLocation(isChecked);
                 settings.save();
             }
         });

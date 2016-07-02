@@ -82,6 +82,7 @@
     <string name="settings_activity_upload_photo">Turn on photos pf the publication</string>
     <string name="settings_activity_minutes">min</string>
     <string name="settings_activity_select_melody">Select melody</string>
+    <string name="settings_activity_location">Location on selfie</string>
 
     <!-- Alarms activity -->
     <string name="alarms_activity_name">Alarms</string>

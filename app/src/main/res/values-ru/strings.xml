@@ -82,6 +82,7 @@
     <string name="settings_activity_upload_photo">Включить публикацию фотографий</string>
     <string name="settings_activity_minutes">мин</string>
     <string name="settings_activity_select_melody">Выбор мелодии</string>
+    <string name="settings_activity_location">Местоположение на селфи</string>
 
     <!-- Alarms activity -->
     <string name="alarms_activity_name">Будильники</string>
