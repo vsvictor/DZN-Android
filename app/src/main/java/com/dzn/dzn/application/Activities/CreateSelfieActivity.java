@@ -31,6 +31,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
@@ -392,11 +393,19 @@ public class CreateSelfieActivity extends BaseActivity {
 
     }
 
+    private void runVibration() {
+        Vibrator vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(3000);
+    }
+
     /**
      * Play melody or default ringtone
      */
     private void playMelody() {
         Uri alert = null;
+        if (settings.isVibro()) {
+            runVibration();
+        }
         if(alarm != null) {
             if ((!alarm.getMelody().equals(""))) {
                 Log.d(TAG, "Alarm melody: " + alarm.getMelody());
