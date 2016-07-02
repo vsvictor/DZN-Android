@@ -21,6 +21,8 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
+import android.location.Address;
+import android.location.Geocoder;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
@@ -90,6 +92,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -897,6 +901,17 @@ public class CreateSelfieActivity extends BaseActivity {
     }
 
     private void drawText(Bitmap selphie){
+        String result = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(location.latitude,
+                    location.longitude, 1);
+            Log.e("Addresses", "-->" + addresses);
+            result = addresses.get(0).getLocality();
+        } catch (Exception ex){
+
+        }
+        if(result.isEmpty()) result = "Alicubi in Terra...";
         StringBuilder sb = new StringBuilder();
         Date dd = Calendar.getInstance().getTime();
         String format;
@@ -905,9 +920,7 @@ public class CreateSelfieActivity extends BaseActivity {
 
         sb.append(DateTimeOperator.dateToString(dd, format));
         sb.append(" , ");
-        sb.append(String.valueOf(location.latitude));
-        sb.append(" , ");
-        sb.append(String.valueOf(location.longitude));
+        sb.append(result);
         String text = sb.toString();
 
         Canvas canvas = new Canvas(selphie);
