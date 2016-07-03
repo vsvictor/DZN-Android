@@ -314,19 +314,31 @@ public class SettingsActivity extends BaseActivity {
             }
         });
 
+        //button of decrease sound
         ibSoundMin = (ImageButton) findViewById(R.id.idSettingsSoundOff);
         ibSoundMin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sbSettingsSound.setProgress(0);
+                int sound = settings.getSound();
+                if (sound > 0) {
+                    sound--;
+                    settings.setSound(sound);
+                    sbSettingsSound.setProgress(sound);
+                }
             }
         });
 
+        //button of increase sound
         ibSoundMax = (ImageButton) findViewById(R.id.idSettingsSoundOn);
         ibSoundMax.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sbSettingsSound.setProgress(100);
+                int sound = settings.getSound();
+                if (sound < 100) {
+                    sound++;
+                    settings.setSound(sound);
+                    sbSettingsSound.setProgress(sound);
+                }
             }
         });
     }
