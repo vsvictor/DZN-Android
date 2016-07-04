@@ -374,6 +374,39 @@
 
             </RelativeLayout>
 
+            <!-- Section of test -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_divider_line"
+                android:background="@android:color/white" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_vertical_margin">
+
+                <TextView
+                    android:id="@+id/tvSettingsTest"
+                    style="@style/NameOfPoint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="TEST" />
+
+                <Switch
+                    android:id="@+id/toggleSettingsTest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:thumb="@drawable/ui_switch_selector"
+                    android:track="@drawable/ui_switch_track"
+                    android:textOff=""
+                    android:textOn="" />
+
+            </RelativeLayout>
+
             <!-- Section of Social network -->
             <View
                 android:layout_width="match_parent"
