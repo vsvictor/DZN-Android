@@ -9,7 +9,9 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
@@ -76,9 +78,6 @@ public class SettingsActivity extends BaseActivity {
 
     private SeekBar sbSettingsSound;
 
-    private ImageButton ibSoundMin;
-    private ImageButton ibSoundMax;
-
     private LinearLayout llChoiceMelody;
 
     private int sender = 0;
@@ -86,6 +85,25 @@ public class SettingsActivity extends BaseActivity {
     private boolean ch;
     private MainApplication app;
     private MediaPlayer mMediaPlayer;
+
+    private ImageButton ibSoundMin;
+    private ImageButton ibSoundMax;
+    private Handler updateVolumeHandler = new Handler();
+    private boolean mAutoVolumeIncrease = false;
+    private boolean mAutoVolumeDecrease = false;
+
+    private class VolumeUpdater implements Runnable {
+        @Override
+        public void run() {
+            if (mAutoVolumeIncrease) {
+                increaseVolume();
+                updateVolumeHandler.postDelayed(new VolumeUpdater(), 50);
+            } else if (mAutoVolumeDecrease) {
+                decreaseVolume();
+                updateVolumeHandler.postDelayed(new VolumeUpdater(), 50);
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -319,12 +337,25 @@ public class SettingsActivity extends BaseActivity {
         ibSoundMin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int sound = settings.getSound();
-                if (sound > 0) {
-                    sound--;
-                    settings.setSound(sound);
-                    sbSettingsSound.setProgress(sound);
+                decreaseVolume();
+            }
+        });
+        ibSoundMin.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mAutoVolumeDecrease = true;
+                updateVolumeHandler.post(new VolumeUpdater());
+                return false;
+            }
+        });
+        ibSoundMin.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (mAutoVolumeDecrease && (event.getAction() == MotionEvent.ACTION_UP
+                        || event.getAction() == MotionEvent.ACTION_CANCEL))  {
+                    mAutoVolumeDecrease = false;
                 }
+                return false;
             }
         });
 
@@ -333,14 +364,51 @@ public class SettingsActivity extends BaseActivity {
         ibSoundMax.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int sound = settings.getSound();
-                if (sound < 100) {
-                    sound++;
-                    settings.setSound(sound);
-                    sbSettingsSound.setProgress(sound);
-                }
+                increaseVolume();
             }
         });
+        ibSoundMax.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mAutoVolumeIncrease = true;
+                updateVolumeHandler.post(new VolumeUpdater());
+                return false;
+            }
+        });
+        ibSoundMax.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (mAutoVolumeIncrease && (event.getAction() == MotionEvent.ACTION_UP
+                        || event.getAction() == MotionEvent.ACTION_CANCEL))  {
+                    mAutoVolumeIncrease = false;
+                }
+                return false;
+            }
+        });
+    }
+
+    /**
+     * Increase volume
+     */
+    private void increaseVolume() {
+        int sound = settings.getSound();
+        if (sound < 100) {
+            sound++;
+            settings.setSound(sound);
+            sbSettingsSound.setProgress(sound);
+        }
+    }
+
+    /**
+     * Decrease volume
+     */
+    private void decreaseVolume() {
+        int sound = settings.getSound();
+        if (sound > 0) {
+            sound--;
+            settings.setSound(sound);
+            sbSettingsSound.setProgress(sound);
+        }
     }
 
     /**
