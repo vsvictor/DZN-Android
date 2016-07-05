@@ -2,7 +2,6 @@ package com.dzn.dzn.application.Activities;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,8 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.dzn.dzn.application.Adapters.RecyclerViewAdapterAlarms;
-import com.dzn.dzn.application.Adapters.RecyclerViewAdapterMain;
 import com.dzn.dzn.application.Adapters.RecyclerViewAdapterOnOff;
 import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.R;

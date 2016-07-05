@@ -278,13 +278,15 @@
                     android:layout_toEndOf="@+id/tvNewEditInterval"
                     android:layout_toRightOf="@+id/tvNewEditInterval" />
 
-                <ToggleButton
-                    android:id="@+id/toggleNewEditInterval"
-                    style="@style/NewEditToggleHandler"
-                    android:layout_width="50dp"
-                    android:layout_height="25dp"
+                <Switch
+                    android:id="@+id/swNewEditInterval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:thumb="@drawable/ui_switch_selector"
+                    android:track="@drawable/ui_switch_track"
+                    android:switchMinWidth="50dp"
                     android:textOff=""
                     android:textOn="" />
 
@@ -322,13 +324,15 @@
                     android:layout_toEndOf="@+id/tvNewEditSocialNetwork"
                     android:layout_toRightOf="@+id/tvNewEditSocialNetwork" />
 
-                <ToggleButton
-                    android:id="@+id/toggleNewEditSocialNetwork"
-                    style="@style/NewEditToggleHandler"
-                    android:layout_width="50dp"
-                    android:layout_height="25dp"
+                <Switch
+                    android:id="@+id/swNewEditSocialNetwork"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:thumb="@drawable/ui_switch_selector"
+                    android:track="@drawable/ui_switch_track"
+                    android:switchMinWidth="50dp"
                     android:textOff=""
                     android:textOn="" />
 
@@ -360,13 +364,15 @@
                         android:layout_centerVertical="true"
                         android:text="@string/name_facebook" />
 
-                    <ToggleButton
-                        android:id="@+id/toggleAlarmFacebook"
-                        style="@style/NewEditToggleHandler"
-                        android:layout_width="50dp"
-                        android:layout_height="25dp"
+                    <Switch
+                        android:id="@+id/swAlarmFacebook"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:thumb="@drawable/ui_switch_selector"
+                        android:track="@drawable/ui_switch_track"
+                        android:switchMinWidth="50dp"
                         android:textOff=""
                         android:textOn="" />
 
@@ -391,13 +397,15 @@
                         android:layout_centerVertical="true"
                         android:text="@string/name_vkontakte" />
 
-                    <ToggleButton
-                        android:id="@+id/toggleAlarmVkontakte"
-                        style="@style/NewEditToggleHandler"
-                        android:layout_width="50dp"
-                        android:layout_height="25dp"
+                    <Switch
+                        android:id="@+id/swAlarmVkontakte"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:thumb="@drawable/ui_switch_selector"
+                        android:track="@drawable/ui_switch_track"
+                        android:switchMinWidth="50dp"
                         android:textOff=""
                         android:textOn="" />
 
@@ -420,16 +428,17 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:text="@string/name_vkontakte" />
+                        android:text="@string/name_twitter" />
 
-
-                    <ToggleButton
-                        android:id="@+id/toggleAlarmTwitter"
-                        style="@style/NewEditToggleHandler"
-                        android:layout_width="50dp"
-                        android:layout_height="25dp"
+                    <Switch
+                        android:id="@+id/swAlarmTwitter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:thumb="@drawable/ui_switch_selector"
+                        android:track="@drawable/ui_switch_track"
+                        android:switchMinWidth="50dp"
                         android:textOff=""
                         android:textOn="" />
 
@@ -452,16 +461,17 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:text="@string/name_vkontakte" />
+                        android:text="@string/name_instagram" />
 
-
-                    <ToggleButton
-                        android:id="@+id/toggleAlarmInstagram"
-                        style="@style/NewEditToggleHandler"
-                        android:layout_width="50dp"
-                        android:layout_height="25dp"
+                    <Switch
+                        android:id="@+id/swAlarmInstagram"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:thumb="@drawable/ui_switch_selector"
+                        android:track="@drawable/ui_switch_track"
+                        android:switchMinWidth="50dp"
                         android:textOff=""
                         android:textOn="" />
 

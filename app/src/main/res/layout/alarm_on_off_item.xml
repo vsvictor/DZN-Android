@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/activity_vertical_margin">
 
-
         <TextView
             android:id="@+id/tvAlarmTime"
             style="@style/MainActivityTextClock"

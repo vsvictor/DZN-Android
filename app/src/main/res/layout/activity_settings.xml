@@ -148,8 +148,6 @@
 
                 </LinearLayout>
 
-
-
             </RelativeLayout>
 
             <LinearLayout
@@ -183,17 +181,6 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@drawable/ic_sound_on" />
-
-                <!--
-                <ImageButton
-                    android:id="@+id/idSettingsOpenSound"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/activity_vertical_margin"
-                    android:layout_weight="1"
-                    android:src="@mipmap/ic_open_sound" />
-                    -->
 
             </LinearLayout>
 
@@ -330,13 +317,15 @@
                     android:layout_centerVertical="true"
                     android:text="@string/settings_activity_vibro" />
 
-                <ToggleButton
-                    android:id="@+id/toggleSettingsVibro"
-                    style="@style/CommonToggle"
-                    android:layout_width="50dp"
-                    android:layout_height="25dp"
+                <Switch
+                    android:id="@+id/swSettingsVibration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:thumb="@drawable/ui_switch_selector"
+                    android:track="@drawable/ui_switch_track"
+                    android:switchMinWidth="50dp"
                     android:textOff=""
                     android:textOn="" />
 
@@ -362,46 +351,15 @@
                     android:layout_centerVertical="true"
                     android:text="@string/settings_activity_location" />
 
-                <ToggleButton
-                    android:id="@+id/toggleSettingsLocation"
-                    style="@style/CommonToggle"
-                    android:layout_width="50dp"
-                    android:layout_height="25dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:textOff=""
-                    android:textOn="" />
-
-            </RelativeLayout>
-
-            <!-- Section of test -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/app_divider_line"
-                android:background="@android:color/white" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/activity_vertical_margin">
-
-                <TextView
-                    android:id="@+id/tvSettingsTest"
-                    style="@style/NameOfPoint"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:text="TEST" />
-
                 <Switch
-                    android:id="@+id/toggleSettingsTest"
+                    android:id="@+id/swSettingsLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:thumb="@drawable/ui_switch_selector"
                     android:track="@drawable/ui_switch_track"
+                    android:switchMinWidth="50dp"
                     android:textOff=""
                     android:textOn="" />
 
@@ -440,13 +398,15 @@
                     android:layout_centerVertical="true"
                     android:text="@string/settings_activity_upload_photo" />
 
-                <ToggleButton
-                    android:id="@+id/toggleSettingsUploadPhoto"
-                    style="@style/CommonToggle"
-                    android:layout_width="50dp"
-                    android:layout_height="25dp"
+                <Switch
+                    android:id="@+id/swSettingsUploadPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:thumb="@drawable/ui_switch_selector"
+                    android:track="@drawable/ui_switch_track"
+                    android:switchMinWidth="50dp"
                     android:textOff=""
                     android:textOn="" />
 
@@ -478,13 +438,15 @@
                         android:layout_centerVertical="true"
                         android:text="@string/name_facebook" />
 
-                    <ToggleButton
-                        android:id="@+id/toggleSettingsFacebook"
-                        style="@style/CommonToggle"
-                        android:layout_width="50dp"
-                        android:layout_height="25dp"
+                    <Switch
+                        android:id="@+id/swSettingsFacebook"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:thumb="@drawable/ui_switch_selector"
+                        android:track="@drawable/ui_switch_track"
+                        android:switchMinWidth="50dp"
                         android:textOff=""
                         android:textOn="" />
 
@@ -509,13 +471,15 @@
                         android:layout_centerVertical="true"
                         android:text="@string/name_vkontakte" />
 
-                    <ToggleButton
-                        android:id="@+id/toggleSettingsVkontakte"
-                        style="@style/CommonToggle"
-                        android:layout_width="50dp"
-                        android:layout_height="25dp"
+                    <Switch
+                        android:id="@+id/swSettingsVkontakte"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:thumb="@drawable/ui_switch_selector"
+                        android:track="@drawable/ui_switch_track"
+                        android:switchMinWidth="50dp"
                         android:textOff=""
                         android:textOn="" />
 
@@ -540,13 +504,15 @@
                         android:layout_centerVertical="true"
                         android:text="@string/name_twitter" />
 
-                    <ToggleButton
-                        android:id="@+id/toggleSettingsTwitter"
-                        style="@style/CommonToggle"
-                        android:layout_width="50dp"
-                        android:layout_height="25dp"
+                    <Switch
+                        android:id="@+id/swSettingsTwitter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:thumb="@drawable/ui_switch_selector"
+                        android:track="@drawable/ui_switch_track"
+                        android:switchMinWidth="50dp"
                         android:textOff=""
                         android:textOn="" />
 
@@ -571,13 +537,15 @@
                         android:layout_centerVertical="true"
                         android:text="@string/name_instagram" />
 
-                    <ToggleButton
-                        android:id="@+id/toggleSettingsInstagram"
-                        style="@style/CommonToggle"
-                        android:layout_width="50dp"
-                        android:layout_height="25dp"
+                    <Switch
+                        android:id="@+id/swSettingsInstagram"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:thumb="@drawable/ui_switch_selector"
+                        android:track="@drawable/ui_switch_track"
+                        android:switchMinWidth="50dp"
                         android:textOff=""
                         android:textOn="" />
 

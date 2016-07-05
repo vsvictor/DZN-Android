@@ -32,13 +32,15 @@
             android:layout_toEndOf="@+id/btnDelete"
             android:layout_toRightOf="@+id/btnDelete" />
 
-        <ToggleButton
-            android:id="@+id/toggleAlarmOnOff"
-            style="@style/NewEditToggleHandler"
-            android:layout_width="50dp"
-            android:layout_height="25dp"
+        <Switch
+            android:id="@+id/swAlarmOnOff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:thumb="@drawable/ui_switch_selector"
+            android:track="@drawable/ui_switch_track"
+            android:switchMinWidth="50dp"
             android:textOff=""
             android:textOn="" />
 

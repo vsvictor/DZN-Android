@@ -15,8 +15,8 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.dzn.dzn.application.Dialog.OpenDialogListener;
 import com.dzn.dzn.application.Dialog.OpenFileDialog;
@@ -59,9 +59,9 @@ public class SettingsActivity extends BaseActivity {
     private TextView tvIntervalWakeUP;
     private TextView tvIntervalRepeat;
 
-    private ToggleButton toggleSettingsVibro;
-    private ToggleButton toggleSettingsLocation;
-    private ToggleButton toggleSettingsUploadPhoto;
+    private Switch swSettingsVibration;
+    private Switch swSettingsLocation;
+    private Switch swSettingsUploadPhoto;
 
     //Section Social network
     private LinearLayout llSocialNetwork;
@@ -69,10 +69,10 @@ public class SettingsActivity extends BaseActivity {
     private TextView tvSettingsVkontakte;
     private TextView tvSettingsTwitter;
     private TextView tvSettingsInstagram;
-    private ToggleButton toggleSettingsFacebook;
-    private ToggleButton toggleSettingsVkontakte;
-    private ToggleButton toggleSettingsTwitter;
-    private ToggleButton toggleSettingsInstagram;
+    private Switch swSettingsFacebook;
+    private Switch swSettingsVkontakte;
+    private Switch swSettingsTwitter;
+    private Switch swSettingsInstagram;
 
     private SeekBar sbSettingsSound;
 
@@ -360,9 +360,9 @@ public class SettingsActivity extends BaseActivity {
         tvSettingsVibro = (TextView) findViewById(R.id.tvSettingsVibro);
         PFHandbookProTypeFaces.THIN.apply(tvSettingsVibro);
 
-        toggleSettingsVibro = (ToggleButton) findViewById(R.id.toggleSettingsVibro);
-        toggleSettingsVibro.setChecked(settings.isVibro());
-        toggleSettingsVibro.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        swSettingsVibration = (Switch) findViewById(R.id.swSettingsVibration);
+        swSettingsVibration.setChecked(settings.isVibro());
+        swSettingsVibration.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 settings.setVibro(isChecked);
@@ -374,9 +374,9 @@ public class SettingsActivity extends BaseActivity {
         tvSettingsLocation = (TextView) findViewById(R.id.tvSettingsLocation);
         PFHandbookProTypeFaces.THIN.apply(tvSettingsLocation);
 
-        toggleSettingsLocation = (ToggleButton) findViewById(R.id.toggleSettingsLocation);
-        toggleSettingsLocation.setChecked(settings.isLocation());
-        toggleSettingsLocation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        swSettingsLocation = (Switch) findViewById(R.id.swSettingsLocation);
+        swSettingsLocation.setChecked(settings.isLocation());
+        swSettingsLocation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 settings.setIsLocation(isChecked);
@@ -413,8 +413,8 @@ public class SettingsActivity extends BaseActivity {
         PFHandbookProTypeFaces.THIN.apply(tvSettingsInstagram);
 
         llSocialNetwork = (LinearLayout) findViewById(R.id.linearSettingsSN);
-        toggleSettingsFacebook = (ToggleButton) findViewById(R.id.toggleSettingsFacebook);
-        toggleSettingsFacebook.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        swSettingsFacebook = (Switch) findViewById(R.id.swSettingsFacebook);
+        swSettingsFacebook.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 settings.setFacebook(isChecked);
@@ -442,11 +442,11 @@ public class SettingsActivity extends BaseActivity {
             }
         });
         ch = false;
-        toggleSettingsFacebook.setChecked(settings.isFacebook());
+        swSettingsFacebook.setChecked(settings.isFacebook());
         ch = true;
 
-        toggleSettingsVkontakte = (ToggleButton) findViewById(R.id.toggleSettingsVkontakte);
-        toggleSettingsVkontakte.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        swSettingsVkontakte = (Switch) findViewById(R.id.swSettingsVkontakte);
+        swSettingsVkontakte.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 settings.setVkontakte(isChecked);
@@ -459,11 +459,11 @@ public class SettingsActivity extends BaseActivity {
             }
         });
         ch = false;
-        toggleSettingsVkontakte.setChecked(settings.isVkontakte());
+        swSettingsVkontakte.setChecked(settings.isVkontakte());
         ch = true;
 
-        toggleSettingsTwitter = (ToggleButton) findViewById(R.id.toggleSettingsTwitter);
-        toggleSettingsTwitter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        swSettingsTwitter = (Switch) findViewById(R.id.swSettingsTwitter);
+        swSettingsTwitter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 settings.setTwitter(isChecked);
@@ -480,11 +480,11 @@ public class SettingsActivity extends BaseActivity {
         });
 
         ch = false;
-        toggleSettingsTwitter.setChecked(settings.isTwitter());
+        swSettingsTwitter.setChecked(settings.isTwitter());
         ch=true;
 
-        toggleSettingsInstagram = (ToggleButton) findViewById(R.id.toggleSettingsInstagram);
-        toggleSettingsInstagram.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        swSettingsInstagram = (Switch) findViewById(R.id.swSettingsInstagram);
+        swSettingsInstagram.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 settings.setInstagram(isChecked);
@@ -500,11 +500,11 @@ public class SettingsActivity extends BaseActivity {
             }
         });
         ch = false;
-        toggleSettingsInstagram.setChecked(settings.isInstagram());
+        swSettingsInstagram.setChecked(settings.isInstagram());
         ch = true;
 
-        toggleSettingsUploadPhoto = (ToggleButton) findViewById(R.id.toggleSettingsUploadPhoto);
-        toggleSettingsUploadPhoto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        swSettingsUploadPhoto = (Switch) findViewById(R.id.swSettingsUploadPhoto);
+        swSettingsUploadPhoto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 settings.setSocial(isChecked);
@@ -523,15 +523,15 @@ public class SettingsActivity extends BaseActivity {
                 settings.save();
             }
         });
-        toggleSettingsUploadPhoto.setChecked(settings.isSocial());
+        swSettingsUploadPhoto.setChecked(settings.isSocial());
     }
 
     private void setCheckedSocialNetwork() {
         ch = false;
-        toggleSettingsFacebook.setChecked(settings.isFacebook());
-        toggleSettingsVkontakte.setChecked(settings.isVkontakte());
-        toggleSettingsTwitter.setChecked(settings.isTwitter());
-        toggleSettingsInstagram.setChecked(settings.isInstagram());
+        swSettingsFacebook.setChecked(settings.isFacebook());
+        swSettingsVkontakte.setChecked(settings.isVkontakte());
+        swSettingsTwitter.setChecked(settings.isTwitter());
+        swSettingsInstagram.setChecked(settings.isInstagram());
         ch = true;
     }
 

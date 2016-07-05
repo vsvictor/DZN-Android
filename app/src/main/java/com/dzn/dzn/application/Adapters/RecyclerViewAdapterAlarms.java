@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.dzn.dzn.application.Activities.CreateSelfieActivity;
 import com.dzn.dzn.application.Activities.NewEditActivity;
-import com.dzn.dzn.application.MainActivity;
 import com.dzn.dzn.application.Objects.Alarm;
 import com.dzn.dzn.application.R;
 import com.dzn.dzn.application.Utils.DataBaseHelper;

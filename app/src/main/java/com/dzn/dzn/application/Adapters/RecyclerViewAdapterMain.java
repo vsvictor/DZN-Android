@@ -15,8 +15,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.dzn.dzn.application.Activities.CreateSelfieActivity;
 import com.dzn.dzn.application.Activities.NewEditActivity;
@@ -79,9 +79,9 @@ public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAd
         });
 
         checked = false;
-        holder.toggleAlarmOnOff.setChecked(alarm.isTurnOn());
+        holder.swAlarmOnOff.setChecked(alarm.isTurnOn());
         checked = true;
-        holder.toggleAlarmOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.swAlarmOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (checked) {
@@ -110,7 +110,7 @@ public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAd
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public Button btnDelete;
         public TextView tvAlarmTime;
-        public ToggleButton toggleAlarmOnOff;
+        public Switch swAlarmOnOff;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -118,7 +118,7 @@ public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAd
             PFHandbookProTypeFaces.THIN.apply(tvAlarmTime);
 
             btnDelete = (Button) itemView.findViewById(R.id.btnDelete);
-            toggleAlarmOnOff = (ToggleButton) itemView.findViewById(R.id.toggleAlarmOnOff);
+            swAlarmOnOff = (Switch) itemView.findViewById(R.id.swAlarmOnOff);
         }
     }
     public void setOnCheckEmpty(OnCheckEmpty listener){
