@@ -91,16 +91,17 @@ public class SettingsActivity extends BaseActivity {
     private Handler updateVolumeHandler = new Handler();
     private boolean mAutoVolumeIncrease = false;
     private boolean mAutoVolumeDecrease = false;
+    private static final int DELAY_REPEAT = 50;
 
     private class VolumeUpdater implements Runnable {
         @Override
         public void run() {
             if (mAutoVolumeIncrease) {
                 increaseVolume();
-                updateVolumeHandler.postDelayed(new VolumeUpdater(), 50);
+                updateVolumeHandler.postDelayed(new VolumeUpdater(), DELAY_REPEAT);
             } else if (mAutoVolumeDecrease) {
                 decreaseVolume();
-                updateVolumeHandler.postDelayed(new VolumeUpdater(), 50);
+                updateVolumeHandler.postDelayed(new VolumeUpdater(), DELAY_REPEAT);
             }
         }
     }
@@ -318,7 +319,7 @@ public class SettingsActivity extends BaseActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 settings.setSound(progress);
                 settings.save();
-                Log.d(TAG, "Sound is: " + progress);
+                Log.d(TAG, "Sound is: " + progress + " / " + settings.getSound());
             }
 
             @Override
@@ -393,7 +394,7 @@ public class SettingsActivity extends BaseActivity {
     private void increaseVolume() {
         int sound = settings.getSound();
         if (sound < 100) {
-            sound++;
+            sound = sound + 2;
             settings.setSound(sound);
             sbSettingsSound.setProgress(sound);
         }
@@ -405,7 +406,7 @@ public class SettingsActivity extends BaseActivity {
     private void decreaseVolume() {
         int sound = settings.getSound();
         if (sound > 0) {
-            sound--;
+            sound = sound - 2;
             settings.setSound(sound);
             sbSettingsSound.setProgress(sound);
         }
