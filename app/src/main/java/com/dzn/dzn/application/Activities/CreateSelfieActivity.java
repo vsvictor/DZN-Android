@@ -35,7 +35,6 @@ import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
@@ -139,6 +138,9 @@ public class CreateSelfieActivity extends BaseActivity {
     private int oldMode;
     private LatLng location;
 
+    private Vibrator vibrator;
+    private long[] vibrationPattern = {200, 400, 600, 400};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,7 +181,6 @@ public class CreateSelfieActivity extends BaseActivity {
             settings = Settings.getInstance(this);
 
             location = new LatLng(0,0);
-
 
             //Initialize view elements
             initView();
@@ -285,6 +286,9 @@ public class CreateSelfieActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Initialize camera
+     */
     private void initCamera() {
         if (camera != null) {
             camera.stopPreview();
@@ -393,9 +397,12 @@ public class CreateSelfieActivity extends BaseActivity {
 
     }
 
+    /**
+     * Start vibration
+     */
     private void runVibration() {
-        Vibrator vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        vibrator.vibrate(3000);
+        vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(vibrationPattern, 1);
     }
 
     /**
@@ -403,10 +410,10 @@ public class CreateSelfieActivity extends BaseActivity {
      */
     private void playMelody() {
         Uri alert = null;
-        if (settings.isVibro()) {
-            runVibration();
-        }
         if(alarm != null) {
+            if (settings.isVibro()) {
+                runVibration();
+            }
             if ((!alarm.getMelody().equals(""))) {
                 Log.d(TAG, "Alarm melody: " + alarm.getMelody());
                 alert = Uri.parse(alarm.getMelody());
@@ -446,8 +453,6 @@ public class CreateSelfieActivity extends BaseActivity {
 
     /**
      * Click on flash
-     *
-     * @param view
      */
     public void onFlash(View view) {
         if (idCamera == Camera.CameraInfo.CAMERA_FACING_BACK) {
@@ -476,8 +481,6 @@ public class CreateSelfieActivity extends BaseActivity {
 
     /**
      * Click on camera
-     *
-     * @param view
      */
     public void onCamera(View view) {
         if (Camera.getNumberOfCameras() > 1) {
@@ -501,9 +504,6 @@ public class CreateSelfieActivity extends BaseActivity {
 
     /**
      * Check installed application
-     *
-     * @param str
-     * @return
      */
     private boolean isAppInstalled(String str) {
         PackageManager packageManager = getPackageManager();
@@ -548,11 +548,10 @@ public class CreateSelfieActivity extends BaseActivity {
 
     /**
      * Click on stop alarm
-     *
-     * @param view
      */
     public void onStopAlarm(View view) {
         //created = true;
+        vibrator.cancel();
         mMediaPlayer.stop();
         ibFlash.setVisibility(View.INVISIBLE);
         ibSpread.setVisibility(View.INVISIBLE);
@@ -663,8 +662,6 @@ public class CreateSelfieActivity extends BaseActivity {
     }
     /**
      * Set preview size
-     *
-     * @param fullScreen
      */
     void setPreviewSize(boolean fullScreen) {
         // получаем размеры экрана
@@ -692,11 +689,11 @@ public class CreateSelfieActivity extends BaseActivity {
         Matrix matrix = new Matrix();
         // подготовка матрицы преобразования
         if (!fullScreen) {
-            // если превью будет "втиснут" в экран (второй вариант из урока)
+            // если превью будет "втиснут" в экран
             matrix.setRectToRect(rectPreview, rectDisplay,
                     Matrix.ScaleToFit.START);
         } else {
-            // если экран будет "втиснут" в превью (третий вариант из урока)
+            // если экран будет "втиснут" в превью
             matrix.setRectToRect(rectDisplay, rectPreview,
                     Matrix.ScaleToFit.START);
             matrix.invert(matrix);
@@ -711,8 +708,6 @@ public class CreateSelfieActivity extends BaseActivity {
 
     /**
      * Set camera display orientation
-     *
-     * @param cameraId
      */
     void setCameraDisplayOrientation(int cameraId) {
         // определяем насколько повернут экран от нормального положения
@@ -900,8 +895,6 @@ public class CreateSelfieActivity extends BaseActivity {
 
     /**
      * Return value of the internet available or not
-     *
-     * @return
      */
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
