@@ -25,25 +25,24 @@ public class LocationService extends Service {
     public Location previousBestLocation = null;
 
     Intent intent;
-    int counter = 0;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d(TAG, "onCreate service");
         intent = new Intent(BROADCAST_ACTION);
     }
 
     @Override
-    public void onStart(Intent intent, int startId) {
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(TAG, "onStartCommand");
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         listener = new VSLocationListener();
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.i(TAG, "Permission!!!");
-            return;
         }
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 0, listener);
-        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 0, listener);
-
+        return Service.START_STICKY;
     }
 
     @Override
@@ -95,39 +94,38 @@ public class LocationService extends Service {
         }
         locationManager.removeUpdates(listener);
     }
-    public static Thread performOnBackgroundThread(final Runnable runnable) {
-        final Thread t = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    runnable.run();
-                } finally {
 
-                }
-            }
-        };
-        t.start();
-        return t;
-    }
-    public class VSLocationListener implements LocationListener{
-        public void onLocationChanged(final Location loc)
-        {
-            if(isBetterLocation(loc, previousBestLocation)) {
-                loc.getLatitude();
-                loc.getLongitude();
+    public class VSLocationListener implements LocationListener {
+
+        @Override
+        public void onLocationChanged(final Location loc) {
+            if (isBetterLocation(loc, previousBestLocation)) {
+                //loc.getLatitude();
+                //loc.getLongitude();
                 intent.putExtra(LATITUDE, loc.getLatitude());
                 intent.putExtra(LONGITUDE, loc.getLongitude());
                 intent.putExtra(PROVIDER, loc.getProvider());
-                Log.i(TAG, "SEND!!!!!");
+                Log.i(TAG, "Broadcast location SEND: " + loc.getLatitude() + " / " + loc.getLongitude());
                 sendBroadcast(intent);
-
-            }
-            else{
-                Log.i(TAG, "NOT SEND!!!!!");
+            } else {
+                Log.i(TAG, "Broadcast location NOT SEND!!!!!");
             }
         }
-        public void onProviderDisabled(String provider){}
-        public void onProviderEnabled(String provider){}
-        public void onStatusChanged(String provider, int status, Bundle extras){}
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            Log.d(TAG, "onProviderDisabled");
+        }
+
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            Log.d(TAG, "onProviderEnabled");
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            Log.d(TAG, "onStatusChanged");
+        }
     }
 }

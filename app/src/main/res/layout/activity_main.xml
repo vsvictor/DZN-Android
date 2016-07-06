@@ -42,8 +42,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:background="@drawable/dzn_dzn"
-        android:onClick="onCreateSelfie"/>
+        android:background="@drawable/dzn_dzn" />
 
     <TextView
         android:id="@+id/tvMainPrompt"

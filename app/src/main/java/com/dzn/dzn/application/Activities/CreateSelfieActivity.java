@@ -146,6 +146,9 @@ public class CreateSelfieActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
 
+        //Start location service
+        startService(new Intent(this, LocationService.class));
+
         if(savedInstanceState == null) {
 
             PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -208,8 +211,6 @@ public class CreateSelfieActivity extends BaseActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction(LocationService.BROADCAST_ACTION);
         registerReceiver(locationReceiver, filter);
-        startService(new Intent(this, LocationService.class));
-
         if(!restored) {
             if (camera == null) initCamera();
         }
@@ -909,11 +910,15 @@ public class CreateSelfieActivity extends BaseActivity {
             List<Address> addresses = geocoder.getFromLocation(location.latitude,
                     location.longitude, 1);
             Log.e("Addresses", "-->" + addresses);
-            result = addresses.get(0).getLocality();
+            //result = addresses.get(0).getLocality();
+            result = addresses.get(0).getAddressLine(3) + ", " + addresses.get(0).getAddressLine(1);
         } catch (Exception ex){
 
         }
-        if(result.isEmpty()) result = "Alicubi in Terra...";
+
+        //if(result.isEmpty()) result = "Alicubi in Terra...";
+        if(result.isEmpty()) result = "";
+
         StringBuilder sb = new StringBuilder();
         Date dd = Calendar.getInstance().getTime();
         String format;
