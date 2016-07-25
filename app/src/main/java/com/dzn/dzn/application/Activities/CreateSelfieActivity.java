@@ -751,11 +751,16 @@ public class CreateSelfieActivity extends BaseActivity {
         result = result % 360;
         camera.setDisplayOrientation(result);
     }
+
+    /**
+     * Publish to Facebook
+     */
     private void publishToFacebook() {
         Bitmap image = btm;
         SharePhoto photo = new SharePhoto.Builder()
                 .setBitmap(image)
-                .setCaption("Like me!")
+                //.setCaption("Like me!")
+                .setCaption(getResources().getString(R.string.publish_message))
                 .build();
 
         SharePhotoContent content = new SharePhotoContent.Builder()
@@ -786,6 +791,7 @@ public class CreateSelfieActivity extends BaseActivity {
             }
         });
     }
+
     private FacebookCallback<LoginResult> login = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
@@ -803,6 +809,10 @@ public class CreateSelfieActivity extends BaseActivity {
             Log.i(TAG, "Error: "+error.getMessage());
         }
     };
+
+    /**
+     * Publish to Twitter
+     */
     public void publishToTwitter(Uri uriImage){
         Intent intent = getPackageManager().getLaunchIntentForPackage("com.twitter.android");
         if(intent != null) {
@@ -811,7 +821,7 @@ public class CreateSelfieActivity extends BaseActivity {
                     CreateSelfieActivity.this.getResources().getString(R.string.twitter_secret));
             Fabric.with(CreateSelfieActivity.this, new TwitterCore(authConfig), new TweetComposer());
             final TweetComposer.Builder builder = new TweetComposer.Builder(CreateSelfieActivity.this)
-                    .text("Like me!")
+                    .text(getResources().getString(R.string.publish_message))
                     .image(uriImage);
             //builder.show();
             Intent intent_tw =  builder.createIntent();
@@ -824,6 +834,10 @@ public class CreateSelfieActivity extends BaseActivity {
             startActivityForResult(intent, 103);
         }
     }
+
+    /**
+     * Publish to VK
+     */
     private void publishPhotoToVK(final Bitmap bitmap) {
         VKRequest request = VKApi.uploadWallPhotoRequest(new VKUploadImage(bitmap, VKImageParameters.pngImage()), 0, 0);
         request.executeWithListener(new VKRequest.VKRequestListener() {
@@ -846,8 +860,13 @@ public class CreateSelfieActivity extends BaseActivity {
             }
         });
     }
+
+    /**
+     * Make photo on wall VK
+     */
     private void makePhotoOnWallVk(final VKApiPhoto photo) {
-        VKRequest post = VKApi.wall().post(VKParameters.from(VKApiConst.ATTACHMENTS, new VKAttachments(photo), VKApiConst.MESSAGE, "Dzn-Dzn photo"));
+        VKRequest post = VKApi.wall().post(VKParameters.from(VKApiConst.ATTACHMENTS, new VKAttachments(photo),
+                VKApiConst.MESSAGE, getResources().getString(R.string.publish_message)));
         post.setModelClass(VKWallPostResult.class);
         post.executeWithListener(new VKRequest.VKRequestListener() {
             @Override
@@ -861,6 +880,10 @@ public class CreateSelfieActivity extends BaseActivity {
             }
         });
     }
+
+    /**
+     * Publish to Instagram
+     */
     private void publishToInstagram(Uri uri) {
         Intent intent = getPackageManager().getLaunchIntentForPackage("com.instagram.android");
         if(intent != null) {
