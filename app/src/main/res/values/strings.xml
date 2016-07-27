@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Dzn-Dzn</string>
-
     <string name="facebook_app_id">651800944972928</string>
     <integer name="com_vk_sdk_AppId">5474561</integer>
+
     <string name="twitter_key">xgKQiEvIz7szWvTT1TujRLi1C</string>
     <string name="twitter_secret">4hTtxVjDLIc6C2l5iZbexaFJ6BIl7j1qnpg6gQ0fhU6HYU3qys</string>
     <!-- Common strings -->

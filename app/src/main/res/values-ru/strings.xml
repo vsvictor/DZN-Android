@@ -2,11 +2,14 @@
     <string name="app_name">Dzn-Dzn</string>
 
     <!-- Facebook -->
+<!--
     <string name="facebook_app_id">651800944972928</string>
+-->
 
     <!-- VK -->
-    <string name="vk_app_id">5474561s</string>
-
+    <!--
+        <string name="vk_app_id">5474561s</string>
+    -->
     <!-- Common strings -->
     <string name="ready">ГОТОВО</string>
     <string name="edit">ИЗМЕНИТЬ</string>

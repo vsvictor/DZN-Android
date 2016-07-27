@@ -91,6 +91,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -233,7 +235,6 @@ public class CreateSelfieActivity extends BaseActivity {
         audioManager.setRingerMode(oldMode);
         super.onDestroy();
     }
-
     @Override
     public void onBackPressed() {
         if (created) {
@@ -242,7 +243,6 @@ public class CreateSelfieActivity extends BaseActivity {
             finish();
         }
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -286,10 +286,6 @@ public class CreateSelfieActivity extends BaseActivity {
             publishToTwitter(uri);
         }
     }
-
-    /**
-     * Initialize camera
-     */
     private void initCamera() {
         if (camera != null) {
             camera.stopPreview();
@@ -309,6 +305,7 @@ public class CreateSelfieActivity extends BaseActivity {
                 camera.setPreviewDisplay(surfaceHolder);
                 setCameraDisplayOrientation(idCamera);
                 setPreviewSize(FULL_SCREEN);
+                setMaxPictureSize(camera);
                 camera.startPreview();
 
                 //Initialize camera flash mode
@@ -318,10 +315,6 @@ public class CreateSelfieActivity extends BaseActivity {
             }
         }
     }
-
-    /**
-     * Initialize camera flash mode
-     */
     private void initCameraFlashMode() {
         if (idCamera == Camera.CameraInfo.CAMERA_FACING_FRONT) {
             ibFlash.setVisibility(View.INVISIBLE);
@@ -333,10 +326,6 @@ public class CreateSelfieActivity extends BaseActivity {
             ibFlash.setBackgroundResource(R.drawable.ic_flash_gray);
         }
     }
-
-    /**
-     * Initialize view elements
-     */
     private void initView() {
         Log.d(TAG, "initView");
 
@@ -356,8 +345,6 @@ public class CreateSelfieActivity extends BaseActivity {
         tvSelfieSpread = (TextView) findViewById(R.id.tvSelfieSpread);
         PFHandbookProTypeFaces.THIN.apply(tvSelfieSpread);
     }
-
-    //Initialize SurfaceView & SurfaceHolder
     private void initSurface() {
         sv = (SurfaceView) findViewById(R.id.surfaceView);
         surfaceHolder = sv.getHolder();
@@ -397,18 +384,10 @@ public class CreateSelfieActivity extends BaseActivity {
         });
 
     }
-
-    /**
-     * Start vibration
-     */
     private void runVibration() {
         vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         vibrator.vibrate(vibrationPattern, 1);
     }
-
-    /**
-     * Play melody or default ringtone
-     */
     private void playMelody() {
         Uri alert = null;
         if(alarm != null) {
@@ -451,10 +430,6 @@ public class CreateSelfieActivity extends BaseActivity {
             }
         }
     }
-
-    /**
-     * Click on flash
-     */
     public void onFlash(View view) {
         if (idCamera == Camera.CameraInfo.CAMERA_FACING_BACK) {
             if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
@@ -479,10 +454,6 @@ public class CreateSelfieActivity extends BaseActivity {
             }
         }
     }
-
-    /**
-     * Click on camera
-     */
     public void onCamera(View view) {
         if (Camera.getNumberOfCameras() > 1) {
             if (camera != null) {
@@ -502,10 +473,6 @@ public class CreateSelfieActivity extends BaseActivity {
             }
         }
     }
-
-    /**
-     * Check installed application
-     */
     private boolean isAppInstalled(String str) {
         PackageManager packageManager = getPackageManager();
         try {
@@ -517,8 +484,8 @@ public class CreateSelfieActivity extends BaseActivity {
             return false;
         }
     }
-
     private Bitmap createPhoto(byte[] data){
+        Log.i("PHOTO", "CreatePhoto");
         Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
         Bitmap res = null;
         if(bitmap != null){
@@ -546,60 +513,78 @@ public class CreateSelfieActivity extends BaseActivity {
         }
         return res;
     }
-
-    /**
-     * Click on stop alarm
-     */
     public void onStopAlarm(View view) {
         //created = true;
-        vibrator.cancel();
+        Log.i("PHOTO", "1");
+        //vibrator.cancel();
+        Log.i("PHOTO", "2");
         mMediaPlayer.stop();
+        Log.i("PHOTO", "3");
         ibFlash.setVisibility(View.INVISIBLE);
+        Log.i("PHOTO", "4");
         ibSpread.setVisibility(View.INVISIBLE);
-
-        sv.setVisibility(View.GONE);
+        Log.i("PHOTO", "5");
+ //       sv.setVisibility(View.GONE);
+        Log.i("PHOTO", "6");
         ibStop.setVisibility(View.INVISIBLE);
-
-        ivPhoto.setVisibility(View.VISIBLE);
-
+        Log.i("PHOTO", "7");
+//        ivPhoto.setVisibility(View.VISIBLE);
+        Log.i("PHOTO", "8");
         tvCreateSelfie.setText(getResources().getString(R.string.good_morning));
-
+        Log.i("PHOTO", "9");
         tvCreateSelfie.setTextSize(getResources().getDimension(R.dimen.app_padding_16dp));
-
+        Log.i("PHOTO", "10");
         arrSocial = new ArrayList<Social>();
+        Log.i("PHOTO", "11");
         if (alarm.isFacebook()) {
+            Log.i("PHOTO", "12");
             Social fb = new Social();
             fb.setID(1);
             fb.setName("Facebook");
             arrSocial.add(fb);
+            Log.i("PHOTO", "13");
         }
         if (alarm.isTwitter()) {
+            Log.i("PHOTO", "14");
             Social tw = new Social();
             tw.setID(2);
             tw.setName("Twitter");
             arrSocial.add(tw);
+            Log.i("PHOTO", "14");
         }
         if (alarm.isVkontakte()) {
+            Log.i("PHOTO", "15");
             Social vk = new Social();
             vk.setID(3);
             vk.setName("VKontakte");
             arrSocial.add(vk);
+            Log.i("PHOTO", "16");
         }
         if (alarm.isInstagram()) {
+            Log.i("PHOTO", "17");
             Social im = new Social();
             im.setID(4);
             im.setName("Facebook");
             arrSocial.add(im);
+            Log.i("PHOTO", "18");
         }
-
+        Log.i("PHOTO", "19");
 
         llSpreadSelfie.setVisibility((settings.isSocial() && (arrSocial.size() > 0))?View.VISIBLE:View.INVISIBLE);
+        Log.i("PHOTO", "20");
 
-        camera.takePicture(null, null, new Camera.PictureCallback() {
+        Camera.PictureCallback cbCall = new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
+                Log.i("PHOTO", "21");
                 Log.d(TAG, "Bitmap length: " + data.length);
                 btm = createPhoto(data);
+
+                sv.setVisibility(View.GONE);
+                ivPhoto.setVisibility(View.VISIBLE);
+
+                Log.i("PHOTO", "Created");
+                Log.i("PHOTO", ""+btm.getWidth()+"x"+btm.getHeight());
                 if (btm != null) {
                     ivPhoto.setImageBitmap(btm);
                     uri = getImageUri(btm);
@@ -633,7 +618,21 @@ public class CreateSelfieActivity extends BaseActivity {
                 }
                 camera.stopPreview();
             }
-        });
+        };
+        Camera.PictureCallback raw = new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] data, Camera camera) {
+                Log.i("PHOTO", "RAW");
+            }
+        };
+        Camera.ShutterCallback stCall = new Camera.ShutterCallback() {
+            @Override
+            public void onShutter() {
+                Log.i("PHOTO", "Shutter");
+            }
+        };
+        camera.takePicture(stCall, null, cbCall);
+        Log.i("PHOTO", "Post Take Photo");
     }
     private Bitmap getPhoto(File photo) {
         Bitmap bitmap = null;
@@ -661,9 +660,6 @@ public class CreateSelfieActivity extends BaseActivity {
             return contentUri.getPath();
         }
     }
-    /**
-     * Set preview size
-     */
     void setPreviewSize(boolean fullScreen) {
         // получаем размеры экрана
         Display display = getWindowManager().getDefaultDisplay();
@@ -706,10 +702,6 @@ public class CreateSelfieActivity extends BaseActivity {
         sv.getLayoutParams().height = (int) (rectPreview.bottom);
         sv.getLayoutParams().width = (int) (rectPreview.right);
     }
-
-    /**
-     * Set camera display orientation
-     */
     void setCameraDisplayOrientation(int cameraId) {
         // определяем насколько повернут экран от нормального положения
         int rotation = getWindowManager().getDefaultDisplay().getRotation();
@@ -750,11 +742,23 @@ public class CreateSelfieActivity extends BaseActivity {
             }
         result = result % 360;
         camera.setDisplayOrientation(result);
+        Log.i("PHOTO", "Orientation: "+result);
     }
-
-    /**
-     * Publish to Facebook
-     */
+    private void setMaxPictureSize(Camera cam){
+        Camera.Parameters param = cam.getParameters();
+        List<Camera.Size> ss = param.getSupportedPictureSizes();
+        Collections.sort(ss, new Comparator<Camera.Size>() {
+            @Override
+            public int compare(Camera.Size lhs, Camera.Size rhs) {
+                int s1 = lhs.width*lhs.height;
+                int s2 = rhs.width*rhs.height;
+                return s1-s2;
+            }
+        });
+        Camera.Size s = ss.get(ss.size()-1);
+        param.setPictureSize(s.width, s.height);
+        cam.setParameters(param);
+    }
     private void publishToFacebook() {
         Bitmap image = btm;
         SharePhoto photo = new SharePhoto.Builder()
@@ -791,7 +795,6 @@ public class CreateSelfieActivity extends BaseActivity {
             }
         });
     }
-
     private FacebookCallback<LoginResult> login = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
@@ -809,10 +812,6 @@ public class CreateSelfieActivity extends BaseActivity {
             Log.i(TAG, "Error: "+error.getMessage());
         }
     };
-
-    /**
-     * Publish to Twitter
-     */
     public void publishToTwitter(Uri uriImage){
         Intent intent = getPackageManager().getLaunchIntentForPackage("com.twitter.android");
         if(intent != null) {
@@ -834,10 +833,6 @@ public class CreateSelfieActivity extends BaseActivity {
             startActivityForResult(intent, 103);
         }
     }
-
-    /**
-     * Publish to VK
-     */
     private void publishPhotoToVK(final Bitmap bitmap) {
         VKRequest request = VKApi.uploadWallPhotoRequest(new VKUploadImage(bitmap, VKImageParameters.pngImage()), 0, 0);
         request.executeWithListener(new VKRequest.VKRequestListener() {
@@ -860,10 +855,6 @@ public class CreateSelfieActivity extends BaseActivity {
             }
         });
     }
-
-    /**
-     * Make photo on wall VK
-     */
     private void makePhotoOnWallVk(final VKApiPhoto photo) {
         VKRequest post = VKApi.wall().post(VKParameters.from(VKApiConst.ATTACHMENTS, new VKAttachments(photo),
                 VKApiConst.MESSAGE, getResources().getString(R.string.publish_message)));
@@ -880,10 +871,6 @@ public class CreateSelfieActivity extends BaseActivity {
             }
         });
     }
-
-    /**
-     * Publish to Instagram
-     */
     private void publishToInstagram(Uri uri) {
         Intent intent = getPackageManager().getLaunchIntentForPackage("com.instagram.android");
         if(intent != null) {
@@ -903,7 +890,6 @@ public class CreateSelfieActivity extends BaseActivity {
             startActivityForResult(intent, 101);
         }
     }
-
     private void publisher(ArrayList<Social> arr){
         if(arr.isEmpty()) {
             startActivity(new Intent(CreateSelfieActivity.this, MainActivity.class));
@@ -916,16 +902,11 @@ public class CreateSelfieActivity extends BaseActivity {
         else if (curr.getID() == 3) publishPhotoToVK(btm);
         else if(curr.getID() == 4) publishToInstagram(uri);
     }
-
-    /**
-     * Return value of the internet available or not
-     */
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
     }
-
     private void drawText(Bitmap selphie){
         String result = "";
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
@@ -964,7 +945,6 @@ public class CreateSelfieActivity extends BaseActivity {
         int y = (selphie.getHeight() - bounds.height());
         canvas.drawText(text, x, y, paint);
     }
-
     private BroadcastReceiver locationReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {

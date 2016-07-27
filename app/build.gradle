@@ -17,15 +17,15 @@ android {
         applicationId "com.dzn.dzn.application"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 6
-        versionName '1.0.0.6'
+        versionCode 7
+        versionName '1.0.0.7'
     }
     lintOptions {
         checkReleaseBuilds false
     }
     signingConfigs {
         release {
-            storeFile file("keystore.jks")
+            storeFile file("/opt/keystore.jks")
             storePassword "Vestern74"
             keyAlias "dzn-release"
             keyPassword "Vargas"
@@ -39,7 +39,7 @@ android {
         }
 
         debug {
-            //signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
         }
     }
     productFlavors {
