@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -93,6 +94,8 @@ public class SettingsActivity extends BaseActivity {
     private boolean mAutoVolumeIncrease = false;
     private boolean mAutoVolumeDecrease = false;
     private static final int DELAY_REPEAT = 50;
+    private ScrollView svScroll;
+    private LinearLayout llAllSettings;
 
     private class VolumeUpdater implements Runnable {
         @Override
@@ -119,6 +122,7 @@ public class SettingsActivity extends BaseActivity {
         if(b != null) sender = b.getInt("sender", 0);
         //Initialize view element
         initView();
+
     }
 
     @Override
@@ -162,6 +166,11 @@ public class SettingsActivity extends BaseActivity {
      * Initialize view elements
      */
     private void initView() {
+
+        svScroll = (ScrollView) findViewById(R.id.svSetting);
+
+        llAllSettings = (LinearLayout) findViewById(R.id.llAllSettings);
+
         tvSettingsTune = (TextView) findViewById(R.id.tvSettingsTune);
         PFHandbookProTypeFaces.THIN.apply(tvSettingsTune);
 
@@ -295,13 +304,13 @@ public class SettingsActivity extends BaseActivity {
                         Log.i(TAG, "!!!!!!!!!Volue:"+vol);
                         try {
                             mMediaPlayer.setDataSource(SettingsActivity.this, uri);
-                            if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
+                            //if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
                                 mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
                                 mMediaPlayer.setVolume(vol, vol);
                                 mMediaPlayer.setLooping(true);
                                 mMediaPlayer.prepare();
                                 mMediaPlayer.start();
-                            }
+                            //}
                         } catch (IOException e) {
                             e.printStackTrace();
                         } catch (IllegalStateException e){
@@ -586,6 +595,7 @@ public class SettingsActivity extends BaseActivity {
                 if (isChecked) {
                     llSocialNetwork.setVisibility(View.VISIBLE);
                     setCheckedSocialNetwork();
+                    svScroll.scrollTo(0, llSocialNetwork.getBottom());
                 } else {
                     llSocialNetwork.setVisibility(View.GONE);
                     settings.setFacebook(false);
@@ -593,11 +603,13 @@ public class SettingsActivity extends BaseActivity {
                     settings.setTwitter(false);
                     settings.setInstagram(false);
                     setCheckedSocialNetwork();
+                    svScroll.scrollTo(0, llSocialNetwork.getBottom());
                 }
                 settings.save();
             }
         });
         swSettingsUploadPhoto.setChecked(settings.isSocial());
+
     }
 
     private void setCheckedSocialNetwork() {

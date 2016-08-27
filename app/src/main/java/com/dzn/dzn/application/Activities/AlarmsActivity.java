@@ -61,6 +61,11 @@ public class AlarmsActivity extends BaseActivity {
         }.execute();
     }
 
+    @Override
+    public void onBackPressed(){
+
+    }
+
     /**
      * Initialize view elements
      */

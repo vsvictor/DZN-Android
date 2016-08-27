@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llMainAlagm"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundMain"
     android:orientation="vertical"
     tools:context="com.dzn.dzn.application.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/llAlarmData"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -101,5 +109,87 @@
         </LinearLayout>
 
     </LinearLayout>
+    </LinearLayout>
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/rlBigReclama"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/ivDznTitle"
+            android:src="@drawable/dzn_dzn"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:id="@+id/rlReclama"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="55dp"
+        android:layout_marginBottom="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:src="@drawable/big_center"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_weight="4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:src="@drawable/right_fiolet"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                    <ImageView
+                        android:id="@+id/ivCloseReclama"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/ic_cancel_reclama"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:scaleType="fitXY"
+                    android:src="@drawable/down_museum"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

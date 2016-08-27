@@ -5,6 +5,8 @@ import android.app.KeyguardManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.PowerManager;
 import android.os.Bundle;
@@ -13,6 +15,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dzn.dzn.application.Activities.BaseActivity;
@@ -43,10 +48,16 @@ public class MainActivity extends BaseActivity {
     private RecyclerView recyclerViewMain;
     private RecyclerViewAdapterMain recycleViewAdapter;
     private RecyclerView.LayoutManager recyclerLayoutManager;
-
+    private ImageView ivCloseReclama;
     private DataBaseHelper dataBaseHelper;
 
     private AlarmManager alarmManager;
+    private int counter = 0;
+    private RelativeLayout rlReclama;
+    private LinearLayout llAlarmData;
+    private RelativeLayout llMainAlarm;
+    private RelativeLayout rlBigReclama;
+    private ImageView ivDznTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +73,36 @@ public class MainActivity extends BaseActivity {
 
         setContentView(R.layout.activity_main);
 
+        llMainAlarm = (RelativeLayout)findViewById(R.id.llMainAlagm);
+
+        rlReclama = (RelativeLayout) findViewById(R.id.rlReclama);
+        rlReclama.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rlBigReclama.setVisibility(View.INVISIBLE);
+                MainApplication.setReclama(true);
+
+                String url = "http://big-funny.com";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
+        rlBigReclama = (RelativeLayout) findViewById(R.id.rlBigReclama);
+        rlBigReclama.setVisibility(View.VISIBLE);
+        ivDznTitle = (ImageView) findViewById(R.id.ivDznTitle);
+        ivDznTitle.setVisibility(View.INVISIBLE);
+        llAlarmData = (LinearLayout) findViewById(R.id.llAlarmData);
+        llAlarmData.setVisibility(View.VISIBLE);
+        ivCloseReclama = (ImageView) findViewById(R.id.ivCloseReclama);
+        ivCloseReclama.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //finish();
+                rlBigReclama.setVisibility(View.INVISIBLE);
+                MainApplication.setReclama(true);
+            }
+        });
         dataBaseHelper = DataBaseHelper.getInstance(this);
 
         alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
@@ -74,6 +115,20 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume(){
         super.onResume();
+        counter = 0;
+        rlReclama.setVisibility(MainApplication.isReclama()?View.INVISIBLE:View.VISIBLE);
+        rlReclama.setBackground(getResources().getDrawable(R.drawable.border));
+        llAlarmData.setVisibility(View.VISIBLE);
+        ivDznTitle.setVisibility(View.INVISIBLE);
+        ivCloseReclama.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //finish();
+                rlBigReclama.setVisibility(View.INVISIBLE);
+                MainApplication.setReclama(true);
+            }
+        });
+
         settings.load();
         new AsyncTask<Void, Void, Void>(){
             private ArrayList<Alarm> list = new ArrayList<Alarm>();
@@ -116,6 +171,27 @@ public class MainActivity extends BaseActivity {
                 }
             }
         }.execute();
+    }
+    @Override
+    public void onBackPressed(){
+        counter++;
+        if(counter == 1){
+            llMainAlarm.setBackgroundColor(Color.argb(224,255,0,0));
+            //rlReclama.setBackgroundColor(Color.argb(255,208,136,136));
+            rlReclama.setBackground(getResources().getDrawable(R.drawable.border));
+            ivCloseReclama.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
+
+            rlBigReclama.setVisibility(View.VISIBLE);
+            rlReclama.setVisibility(View.VISIBLE);
+            llAlarmData.setVisibility(View.INVISIBLE);
+            ivDznTitle.setVisibility(View.VISIBLE);
+        }
+        else if (counter > 1) {MainApplication.setReclama(false);super.onBackPressed();}
     }
 
     private void clearAllAlarms() {

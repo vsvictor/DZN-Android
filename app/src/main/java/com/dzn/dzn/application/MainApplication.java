@@ -14,6 +14,16 @@ public class MainApplication extends Application {
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     //private final String TWITTER_KEY = "xgKQiEvIz7szWvTT1TujRLi1C";
     //private final String TWITTER_SECRET = "4hTtxVjDLIc6C2l5iZbexaFJ6BIl7j1qnpg6gQ0fhU6HYU3qys";
+
+    private static boolean isReclama = false;
+
+    public static boolean isReclama(){
+        return isReclama;
+    }
+    public static void setReclama(boolean is){
+        isReclama = is;
+    }
+
     private final String[] sVkScope = new String[]{
             VKScope.WALL,
             VKScope.PHOTOS

@@ -76,14 +76,15 @@
             android:layout_alignParentTop="true" />
             -->
 
-        <ImageView
+        <com.dzn.dzn.application.Widget.SquareImageView
             android:id="@+id/ivPhoto"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:layout_above="@+id/linearLayout"
-            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+
             android:paddingTop="@dimen/activity_vertical_margin"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <FrameLayout
             android:layout_width="80dp"

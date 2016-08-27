@@ -296,10 +296,10 @@ public class CreateSelfieActivity extends BaseActivity {
             Log.d(TAG, "Camera null");
             try {
                 if(Camera.getNumberOfCameras()>1){
-                    camera = Camera.open(idCamera);
+                    camera = Camera.open(CameraInfo.CAMERA_FACING_FRONT);
                 }
                 else{
-                    camera = Camera.open();
+                    camera = Camera.open(CameraInfo.CAMERA_FACING_BACK);
                 }
                 initSurface();
                 camera.setPreviewDisplay(surfaceHolder);
@@ -487,14 +487,17 @@ public class CreateSelfieActivity extends BaseActivity {
     private Bitmap createPhoto(byte[] data){
         Log.i("PHOTO", "CreatePhoto");
         Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+
         Bitmap res = null;
         if(bitmap != null){
             int width = bitmap.getWidth();
             int height = bitmap.getHeight();
+
             float dx = 1;
             float dy = 1;
             float scale = 1;
             Log.i(TAG, "Width:"+width+" height:"+height);
+/*
             if(width>=2048||height>=2048){
                 dx = 2048f/((float)width);
                 dy = 2048f/((float)height);
@@ -504,9 +507,10 @@ public class CreateSelfieActivity extends BaseActivity {
             width = Math.round((((float)width)*scale));
             height = Math.round((((float)height)*scale));
             Log.i(TAG, "Width:"+width+" height:"+height);
+*/
             int angle = ((idCamera == Camera.CameraInfo.CAMERA_FACING_FRONT)?-90:90);
             Matrix matrix = new Matrix();
-            matrix.postScale(scale, scale);
+            //matrix.postScale(scale, scale);
             matrix.postRotate(angle);
             res = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
             if(settings.isLocation()) drawText(res);
@@ -516,7 +520,7 @@ public class CreateSelfieActivity extends BaseActivity {
     public void onStopAlarm(View view) {
         //created = true;
         Log.i("PHOTO", "1");
-        //vibrator.cancel();
+        vibrator.cancel();
         Log.i("PHOTO", "2");
         mMediaPlayer.stop();
         Log.i("PHOTO", "3");
