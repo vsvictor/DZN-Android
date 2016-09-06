@@ -47,6 +47,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dzn.dzn.application.RequestUserPermission;
 import com.dzn.dzn.application.Utils.DateTimeOperator;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -112,7 +113,7 @@ public class CreateSelfieActivity extends BaseActivity {
     private TextView tvSelfieSpread;
 
     private Bitmap btm;
-    private Camera camera;
+    private static Camera camera = null;
     private SurfaceView sv;
     private SurfaceHolder surfaceHolder;
     private DataBaseHelper dataBaseHelper;
@@ -148,8 +149,14 @@ public class CreateSelfieActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
 
+
         //Start location service
-        startService(new Intent(this, LocationService.class));
+
+        try {
+            startService(new Intent(this, LocationService.class));
+        }catch (RuntimeException ex){
+            ex.printStackTrace();
+        }
 
         if(savedInstanceState == null) {
 
@@ -185,7 +192,7 @@ public class CreateSelfieActivity extends BaseActivity {
             //Initialize settings
             settings = Settings.getInstance(this);
 
-            location = new LatLng(0,0);
+            if(location == null) location = new LatLng(0,0);
 
             //Initialize view elements
             initView();
@@ -508,12 +515,14 @@ public class CreateSelfieActivity extends BaseActivity {
             height = Math.round((((float)height)*scale));
             Log.i(TAG, "Width:"+width+" height:"+height);
 */
-            int angle = ((idCamera == Camera.CameraInfo.CAMERA_FACING_FRONT)?-90:90);
+            //int angle = ((idCamera == Camera.CameraInfo.CAMERA_FACING_FRONT)?-90:90);
+            int angle = ((idCamera == Camera.CameraInfo.CAMERA_FACING_FRONT)?90:-90);
             Matrix matrix = new Matrix();
             //matrix.postScale(scale, scale);
             matrix.postRotate(angle);
             res = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
             if(settings.isLocation()) drawText(res);
+            drawLogo(res);
         }
         return res;
     }
@@ -941,13 +950,25 @@ public class CreateSelfieActivity extends BaseActivity {
         Canvas canvas = new Canvas(selphie);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(Color.rgb(110,110, 110));
-        paint.setTextSize((int)(22));
+        paint.setTextSize((int)(48));
         paint.setShadowLayer(1f, 0f, 1f, Color.DKGRAY);
         Rect bounds = new Rect();
         paint.getTextBounds(text, 0, text.length(), bounds);
         int x = (selphie.getWidth() - bounds.width())/6;
         int y = (selphie.getHeight() - bounds.height());
         canvas.drawText(text, x, y, paint);
+    }
+    private void drawLogo(Bitmap selphie){
+        Canvas canvas = new Canvas(selphie);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(Color.rgb(110,110, 110));
+        paint.setTextSize((int)(22));
+        paint.setShadowLayer(1f, 0f, 1f, Color.DKGRAY);
+        Rect bounds = new Rect();
+        Bitmap logo = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
+        int x = selphie.getWidth()-logo.getWidth();
+        int y = selphie.getHeight()-logo.getHeight();
+        canvas.drawBitmap(logo,x,y,paint);
     }
     private BroadcastReceiver locationReceiver = new BroadcastReceiver() {
         @Override

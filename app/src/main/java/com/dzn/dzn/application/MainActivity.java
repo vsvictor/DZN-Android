@@ -73,6 +73,10 @@ public class MainActivity extends BaseActivity {
 
         setContentView(R.layout.activity_main);
 
+        RequestUserPermission requestUserPermission = new RequestUserPermission(this);
+        requestUserPermission.verifyStoragePermissions();
+
+
         llMainAlarm = (RelativeLayout)findViewById(R.id.llMainAlagm);
 
         rlReclama = (RelativeLayout) findViewById(R.id.rlReclama);

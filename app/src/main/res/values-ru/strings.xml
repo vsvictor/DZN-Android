@@ -102,8 +102,8 @@
     <string name="network_error">Отсутствует соединение к сети Интернет. Проверте подключение.</string>
 
     <string name="morning">Мое утро</string>
-    <string name="publish_message">Доброе утро! #DZNDZN</string>
-
+<!--    <string name="publish_message">Доброе утро! #DZNDZN</string> -->
+    <string name="publish_message">Доброе утро, мир! Селфи-будильник #dzndzn меня разбудил </string>
     <!-- Dialog of delete alarm -->
     <string name="dialog_delete_alarm">Вы действительно хотите удалить будильник?</string>
     <string name="dialog_yes">ДА</string>
